@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d18">
+<title>BRJ EMPIRE | Dashboard</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #080d18;
+    color: #fff;
+    min-height: 100vh;
+}
+
+header {
+    height: 70px;
+    padding: 0 20px;
+    background: #101a2b;
+    border-bottom: 1px solid #25354d;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.brand {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #f0c45b;
+}
+
+.brand span {
+    color: white;
+}
+
+.header-right {
+    font-size: 12px;
+    color: #aab7ca;
+}
+
+.wrapper {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px 18px 100px;
+}
+
+.welcome {
+    background: linear-gradient(130deg,#172740,#0e1726);
+    border: 1px solid #2a3d59;
+    border-radius: 18px;
+    padding: 26px 22px;
+    margin-bottom: 24px;
+}
+
+.welcome small {
+    color: #b6c2d3;
+}
+
+.welcome h1 {
+    font-size: 25px;
+    margin: 12px 0;
+    overflow-wrap: anywhere;
+}
+
+.welcome p {
+    color: #9eacc0;
+    font-size: 13px;
+}
+
+.status {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 7px 12px;
+    background: #193b31;
+    color: #85e3ad;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+.section-title {
+    font-size: 17px;
+    margin-bottom: 16px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.card {
+    background: #111b2c;
+    border: 1px solid #263953;
+    border-radius: 15px;
+    padding: 19px;
+    min-width: 0;
+}
+
+.card small {
+    color: #9aa9bf;
+    font-size: 12px;
+}
+
+.card h2 {
+    color: #f0c45b;
+    font-size: 23px;
+    margin-top: 12px;
+    overflow-wrap: anywhere;
+}
+
+.card p {
+    color: #718097;
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+.referral-card {
+    background: linear-gradient(135deg,#17263b,#111b2c);
+    border: 1px solid #364b67;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.referral-card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.referral-card p {
+    font-size: 12px;
+    color: #9aa9bf;
+}
+
+.referral-code {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.referral-code span {
+    flex: 1;
+    background: #080d18;
+    padding: 13px;
+    border-radius: 9px;
+    border: 1px solid #2a3d59;
+    color: #f0c45b;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.referral-code button {
+    border: none;
+    border-radius: 9px;
+    background: #d5a43b;
+    padding: 13px;
+    color: #101827;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.activity {
+    background: #111b2c;
+    border: 1px solid #263953;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.activity-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 15px 0;
+    border-bottom: 1px solid #25344a;
+    font-size: 13px;
+}
+
+.activity-row:last-child {
+    border-bottom: none;
+}
+
+.activity-row span:first-child {
+    color: #aab7ca;
+}
+
+.activity-row span:last-child {
+    color: #f0c45b;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #101a2b;
+    border-top: 1px solid #263953;
+    display: flex;
+    justify-content: space-around;
+    padding: 14px 5px;
+    z-index: 20;
+}
+
+.bottom-nav a {
+    text-decoration: none;
+    color: #8998af;
+    font-size: 11px;
+    text-align: center;
+}
+
+.bottom-nav a.active {
+    color: #f0c45b;
+}
+
+.bottom-nav div {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.logout {
+    margin-top: 22px;
+    background: #281b24;
+    border: 1px solid #50303a;
+    color: #f1a3a3;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.message {
+    color: #9aa9bf;
+    font-size: 12px;
+    margin-top: 15px;
+    overflow-wrap: anywhere;
+}
+
+@media(min-width:700px) {
+    .grid {
+        grid-template-columns: repeat(4,1fr);
+    }
+}
+
+@media(max-width:360px) {
+    .brand {
+        font-size: 16px;
+    }
+
+    .welcome h1 {
+        font-size: 21px;
+    }
+
+    .card h2 {
+        font-size: 19px;
+    }
+
+    .referral-code {
+        flex-wrap: wrap;
+    }
+
+    .referral-code span {
+        min-width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">BRJ <span>EMPIRE</span></div>
+    <div class="header-right">MEMBER PANEL</div>
+</header>
+
+<div class="wrapper">
+
+    <section class="welcome">
+        <small>MEMBER DASHBOARD</small>
+        <h1>Welcome, <span id="memberName">Member</span> 👋</h1>
+        <p>Welcome to your BRJ EMPIRE account.</p>
+        <div class="status">● Account Connected</div>
+    </section>
+
+    <h3 class="section-title">Account Overview</h3>
+
+    <div class="grid">
+
+        <div class="card">
+            <small>Member ID</small>
+            <h2 id="memberId">---</h2>
+            <p>Your account identification</p>
+        </div>
+
+        <div class="card">
+            <small>My Team</small>
+            <h2 id="teamCount">0</h2>
+            <p>Registered referrals</p>
+        </div>
+
+        <div class="card">
+            <small>Account Status</small>
+            <h2>Active</h2>
+            <p>Account overview</p>
+        </div>
+
+        <div class="card">
+            <small>Member Since</small>
+            <h2 id="memberSince">---</h2>
+            <p>Registration date</p>
+        </div>
+
+    </div>
+
+    <section class="referral-card">
+        <h3>My Referral Code</h3>
+        <p>Share your referral code with others.</p>
+
+        <div class="referral-code">
+            <span id="referralCode">Loading...</span>
+            <button onclick="copyReferral()">COPY</button>
+        </div>
+    </section>
+
+    <h3 class="section-title">Account Information</h3>
+
+    <section class="activity">
+        <div class="activity-row">
+            <span>Full Name</span>
+            <span id="profileName">Loading...</span>
+        </div>
+
+        <div class="activity-row">
+            <span>Email</span>
+            <span id="profileEmail">Loading...</span>
+        </div>
+
+        <div class="activity-row">
+            <span>Mobile</span>
+            <span id="profileMobile">Loading...</span>
+        </div>
+
+        <div class="activity-row">
+            <span>Profile Status</span>
+            <span>Registered</span>
+        </div>
+    </section>
+
+    <button class="logout" onclick="logout()">LOG OUT</button>
+
+    <div id="message" class="message"></div>
+
+</div>
+
+<nav class="bottom-nav">
+    <a href="dashboard.html" class="active">
+        <div>⌂</div>Home
+    </a>
+
+    <a href="#" onclick="showNotice('Team section coming soon')">
+        <div>♧</div>Team
+    </a>
+
+    <a href="#" onclick="showNotice('Profile section coming soon')">
+        <div>◉</div>Profile
+    </a>
+
+    <a href="#" onclick="showNotice('Settings section coming soon')">
+        <div>⚙</div>Settings
+    </a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+async function loadDashboard() {
+    const db = window.brjSupabase;
+
+    if (!db) {
+        document.getElementById("message").innerText =
+            "Database connection not configured.";
+        return;
+    }
+
+    const { data: sessionData, error: sessionError } =
+        await db.auth.getSession();
+
+    if (sessionError || !sessionData.session) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const user = sessionData.session.user;
+
+    const { data: profile, error } = await db
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+    if (error) {
+        document.getElementById("message").innerText =
+            "Unable to load profile.";
+        return;
+    }
+
+    if (!profile) {
+        document.getElementById("message").innerText =
+            "Profile is not available yet. Please contact support.";
+        return;
+    }
+
+    const name = profile.full_name || "Member";
+
+    document.getElementById("memberName").innerText = name;
+    document.getElementById("profileName").innerText = name;
+    document.getElementById("profileEmail").innerText =
+        user.email || "Not available";
+    document.getElementById("profileMobile").innerText =
+        profile.mobile || "Not provided";
+    document.getElementById("memberId").innerText =
+        user.id.slice(0, 8).toUpperCase();
+    document.getElementById("referralCode").innerText =
+        profile.referral_code || "Not assigned";
+
+    if (profile.created_at) {
+        document.getElementById("memberSince").innerText =
+            new Date(profile.created_at).toLocaleDateString("en-IN");
+    }
+
+    // Referral team count
+    const { count } = await db
+        .from("profiles")
+        .select("*", { count: "exact", head: true })
+        .eq("referred_by", user.id);
+
+    document.getElementById("teamCount").innerText = count || 0;
+}
+
+async function copyReferral() {
+    const code = document.getElementById("referralCode").innerText;
+
+    if (!code || code === "Loading..." || code === "Not assigned") {
+        showNotice("Referral code is not available.");
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(code);
+        showNotice("Referral code copied!");
+    } catch {
+        showNotice("Unable to copy. Please copy manually.");
+    }
+}
+
+async function logout() {
+    if (!window.brjSupabase) return;
+
+    const { error } = await window.brjSupabase.auth.signOut();
+
+    if (error) {
+        showNotice("Logout failed.");
+        return;
+    }
+
+    window.location.href = "index.html";
+}
+
+function showNotice(text) {
+    document.getElementById("message").innerText = text;
+}
+
+loadDashboard();
+</script>
+
+</body>
+</html>
