@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d18">
+<title>BRJ EMPIRE | My Team</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #080d18;
+    color: #fff;
+    min-height: 100vh;
+}
+
+header {
+    background: #101a2b;
+    border-bottom: 1px solid #263953;
+    padding: 20px;
+    color: #f0c45b;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+    padding: 25px 18px 100px;
+}
+
+.title {
+    margin-bottom: 22px;
+}
+
+.title h1 {
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+.title p {
+    color: #9aa9bf;
+    font-size: 13px;
+}
+
+.summary {
+    background: linear-gradient(135deg,#17263b,#111b2c);
+    border: 1px solid #344963;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.summary small {
+    color: #aab7ca;
+}
+
+.summary h2 {
+    color: #f0c45b;
+    font-size: 32px;
+    margin-top: 12px;
+}
+
+.summary p {
+    color: #8e9db3;
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+.search {
+    width: 100%;
+    padding: 15px;
+    border-radius: 11px;
+    background: #111b2c;
+    border: 1px solid #293b54;
+    color: white;
+    outline: none;
+    margin: 0 0 18px;
+}
+
+.search:focus {
+    border-color: #e3b64e;
+}
+
+.list {
+    background: #111b2c;
+    border: 1px solid #263953;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.list-title {
+    padding: 18px;
+    border-bottom: 1px solid #263953;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.member {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    border-bottom: 1px solid #25344a;
+}
+
+.member:last-child {
+    border-bottom: none;
+}
+
+.avatar {
+    min-width: 43px;
+    height: 43px;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#d5a43b,#f5d77e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #101827;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.info {
+    min-width: 0;
+    flex: 1;
+}
+
+.info h3 {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.info p {
+    color: #8796ac;
+    font-size: 11px;
+    margin-top: 5px;
+    overflow-wrap: anywhere;
+}
+
+.badge {
+    background: #193b31;
+    color: #85e3ad;
+    padding: 7px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+}
+
+.empty {
+    text-align: center;
+    padding: 35px 20px;
+    color: #8493a9;
+    font-size: 13px;
+}
+
+.message {
+    color: #9aa9bf;
+    font-size: 13px;
+    margin-top: 15px;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #101a2b;
+    border-top: 1px solid #263953;
+    display: flex;
+    justify-content: space-around;
+    padding: 13px 5px;
+}
+
+.bottom-nav a {
+    text-decoration: none;
+    color: #8998af;
+    font-size: 11px;
+    text-align: center;
+}
+
+.bottom-nav a.active {
+    color: #f0c45b;
+}
+
+.bottom-nav div {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+@media(min-width:700px) {
+    .summary {
+        max-width: 320px;
+    }
+}
+
+@media(max-width:380px) {
+    .member {
+        gap: 10px;
+        padding: 13px 10px;
+    }
+
+    .badge {
+        font-size: 9px;
+        padding: 6px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>BRJ EMPIRE</header>
+
+<div class="container">
+
+    <div class="title">
+        <h1>My Team</h1>
+        <p>View your direct referral members.</p>
+    </div>
+
+    <div class="summary">
+        <small>DIRECT TEAM MEMBERS</small>
+        <h2 id="teamTotal">0</h2>
+        <p>People registered directly through your referral.</p>
+    </div>
+
+    <input
+        class="search"
+        type="search"
+        id="searchInput"
+        placeholder="Search team members..."
+        oninput="filterMembers()"
+    >
+
+    <section class="list">
+        <div class="list-title">Team Members</div>
+        <div id="membersList">
+            <div class="empty">Loading team members...</div>
+        </div>
+    </section>
+
+    <div id="message" class="message"></div>
+
+</div>
+
+<nav class="bottom-nav">
+    <a href="dashboard.html">
+        <div>⌂</div>Home
+    </a>
+
+    <a href="team.html" class="active">
+        <div>♧</div>Team
+    </a>
+
+    <a href="profile.html">
+        <div>◉</div>Profile
+    </a>
+
+    <a href="#" onclick="showMessage('Settings coming soon')">
+        <div>⚙</div>Settings
+    </a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+let teamMembers = [];
+
+async function loadTeam() {
+
+    const db = window.brjSupabase;
+
+    if (!db) {
+        showMessage("Database connection is unavailable.");
+        return;
+    }
+
+    const { data: sessionData } = await db.auth.getSession();
+
+    if (!sessionData.session) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const user = sessionData.session.user;
+
+    const { data, error } = await db
+        .from("profiles")
+        .select("id, full_name, referral_code, created_at")
+        .eq("referred_by", user.id)
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        showMessage("Unable to load team members.");
+        return;
+    }
+
+    teamMembers = data || [];
+
+    document.getElementById("teamTotal").innerText =
+        teamMembers.length;
+
+    renderMembers(teamMembers);
+}
+
+function renderMembers(list) {
+
+    const container = document.getElementById("membersList");
+
+    if (!list.length) {
+        container.innerHTML =
+            '<div class="empty">No team members found yet.</div>';
+        return;
+    }
+
+    container.innerHTML = list.map(member => {
+
+        const name = escapeHTML(member.full_name || "Member");
+
+        const code = escapeHTML(member.referral_code || "N/A");
+
+        const date = member.created_at
+            ? new Date(member.created_at).toLocaleDateString("en-IN")
+            : "Unknown";
+
+        const initial = name.charAt(0).toUpperCase();
+
+        return `
+            <div class="member">
+                <div class="avatar">${initial}</div>
+
+                <div class="info">
+                    <h3>${name}</h3>
+                    <p>Code: ${code} · Joined: ${date}</p>
+                </div>
+
+                <div class="badge">MEMBER</div>
+            </div>
+        `;
+    }).join("");
+}
+
+function filterMembers() {
+
+    const query = document.getElementById("searchInput")
+        .value.trim().toLowerCase();
+
+    const filtered = teamMembers.filter(member =>
+        (member.full_name || "").toLowerCase().includes(query) ||
+        (member.referral_code || "").toLowerCase().includes(query)
+    );
+
+    renderMembers(filtered);
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    }[char]));
+}
+
+function showMessage(text) {
+    document.getElementById("message").innerText = text;
+}
+
+loadTeam();
+</script>
+
+</body>
+</html>
