@@ -3,15 +3,17 @@
 // ======================================
 
 function getSupabase() {
-    return window.supabaseClient || window.brjSupabase || null;
+    return window.brjSupabase || window.supabaseClient || null;
 }
 
+// SHOW MESSAGE
 function showMessage(text) {
     const msg = document.getElementById("message");
     msg.innerText = text;
     msg.style.display = "block";
 }
 
+// SHOW LOGIN
 function showLogin() {
     document.getElementById("loginForm").classList.remove("hidden");
     document.getElementById("registerForm").classList.add("hidden");
@@ -22,6 +24,7 @@ function showLogin() {
     document.getElementById("message").style.display = "none";
 }
 
+// SHOW REGISTER
 function showRegister() {
     document.getElementById("registerForm").classList.remove("hidden");
     document.getElementById("loginForm").classList.add("hidden");
@@ -32,14 +35,16 @@ function showRegister() {
     document.getElementById("message").style.display = "none";
 }
 
-// REGISTER
+// ======================================
+// REGISTER USER
+// ======================================
 async function register(event) {
     event.preventDefault();
 
     const supabase = getSupabase();
 
     if (!supabase) {
-        showMessage("Database connection failed. Refresh and try again.");
+        showMessage("Database connection failed. Please refresh.");
         console.error("Supabase client missing.");
         return;
     }
@@ -48,9 +53,9 @@ async function register(event) {
     const mobile = document.getElementById("mobile").value.trim();
     const email = document.getElementById("registerEmail").value.trim();
     const password = document.getElementById("registerPassword").value;
-    const confirm = document.getElementById("confirmPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
-    if (password !== confirm) {
+    if (password !== confirmPassword) {
         showMessage("Passwords do not match.");
         return;
     }
@@ -84,7 +89,11 @@ async function register(event) {
             showMessage("Registration successful! Please verify your email.");
         }
 
-        document.getElementById("registerForm").reset();
+        // FIX: Reset the actual form, not the div container
+        const registerFormElement = document.querySelector("#registerForm form");
+        if (registerFormElement) {
+            registerFormElement.reset();
+        }
 
     } catch (error) {
         console.error("Registration error:", error);
@@ -95,14 +104,16 @@ async function register(event) {
     }
 }
 
-// LOGIN
+// ======================================
+// LOGIN USER
+// ======================================
 async function login(event) {
     event.preventDefault();
 
     const supabase = getSupabase();
 
     if (!supabase) {
-        showMessage("Database connection failed. Refresh and try again.");
+        showMessage("Database connection failed. Please refresh.");
         console.error("Supabase client missing.");
         return;
     }
@@ -123,7 +134,7 @@ async function login(event) {
         if (error) throw error;
 
         showMessage("Login successful! Welcome to BRJ EMPIRE.");
-        console.log("Logged in:", data.user);
+        console.log("Login successful:", data.user);
 
     } catch (error) {
         console.error("Login error:", error);
@@ -134,12 +145,14 @@ async function login(event) {
     }
 }
 
-// SESSION CHECK
+// ======================================
+// CHECK EXISTING SESSION
+// ======================================
 async function checkSession() {
     const supabase = getSupabase();
 
     if (!supabase) {
-        console.error("Supabase client is not initialized.");
+        console.error("Supabase client not initialized.");
         return;
     }
 
@@ -156,4 +169,5 @@ async function checkSession() {
     }
 }
 
+// INITIALIZE
 document.addEventListener("DOMContentLoaded", checkSession);
