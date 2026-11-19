@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRJ EMPIRE — Settings</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial, sans-serif;
+}
+
+body{
+  background:#080d1b;
+  color:#fff;
+  min-height:100vh;
+  padding-bottom:90px;
+}
+
+.header{
+  padding:22px 20px;
+  background:#10182a;
+  border-bottom:1px solid #d5a93b33;
+}
+
+.brand{
+  color:#e5b84b;
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.brand span{
+  color:white;
+}
+
+.subtitle{
+  color:#8c96aa;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.container{
+  width:100%;
+  max-width:500px;
+  margin:auto;
+  padding:20px;
+}
+
+.title{
+  font-size:25px;
+  font-weight:800;
+  margin:10px 0 6px;
+}
+
+.description{
+  color:#929db2;
+  font-size:13px;
+  margin-bottom:24px;
+}
+
+.card{
+  background:#111a2c;
+  border:1px solid #ffffff10;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:16px;
+}
+
+.card-title{
+  font-size:16px;
+  font-weight:bold;
+  margin-bottom:18px;
+}
+
+.label{
+  color:#8995ab;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.value{
+  font-size:14px;
+  font-weight:600;
+  word-break:break-all;
+}
+
+.info-row{
+  margin-bottom:18px;
+}
+
+.info-row:last-child{
+  margin-bottom:0;
+}
+
+.account-icon{
+  width:55px;
+  height:55px;
+  background:#d5a93b18;
+  border:1px solid #d5a93b50;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  margin-bottom:15px;
+}
+
+.btn{
+  width:100%;
+  border:none;
+  padding:15px;
+  border-radius:12px;
+  font-weight:bold;
+  font-size:14px;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.gold-btn{
+  background:linear-gradient(135deg,#e5bb51,#bd8a24);
+  color:#101521;
+}
+
+.dark-btn{
+  background:#1a2438;
+  color:white;
+  border:1px solid #ffffff12;
+}
+
+.logout-btn{
+  background:#301a22;
+  color:#ff7b85;
+  border:1px solid #ff7b8525;
+}
+
+.status{
+  font-size:13px;
+  margin-top:14px;
+  line-height:1.6;
+  display:none;
+}
+
+.success{
+  color:#55d6a1;
+}
+
+.error{
+  color:#ff818b;
+}
+
+.note{
+  font-size:12px;
+  color:#909bb0;
+  line-height:1.7;
+  margin-top:12px;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#10182a;
+  border-top:1px solid #ffffff10;
+  display:flex;
+  justify-content:space-around;
+  padding:13px 5px;
+  z-index:100;
+}
+
+.nav a{
+  color:#8490a7;
+  text-decoration:none;
+  font-size:11px;
+  text-align:center;
+  flex:1;
+}
+
+.nav a.active{
+  color:#e5b84b;
+}
+
+.nav-icon{
+  font-size:19px;
+  display:block;
+  margin-bottom:5px;
+}
+
+button:disabled{
+  opacity:0.6;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="brand">BRJ <span>EMPIRE</span></div>
+  <div class="subtitle">ACCOUNT SETTINGS</div>
+</header>
+
+<div class="container">
+
+  <h1 class="title">Settings ⚙️</h1>
+  <p class="description">Manage your account and security.</p>
+
+  <div class="card">
+    <div class="account-icon">👤</div>
+    <div class="card-title">Account Information</div>
+
+    <div class="info-row">
+      <div class="label">Registered Email</div>
+      <div class="value" id="userEmail">Loading...</div>
+    </div>
+
+    <div class="info-row">
+      <div class="label">Account ID</div>
+      <div class="value" id="userId">Loading...</div>
+    </div>
+
+    <div class="info-row">
+      <div class="label">Account Status</div>
+      <div class="value" style="color:#55d6a1">● Active Session</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔐 Security</div>
+
+    <p class="note">
+      Forgot your password or want to change it? We can send a password reset link to your registered email.
+    </p>
+
+    <button class="btn gold-btn" id="resetBtn" onclick="resetPassword()">
+      Send Password Reset Email
+    </button>
+
+    <div id="resetStatus" class="status"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚪 Session</div>
+
+    <p class="note">
+      Logout from your BRJ EMPIRE account on this device.
+    </p>
+
+    <button class="btn logout-btn" id="logoutBtn" onclick="logout()">
+      Logout
+    </button>
+
+    <div id="logoutStatus" class="status"></div>
+  </div>
+
+</div>
+
+<nav class="nav">
+  <a href="dashboard.html">
+    <span class="nav-icon">🏠</span>
+    Home
+  </a>
+
+  <a href="team.html">
+    <span class="nav-icon">👥</span>
+    Team
+  </a>
+
+  <a href="profile.html">
+    <span class="nav-icon">👤</span>
+    Profile
+  </a>
+
+  <a href="settings.html" class="active">
+    <span class="nav-icon">⚙️</span>
+    Settings
+  </a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+let currentUser = null;
+
+async function initSettings(){
+
+  const db = window.brjSupabase;
+
+  if(!db){
+    showStatus("resetStatus","Supabase connection not configured.","error");
+    return;
+  }
+
+  const {data,error} = await db.auth.getSession();
+
+  if(error || !data.session){
+    window.location.href="index.html";
+    return;
+  }
+
+  currentUser = data.session.user;
+
+  document.getElementById("userEmail").textContent =
+    currentUser.email || "Not available";
+
+  document.getElementById("userId").textContent =
+    currentUser.id || "Not available";
+}
+
+function showStatus(id,message,type){
+
+  const box=document.getElementById(id);
+
+  box.style.display="block";
+  box.className="status "+type;
+  box.textContent=message;
+}
+
+async function resetPassword(){
+
+  const db=window.brjSupabase;
+  const btn=document.getElementById("resetBtn");
+
+  if(!currentUser || !currentUser.email){
+    showStatus("resetStatus","Email not available. Please login again.","error");
+    return;
+  }
+
+  btn.disabled=true;
+  btn.textContent="Sending...";
+
+  const {error}=await db.auth.resetPasswordForEmail(currentUser.email);
+
+  if(error){
+    showStatus("resetStatus",error.message,"error");
+  }else{
+    showStatus(
+      "resetStatus",
+      "Password reset email sent! Check your inbox and spam folder.",
+      "success"
+    );
+  }
+
+  btn.disabled=false;
+  btn.textContent="Send Password Reset Email";
+}
+
+async function logout(){
+
+  const db=window.brjSupabase;
+  const btn=document.getElementById("logoutBtn");
+
+  btn.disabled=true;
+  btn.textContent="Logging out...";
+
+  const {error}=await db.auth.signOut();
+
+  if(error){
+    showStatus("logoutStatus",error.message,"error");
+    btn.disabled=false;
+    btn.textContent="Logout";
+    return;
+  }
+
+  window.location.href="index.html";
+}
+
+initSettings();
+
+</script>
+
+</body>
+</html>
