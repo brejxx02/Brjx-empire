@@ -2,6 +2,10 @@
 // BRJ EMPIRE - AUTHENTICATION SYSTEM
 // ======================================
 
+function getSupabase() {
+    return window.supabaseClient || window.brjSupabase || null;
+}
+
 function showMessage(text) {
     const msg = document.getElementById("message");
     msg.innerText = text;
@@ -28,9 +32,17 @@ function showRegister() {
     document.getElementById("message").style.display = "none";
 }
 
-// REGISTER USER
+// REGISTER
 async function register(event) {
     event.preventDefault();
+
+    const supabase = getSupabase();
+
+    if (!supabase) {
+        showMessage("Database connection failed. Refresh and try again.");
+        console.error("Supabase client missing.");
+        return;
+    }
 
     const name = document.getElementById("fullName").value.trim();
     const mobile = document.getElementById("mobile").value.trim();
@@ -48,27 +60,21 @@ async function register(event) {
         return;
     }
 
-    if (!window.brjSupabase) {
-        showMessage("Database connection is not configured.");
-        return;
-    }
-
     const button = event.submitter;
     button.disabled = true;
     button.innerText = "CREATING ACCOUNT...";
 
     try {
-        const { data, error } =
-            await window.brjSupabase.auth.signUp({
-                email: email,
-                password: password,
-                options: {
-                    data: {
-                        full_name: name,
-                        mobile: mobile
-                    }
+        const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {
+                    full_name: name,
+                    mobile: mobile
                 }
-            });
+            }
+        });
 
         if (error) throw error;
 
@@ -81,62 +87,72 @@ async function register(event) {
         document.getElementById("registerForm").reset();
 
     } catch (error) {
-        showMessage(error.message);
+        console.error("Registration error:", error);
+        showMessage(error.message || "Registration failed.");
     } finally {
         button.disabled = false;
         button.innerText = "CREATE ACCOUNT";
     }
 }
 
-// LOGIN USER
+// LOGIN
 async function login(event) {
     event.preventDefault();
 
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
+    const supabase = getSupabase();
 
-    if (!window.brjSupabase) {
-        showMessage("Database connection is not configured.");
+    if (!supabase) {
+        showMessage("Database connection failed. Refresh and try again.");
+        console.error("Supabase client missing.");
         return;
     }
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
 
     const button = event.submitter;
     button.disabled = true;
     button.innerText = "SIGNING IN...";
 
     try {
-        const { data, error } =
-            await window.brjSupabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
 
         if (error) throw error;
 
         showMessage("Login successful! Welcome to BRJ EMPIRE.");
+        console.log("Logged in:", data.user);
 
     } catch (error) {
-        showMessage(error.message);
+        console.error("Login error:", error);
+        showMessage(error.message || "Login failed.");
     } finally {
         button.disabled = false;
         button.innerText = "SIGN IN";
     }
 }
 
-// CHECK EXISTING SESSION
+// SESSION CHECK
 async function checkSession() {
-    if (!window.brjSupabase) return;
+    const supabase = getSupabase();
 
-    const { data, error } =
-        await window.brjSupabase.auth.getSession();
-
-    if (error) {
-        console.error(error.message);
+    if (!supabase) {
+        console.error("Supabase client is not initialized.");
         return;
     }
 
-    if (data.session) {
-        console.log("BRJ EMPIRE: User session active.");
+    try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) throw error;
+
+        if (data.session) {
+            console.log("BRJ EMPIRE: User session active.");
+        }
+    } catch (error) {
+        console.error("Session error:", error.message);
     }
 }
 
