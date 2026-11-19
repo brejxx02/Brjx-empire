@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d18">
+<title>BRJ EMPIRE | Official Platform</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(145deg,#080d18,#111d32,#080d18);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    background: #111b2c;
+    border: 1px solid #263953;
+    border-radius: 22px;
+    padding: 30px 24px;
+    box-shadow: 0 15px 50px #0008;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.logo-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    margin: auto;
+    background: linear-gradient(135deg,#d5a43b,#fff0a5);
+    color: #101827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.logo h1 {
+    margin-top: 15px;
+    font-size: 27px;
+    letter-spacing: 3px;
+    color: #f2c45b;
+}
+
+.logo p {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #aab7ca;
+    margin-top: 6px;
+}
+
+.tabs {
+    display: flex;
+    background: #08111f;
+    border-radius: 12px;
+    padding: 5px;
+    margin-bottom: 25px;
+}
+
+.tabs button {
+    flex: 1;
+    border: none;
+    padding: 13px;
+    background: transparent;
+    color: #9ba9bd;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.tabs button.active {
+    background: linear-gradient(135deg,#d5a43b,#f5d77e);
+    color: #111827;
+}
+
+.form-title {
+    font-size: 23px;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: #9ba9bd;
+    margin-bottom: 22px;
+}
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    color: #c5d0df;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 15px;
+    background: #08111f;
+    border: 1px solid #293b54;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: #e3b64e;
+}
+
+input::placeholder {
+    color: #66758a;
+}
+
+.submit-btn {
+    width: 100%;
+    border: none;
+    padding: 16px;
+    border-radius: 11px;
+    background: linear-gradient(135deg,#d5a43b,#f5d77e);
+    color: #101827;
+    font-size: 15px;
+    font-weight: 900;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.submit-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.submit-btn:active {
+    transform: scale(.98);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.footer {
+    text-align: center;
+    font-size: 11px;
+    color: #718097;
+    margin-top: 25px;
+    line-height: 1.6;
+}
+
+.message {
+    display: none;
+    padding: 12px;
+    border-radius: 9px;
+    margin-bottom: 15px;
+    font-size: 13px;
+    background: #203b32;
+    color: #8ef0b8;
+    overflow-wrap: anywhere;
+}
+
+@media(max-width:380px) {
+    .container {
+        padding: 24px 17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <div class="logo-icon">B</div>
+        <h1>BRJ EMPIRE</h1>
+        <p>BUILD YOUR FUTURE</p>
+    </div>
+
+    <div class="tabs">
+        <button id="loginTab" class="active" onclick="showLogin()">SIGN IN</button>
+        <button id="registerTab" onclick="showRegister()">CREATE ACCOUNT</button>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+
+        <h2 class="form-title">Welcome Back</h2>
+        <p class="subtitle">Sign in to access your account.</p>
+
+        <form onsubmit="login(event)">
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail"
+                placeholder="Enter your email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword"
+                placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                SIGN IN
+            </button>
+
+        </form>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" class="hidden">
+
+        <h2 class="form-title">Create Account</h2>
+        <p class="subtitle">Join the BRJ EMPIRE community.</p>
+
+        <form onsubmit="register(event)">
+
+            <div class="input-group">
+                <label>Full Name</label>
+                <input type="text" id="fullName"
+                placeholder="Enter your full name" required>
+            </div>
+
+            <div class="input-group">
+                <label>Mobile Number</label>
+                <input type="tel" id="mobile"
+                placeholder="Enter 10 digit mobile number"
+                pattern="[0-9]{10}" maxlength="10" required>
+            </div>
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="registerEmail"
+                placeholder="Enter your email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="registerPassword"
+                placeholder="Create password" minlength="8" required>
+            </div>
+
+            <div class="input-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword"
+                placeholder="Confirm password" minlength="8" required>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                CREATE ACCOUNT
+            </button>
+
+        </form>
+    </div>
+
+    <div class="footer">
+        © 2026 BRJ EMPIRE. All Rights Reserved.
+        <br>
+        Secure Account Access
+    </div>
+
+</div>
+
+<!-- SUPABASE + BRJ EMPIRE AUTH FILES -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="auth.js"></script>
+
+</body>
+</html>
