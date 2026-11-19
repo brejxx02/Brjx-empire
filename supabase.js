@@ -1,25 +1,18 @@
 // ==========================================
-// BRJ EMPIRE - SUPABASE DATABASE CONNECTION
+// BRJ EMPIRE - SUPABASE CONNECTION
 // ==========================================
 
 const SUPABASE_URL = "https://yjnyeyvrnytbvcmzxolq.supabase.co";
 
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqbnlleXZybnl0YnZjbXp4b2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwNTIwMjIsImV4cCI6MjExMDYyODAyM30.O6HbUrCwUvdizQpiq5xJXqna4TcxzvVg7Sy6IrXH9UI";
+const SUPABASE_KEY = "sb_publishable_GNZINkAOvLVp_6RIXEzenQ_3r5w5qHH";
 
-// Create Supabase connection
+// Initialize Supabase
 window.supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_KEY,
-    {
-        auth: {
-            autoRefreshToken: true,
-            persistSession: true,
-            detectSessionInUrl: true
-        }
-    }
+    SUPABASE_KEY
 );
 
-// Connection status
-window.databaseConnected = true;
+// Legacy compatibility
+window.brjSupabase = window.supabaseClient;
 
-console.log("BRJ EMPIRE: Supabase initialized successfully");
+console.log("BRJ EMPIRE: Database initialized");
