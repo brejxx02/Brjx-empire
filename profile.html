@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRJ EMPIRE | My Profile</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #080d18;
+    color: white;
+    padding-bottom: 30px;
+}
+
+header {
+    background: #101a2b;
+    padding: 20px;
+    border-bottom: 1px solid #263953;
+    color: #f0c45b;
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.container {
+    max-width: 550px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    padding: 25px;
+    background: #111b2c;
+    border: 1px solid #263953;
+    border-radius: 18px;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#d5a43b,#fff0a5);
+    color: #101827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin: auto;
+}
+
+.profile-header h2 {
+    margin-top: 15px;
+}
+
+.profile-header p {
+    color: #9aa9bf;
+    margin-top: 7px;
+    font-size: 13px;
+}
+
+.card {
+    background: #111b2c;
+    border: 1px solid #263953;
+    padding: 22px;
+    border-radius: 16px;
+}
+
+.card h3 {
+    margin-bottom: 20px;
+    color: #f0c45b;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    color: #aab7ca;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 18px;
+    background: #080d18;
+    color: white;
+    border: 1px solid #293b54;
+    border-radius: 10px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #e3b64e;
+}
+
+input[readonly] {
+    opacity: 0.75;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.save {
+    background: linear-gradient(135deg,#d5a43b,#f5d77e);
+    color: #101827;
+}
+
+.logout {
+    margin-top: 12px;
+    background: #281b24;
+    color: #f1a3a3;
+    border: 1px solid #50303a;
+}
+
+#message {
+    font-size: 13px;
+    margin-top: 15px;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.back {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #f0c45b;
+    text-decoration: none;
+}
+
+@media(max-width:400px) {
+    .container {
+        padding: 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>BRJ EMPIRE</header>
+
+<div class="container">
+
+    <div class="profile-header">
+        <div class="avatar" id="avatar">B</div>
+        <h2 id="displayName">Loading...</h2>
+        <p>Member Profile</p>
+    </div>
+
+    <div class="card">
+
+        <h3>Personal Information</h3>
+
+        <label>Full Name</label>
+        <input type="text" id="name">
+
+        <label>Email Address</label>
+        <input type="email" id="email" readonly>
+
+        <label>Mobile Number</label>
+        <input type="tel" id="mobile" maxlength="10">
+
+        <label>Member ID</label>
+        <input type="text" id="memberId" readonly>
+
+        <label>Joined On</label>
+        <input type="text" id="joined" readonly>
+
+        <button class="save" id="saveBtn" onclick="saveProfile()">
+            SAVE CHANGES
+        </button>
+
+        <button class="logout" onclick="logout()">
+            LOG OUT
+        </button>
+
+        <div id="message"></div>
+
+    </div>
+
+    <a href="dashboard.html" class="back">← Back to Dashboard</a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+async function loadProfile() {
+
+    const db = window.brjSupabase;
+
+    if (!db) {
+        showMessage("Database connection unavailable.");
+        return;
+    }
+
+    const { data: sessionData } = await db.auth.getSession();
+
+    if (!sessionData.session) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const user = sessionData.session.user;
+
+    const { data: profile, error } = await db
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+    if (error || !profile) {
+        showMessage("Unable to load profile.");
+        return;
+    }
+
+    document.getElementById("name").value = profile.full_name || "";
+    document.getElementById("email").value = user.email || "";
+    document.getElementById("mobile").value = profile.mobile || "";
+    document.getElementById("memberId").value =
+        user.id.slice(0, 8).toUpperCase();
+
+    document.getElementById("joined").value =
+        profile.created_at
+        ? new Date(profile.created_at).toLocaleDateString("en-IN")
+        : "-";
+
+    document.getElementById("displayName").innerText =
+        profile.full_name || "Member";
+
+    document.getElementById("avatar").innerText =
+        (profile.full_name || "B").charAt(0).toUpperCase();
+}
+
+async function saveProfile() {
+
+    const db = window.brjSupabase;
+    const button = document.getElementById("saveBtn");
+
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+
+    if (!name) {
+        showMessage("Please enter your name.");
+        return;
+    }
+
+    if (mobile && !/^[0-9]{10}$/.test(mobile)) {
+        showMessage("Enter a valid 10-digit mobile number.");
+        return;
+    }
+
+    button.disabled = true;
+    button.innerText = "SAVING...";
+
+    try {
+        const { data: sessionData } = await db.auth.getSession();
+        const user = sessionData.session?.user;
+
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const { error } = await db
+            .from("profiles")
+            .update({
+                full_name: name,
+                mobile: mobile
+            })
+            .eq("id", user.id);
+
+        if (error) throw error;
+
+        document.getElementById("displayName").innerText = name;
+        document.getElementById("avatar").innerText =
+            name.charAt(0).toUpperCase();
+
+        showMessage("Profile updated successfully!");
+
+    } catch (error) {
+        showMessage(error.message || "Update failed.");
+    }
+
+    button.disabled = false;
+    button.innerText = "SAVE CHANGES";
+}
+
+async function logout() {
+    const { error } = await window.brjSupabase.auth.signOut();
+
+    if (!error) {
+        window.location.href = "index.html";
+    }
+}
+
+function showMessage(text) {
+    document.getElementById("message").innerText = text;
+}
+
+loadProfile();
+</script>
+
+</body>
+</html>
