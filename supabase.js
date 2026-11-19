@@ -1,31 +1,25 @@
-// ===================================
-// BRJ EMPIRE - SUPABASE CONFIGURATION
-// ===================================
+// ==========================================
+// BRJ EMPIRE - SUPABASE DATABASE CONNECTION
+// ==========================================
 
-// Apne Supabase project ki details yahan dalein.
+const SUPABASE_URL = "https://yjnyeyvrnytbvcmzxolq.supabase.co";
 
-const SUPABASE_URL = "https://yjnyeyvrnytbvcmzxolq.supabase.co/rest/v1/";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqbnlleXZybnl0YnZjbXp4b2xxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUwNTIwMjIsImV4cCI6MjExMDYyODAyM30.O6HbUrCwUvdizQpiq5xJXqna4TcxzvVg7Sy6IrXH9UI";
 
-const SUPABASE_ANON_KEY = "sb_publishable_GNZINkAOvLVp_6RIXEzenQ_3r5w5qHH";
-
-// Supabase connection
-if (
-    SUPABASE_URL === "https://yjnyeyvrnytbvcmzxolq.supabase.co/rest/v1/" ||
-    SUPABASE_ANON_KEY === "sb_publishable_GNZINkAOvLVp_6RIXEzenQ_3r5w5qHH"
-) {
-    console.warn("BRJ EMPIRE: Supabase credentials are not configured.");
-} else {
-    window.brjSupabase = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY,
-        {
-            auth: {
-                autoRefreshToken: true,
-                persistSession: true,
-                detectSessionInUrl: true
-            }
+// Create Supabase connection
+window.supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+        auth: {
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: true
         }
-    );
+    }
+);
 
-    console.log("BRJ EMPIRE: Database client initialized.");
-}
+// Connection status
+window.databaseConnected = true;
+
+console.log("BRJ EMPIRE: Supabase initialized successfully");
