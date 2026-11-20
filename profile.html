@@ -3,148 +3,342 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BRJ EMPIRE | My Profile</title>
+<title>BRJ EMPIRE - My Profile</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
 <style>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
 }
 
 body {
-    background: #080d18;
-    color: white;
-    padding-bottom: 30px;
+    background: #080b12;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    padding-bottom: 90px;
 }
 
-header {
-    background: #101a2b;
-    padding: 20px;
-    border-bottom: 1px solid #263953;
-    color: #f0c45b;
-    font-size: 21px;
-    font-weight: bold;
+:root {
+    --gold: #e8bd63;
+    --gold2: #f7d98c;
+    --panel: #111722;
+    --border: rgba(232,189,99,0.15);
+    --muted: #8d98aa;
+}
+
+.header {
+    padding: 23px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 900;
     letter-spacing: 2px;
 }
 
-.container {
-    max-width: 550px;
-    margin: 30px auto;
-    padding: 20px;
+.logo span {
+    color: var(--gold);
 }
 
-.profile-header {
-    text-align: center;
-    padding: 25px;
-    background: #111b2c;
-    border: 1px solid #263953;
-    border-radius: 18px;
+.header-btn {
+    background: #151c29;
+    border: 1px solid var(--border);
+    color: white;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    font-size: 18px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 22px 16px;
+}
+
+.heading {
     margin-bottom: 20px;
+}
+
+.heading h1 {
+    font-size: 27px;
+    margin-bottom: 7px;
+}
+
+.heading p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.profile-card {
+    background: linear-gradient(145deg, #171f2c, #10151e);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 25px 18px;
+    text-align: center;
+    margin-bottom: 18px;
 }
 
 .avatar {
-    width: 80px;
-    height: 80px;
+    width: 85px;
+    height: 85px;
+    margin: auto auto 15px;
     border-radius: 50%;
-    background: linear-gradient(135deg,#d5a43b,#fff0a5);
-    color: #101827;
+    background: linear-gradient(135deg, #e8bd63, #99712c);
+    color: #111;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
-    font-weight: bold;
-    margin: auto;
+    font-size: 30px;
+    font-weight: 900;
+    border: 4px solid #252b35;
 }
 
-.profile-header h2 {
-    margin-top: 15px;
-}
-
-.profile-header p {
-    color: #9aa9bf;
-    margin-top: 7px;
-    font-size: 13px;
-}
-
-.card {
-    background: #111b2c;
-    border: 1px solid #263953;
-    padding: 22px;
-    border-radius: 16px;
-}
-
-.card h3 {
-    margin-bottom: 20px;
-    color: #f0c45b;
-}
-
-label {
-    display: block;
-    font-size: 12px;
-    color: #aab7ca;
-    margin-bottom: 8px;
-}
-
-input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 18px;
-    background: #080d18;
-    color: white;
-    border: 1px solid #293b54;
-    border-radius: 10px;
-    outline: none;
-}
-
-input:focus {
-    border-color: #e3b64e;
-}
-
-input[readonly] {
-    opacity: 0.75;
-}
-
-button {
-    width: 100%;
-    padding: 15px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.save {
-    background: linear-gradient(135deg,#d5a43b,#f5d77e);
-    color: #101827;
-}
-
-.logout {
-    margin-top: 12px;
-    background: #281b24;
-    color: #f1a3a3;
-    border: 1px solid #50303a;
-}
-
-#message {
-    font-size: 13px;
-    margin-top: 15px;
-    text-align: center;
+.name {
+    font-size: 23px;
+    font-weight: 800;
+    margin-bottom: 7px;
     overflow-wrap: anywhere;
 }
 
-.back {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    color: #f0c45b;
-    text-decoration: none;
+.memberid {
+    color: var(--gold);
+    font-size: 13px;
 }
 
-@media(max-width:400px) {
+.badge {
+    display: inline-block;
+    margin-top: 13px;
+    background: rgba(232,189,99,0.10);
+    color: var(--gold2);
+    border: 1px solid var(--border);
+    padding: 7px 13px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin: 25px 3px 12px;
+}
+
+.info-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-left {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+}
+
+.info-icon {
+    width: 38px;
+    height: 38px;
+    background: #1a2230;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.info-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 13px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.row-right {
+    text-align: right;
+    max-width: 58%;
+}
+
+.copy-btn {
+    border: 1px solid var(--border);
+    color: var(--gold);
+    background: #1b2230;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.referral-box {
+    background: linear-gradient(135deg, #2a2317, #171a20);
+    border: 1px solid rgba(232,189,99,0.25);
+    border-radius: 19px;
+    padding: 18px;
+    margin-top: 18px;
+}
+
+.referral-box h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.referral-box p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.ref-code {
+    margin-top: 15px;
+    padding: 14px;
+    border-radius: 13px;
+    background: #0b1018;
+    border: 1px dashed var(--gold);
+    color: var(--gold2);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    overflow-wrap: anywhere;
+}
+
+.ref-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.ref-buttons button {
+    flex: 1;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 13px;
+    font-size: 14px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #e8bd63, #bd8736);
+    color: #111;
+}
+
+.secondary-btn {
+    width: 100%;
+    padding: 14px;
+    background: #161e2b;
+    border: 1px solid var(--border);
+    color: white;
+    border-radius: 13px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.logout-btn {
+    margin-top: 22px;
+    background: #21161a;
+    border: 1px solid rgba(255,80,80,0.18);
+    color: #ff8a8a;
+}
+
+.status {
+    color: var(--gold);
+}
+
+.loading {
+    text-align: center;
+    padding: 40px 10px;
+    color: var(--muted);
+}
+
+.error-box {
+    background: #27191c;
+    border: 1px solid #5b3038;
+    color: #ffb4b4;
+    padding: 15px;
+    border-radius: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #e8bd63;
+    color: #111;
+    padding: 12px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 800;
+    display: none;
+    z-index: 1000;
+    white-space: nowrap;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0d121b;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 5px calc(12px + env(safe-area-inset-bottom));
+    z-index: 99;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #8792a5;
+    text-align: center;
+    font-size: 10px;
+    min-width: 55px;
+}
+
+.nav-item div {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.nav-item.active {
+    color: var(--gold);
+}
+
+@media (min-width: 500px) {
     .container {
-        padding: 14px;
+        padding-top: 30px;
     }
 }
 </style>
@@ -152,169 +346,338 @@ button {
 
 <body>
 
-<header>BRJ EMPIRE</header>
+<header class="header">
+    <div class="logo">BRJ <span>EMPIRE</span></div>
+    <button class="header-btn" onclick="refreshProfile()" title="Refresh">↻</button>
+</header>
 
-<div class="container">
+<main class="container">
 
-    <div class="profile-header">
-        <div class="avatar" id="avatar">B</div>
-        <h2 id="displayName">Loading...</h2>
-        <p>Member Profile</p>
+    <div class="heading">
+        <h1>My Profile 👤</h1>
+        <p>Your personal account information</p>
     </div>
 
-    <div class="card">
+    <div id="loading" class="loading">
+        Loading profile...
+    </div>
 
-        <h3>Personal Information</h3>
+    <div id="profileContent" style="display:none">
 
-        <label>Full Name</label>
-        <input type="text" id="name">
+        <div class="profile-card">
+            <div class="avatar" id="avatar">B</div>
+            <div class="name" id="fullName">Member</div>
+            <div class="memberid" id="memberId">Member ID: Loading...</div>
+            <div class="badge" id="accountBadge">● MEMBER ACCOUNT</div>
+        </div>
 
-        <label>Email Address</label>
-        <input type="email" id="email" readonly>
+        <div class="section-title">Personal Information</div>
 
-        <label>Mobile Number</label>
-        <input type="tel" id="mobile" maxlength="10">
+        <div class="info-card">
 
-        <label>Member ID</label>
-        <input type="text" id="memberId" readonly>
+            <div class="info-row">
+                <div class="info-left">
+                    <div class="info-icon">📧</div>
+                    <div>
+                        <div class="info-label">Email Address</div>
+                        <div class="info-value" id="email">—</div>
+                    </div>
+                </div>
+            </div>
 
-        <label>Joined On</label>
-        <input type="text" id="joined" readonly>
+            <div class="info-row">
+                <div class="info-left">
+                    <div class="info-icon">📱</div>
+                    <div>
+                        <div class="info-label">Mobile Number</div>
+                        <div class="info-value" id="mobile">—</div>
+                    </div>
+                </div>
+            </div>
 
-        <button class="save" id="saveBtn" onclick="saveProfile()">
-            SAVE CHANGES
+            <div class="info-row">
+                <div class="info-left">
+                    <div class="info-icon">🔗</div>
+                    <div>
+                        <div class="info-label">Referral Code</div>
+                        <div class="info-value" id="referralCode">—</div>
+                    </div>
+                </div>
+                <button class="copy-btn" onclick="copyReferral()">COPY</button>
+            </div>
+
+            <div class="info-row">
+                <div class="info-left">
+                    <div class="info-icon">📅</div>
+                    <div>
+                        <div class="info-label">Joined On</div>
+                        <div class="info-value" id="joinedDate">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-left">
+                    <div class="info-icon">🛡️</div>
+                    <div>
+                        <div class="info-label">KYC Status</div>
+                        <div class="info-value status" id="kycStatus">Pending</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="referral-box">
+            <h3>🤝 Invite Friends</h3>
+            <p>Share your referral code with friends.</p>
+
+            <div class="ref-code" id="refCodeBox">Loading...</div>
+
+            <div class="ref-buttons">
+                <button class="secondary-btn" onclick="copyReferral()">📋 Copy Code</button>
+                <button class="primary-btn" onclick="shareReferral()">↗ Share</button>
+            </div>
+        </div>
+
+        <button class="secondary-btn" onclick="refreshProfile()" style="margin-top:18px">
+            ↻ Refresh Profile
         </button>
 
-        <button class="logout" onclick="logout()">
-            LOG OUT
+        <button class="secondary-btn logout-btn" onclick="logoutUser()">
+            🚪 Logout
         </button>
-
-        <div id="message"></div>
 
     </div>
 
-    <a href="dashboard.html" class="back">← Back to Dashboard</a>
+    <div id="errorBox" style="display:none"></div>
 
-</div>
+</main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
+<div class="toast" id="toast">Copied successfully!</div>
+
+<nav class="bottom-nav">
+    <a href="dashboard.html" class="nav-item">
+        <div>⌂</div>Home
+    </a>
+    <a href="team.html" class="nav-item">
+        <div>♧</div>Team
+    </a>
+    <a href="profile.html" class="nav-item active">
+        <div>👤</div>Profile
+    </a>
+    <a href="settings.html" class="nav-item">
+        <div>⚙</div>Settings
+    </a>
+</nav>
 
 <script>
-async function loadProfile() {
+let currentUser = null;
+let currentProfile = null;
 
-    const db = window.brjSupabase;
-
-    if (!db) {
-        showMessage("Database connection unavailable.");
-        return;
-    }
-
-    const { data: sessionData } = await db.auth.getSession();
-
-    if (!sessionData.session) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    const user = sessionData.session.user;
-
-    const { data: profile, error } = await db
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle();
-
-    if (error || !profile) {
-        showMessage("Unable to load profile.");
-        return;
-    }
-
-    document.getElementById("name").value = profile.full_name || "";
-    document.getElementById("email").value = user.email || "";
-    document.getElementById("mobile").value = profile.mobile || "";
-    document.getElementById("memberId").value =
-        user.id.slice(0, 8).toUpperCase();
-
-    document.getElementById("joined").value =
-        profile.created_at
-        ? new Date(profile.created_at).toLocaleDateString("en-IN")
-        : "-";
-
-    document.getElementById("displayName").innerText =
-        profile.full_name || "Member";
-
-    document.getElementById("avatar").innerText =
-        (profile.full_name || "B").charAt(0).toUpperCase();
+function getClient() {
+    return window.supabaseClient || window.brjSupabase;
 }
 
-async function saveProfile() {
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.style.display = "block";
 
-    const db = window.brjSupabase;
-    const button = document.getElementById("saveBtn");
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 2500);
+}
 
-    const name = document.getElementById("name").value.trim();
-    const mobile = document.getElementById("mobile").value.trim();
+async function loadProfile() {
+    const client = getClient();
 
-    if (!name) {
-        showMessage("Please enter your name.");
+    if (!client) {
+        showError("Supabase connection not found. Please check supabase.js.");
         return;
     }
 
-    if (mobile && !/^[0-9]{10}$/.test(mobile)) {
-        showMessage("Enter a valid 10-digit mobile number.");
-        return;
-    }
-
-    button.disabled = true;
-    button.innerText = "SAVING...";
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("profileContent").style.display = "none";
+    document.getElementById("errorBox").style.display = "none";
 
     try {
-        const { data: sessionData } = await db.auth.getSession();
-        const user = sessionData.session?.user;
+        const { data: sessionData, error: sessionError } =
+            await client.auth.getSession();
 
-        if (!user) {
+        if (sessionError) throw sessionError;
+
+        const session = sessionData.session;
+
+        if (!session || !session.user) {
             window.location.href = "index.html";
             return;
         }
 
-        const { error } = await db
+        currentUser = session.user;
+
+        const { data, error } = await client
             .from("profiles")
-            .update({
-                full_name: name,
-                mobile: mobile
-            })
-            .eq("id", user.id);
+            .select("id,member_id,full_name,mobile,referral_code,avatar_url,kyc_status,created_at")
+            .eq("id", currentUser.id)
+            .maybeSingle();
 
         if (error) throw error;
 
-        document.getElementById("displayName").innerText = name;
-        document.getElementById("avatar").innerText =
-            name.charAt(0).toUpperCase();
+        if (!data) {
+            showError("Your profile record was not found. Please contact support.");
+            return;
+        }
 
-        showMessage("Profile updated successfully!");
+        currentProfile = data;
+
+        const name =
+            data.full_name ||
+            currentUser.user_metadata?.full_name ||
+            currentUser.user_metadata?.name ||
+            "Member";
+
+        const memberID = data.member_id || "Not assigned";
+        const referral = data.referral_code || "Not assigned";
+        const mobileNumber =
+            data.mobile ||
+            currentUser.user_metadata?.mobile ||
+            "Not added";
+
+        document.getElementById("fullName").textContent = name;
+        document.getElementById("memberId").textContent = "Member ID: " + memberID;
+        document.getElementById("email").textContent = currentUser.email || "Not available";
+        document.getElementById("mobile").textContent = mobileNumber;
+        document.getElementById("referralCode").textContent = referral;
+        document.getElementById("refCodeBox").textContent = referral;
+
+        const initials = name
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(word => word[0])
+            .join("")
+            .toUpperCase();
+
+        document.getElementById("avatar").textContent = initials || "B";
+
+        const date = data.created_at
+            ? new Date(data.created_at)
+            : new Date(currentUser.created_at);
+
+        document.getElementById("joinedDate").textContent =
+            date.toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+
+        const kyc = data.kyc_status || "pending";
+        document.getElementById("kycStatus").textContent =
+            kyc.charAt(0).toUpperCase() + kyc.slice(1);
+
+        document.getElementById("accountBadge").textContent = "● MEMBER ACCOUNT";
+
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("profileContent").style.display = "block";
 
     } catch (error) {
-        showMessage(error.message || "Update failed.");
+        console.error("Profile loading error:", error);
+        showError(error.message || "Unable to load profile.");
     }
-
-    button.disabled = false;
-    button.innerText = "SAVE CHANGES";
 }
 
-async function logout() {
-    const { error } = await window.brjSupabase.auth.signOut();
+function showError(message) {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("profileContent").style.display = "none";
 
-    if (!error) {
+    const box = document.getElementById("errorBox");
+    box.className = "error-box";
+    box.textContent = message;
+    box.style.display = "block";
+}
+
+async function copyReferral() {
+    const code = currentProfile?.referral_code;
+
+    if (!code) {
+        showToast("Referral code is not available.");
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(code);
+        showToast("Referral code copied! ✓");
+    } catch {
+        const textArea = document.createElement("textarea");
+        textArea.value = code;
+        textArea.style.position = "fixed";
+        textArea.style.opacity = "0";
+        document.body.appendChild(textArea);
+        textArea.select();
+
+        try {
+            document.execCommand("copy");
+            showToast("Referral code copied! ✓");
+        } catch {
+            showToast("Copy failed. Please copy manually.");
+        }
+
+        textArea.remove();
+    }
+}
+
+async function shareReferral() {
+    const code = currentProfile?.referral_code;
+
+    if (!code) {
+        showToast("Referral code is not available.");
+        return;
+    }
+
+    const shareText =
+        "Join BRJ EMPIRE! My referral code: " + code;
+
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: "BRJ EMPIRE Invitation",
+                text: shareText
+            });
+        } catch (error) {
+            if (error.name !== "AbortError") {
+                showToast("Sharing unavailable.");
+            }
+        }
+    } else {
+        await copyReferral();
+    }
+}
+
+async function refreshProfile() {
+    await loadProfile();
+    showToast("Profile refreshed.");
+}
+
+async function logoutUser() {
+    const client = getClient();
+
+    if (!client) {
         window.location.href = "index.html";
+        return;
     }
+
+    const { error } = await client.auth.signOut();
+
+    if (error) {
+        showToast("Logout failed. Please try again.");
+        return;
+    }
+
+    window.location.href = "index.html";
 }
 
-function showMessage(text) {
-    document.getElementById("message").innerText = text;
-}
-
-loadProfile();
+document.addEventListener("DOMContentLoaded", loadProfile);
 </script>
 
 </body>
