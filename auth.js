@@ -6,9 +6,15 @@ function getSupabase() {
     return window.brjSupabase || window.supabaseClient || null;
 }
 
+// DASHBOARD REDIRECT
+function goToDashboard() {
+    window.location.href = "dashboard.html";
+}
+
 // SHOW MESSAGE
 function showMessage(text) {
     const msg = document.getElementById("message");
+    if (!msg) return;
     msg.innerText = text;
     msg.style.display = "block";
 }
@@ -45,7 +51,6 @@ async function register(event) {
 
     if (!supabase) {
         showMessage("Database connection failed. Please refresh.");
-        console.error("Supabase client missing.");
         return;
     }
 
@@ -66,8 +71,10 @@ async function register(event) {
     }
 
     const button = event.submitter;
-    button.disabled = true;
-    button.innerText = "CREATING ACCOUNT...";
+    if (button) {
+        button.disabled = true;
+        button.innerText = "CREATING ACCOUNT...";
+    }
 
     try {
         const { data, error } = await supabase.auth.signUp({
@@ -83,24 +90,26 @@ async function register(event) {
 
         if (error) throw error;
 
+        // If signup returned a session, user is logged in.
         if (data.session) {
-            showMessage("Account created successfully!");
+            showMessage("Account created! Opening dashboard...");
+            setTimeout(goToDashboard, 800);
         } else {
-            showMessage("Registration successful! Please verify your email.");
+            // Email verification required before login.
+            showMessage("Registration successful! Please verify your email, then sign in.");
         }
 
-        // FIX: Reset the actual form, not the div container
         const registerFormElement = document.querySelector("#registerForm form");
-        if (registerFormElement) {
-            registerFormElement.reset();
-        }
+        if (registerFormElement) registerFormElement.reset();
 
     } catch (error) {
         console.error("Registration error:", error);
         showMessage(error.message || "Registration failed.");
     } finally {
-        button.disabled = false;
-        button.innerText = "CREATE ACCOUNT";
+        if (button) {
+            button.disabled = false;
+            button.innerText = "CREATE ACCOUNT";
+        }
     }
 }
 
@@ -114,7 +123,6 @@ async function login(event) {
 
     if (!supabase) {
         showMessage("Database connection failed. Please refresh.");
-        console.error("Supabase client missing.");
         return;
     }
 
@@ -122,8 +130,10 @@ async function login(event) {
     const password = document.getElementById("loginPassword").value;
 
     const button = event.submitter;
-    button.disabled = true;
-    button.innerText = "SIGNING IN...";
+    if (button) {
+        button.disabled = true;
+        button.innerText = "SIGNING IN...";
+    }
 
     try {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -133,15 +143,20 @@ async function login(event) {
 
         if (error) throw error;
 
-        showMessage("Login successful! Welcome to BRJ EMPIRE.");
+        showMessage("Login successful! Opening dashboard...");
         console.log("Login successful:", data.user);
+
+        // OPEN DASHBOARD AFTER LOGIN
+        setTimeout(goToDashboard, 800);
 
     } catch (error) {
         console.error("Login error:", error);
         showMessage(error.message || "Login failed.");
     } finally {
-        button.disabled = false;
-        button.innerText = "SIGN IN";
+        if (button) {
+            button.disabled = false;
+            button.innerText = "SIGN IN";
+        }
     }
 }
 
