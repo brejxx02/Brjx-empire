@@ -19,6 +19,7 @@
 body{
   background:#080b14;
   color:#fff;
+  min-height:100vh;
 }
 .container{
   max-width:1100px;
@@ -46,9 +47,7 @@ header{
   border-radius:30px;
   font-size:11px;
 }
-.welcome{
-  margin:26px 0;
-}
+.welcome{margin:26px 0}
 .welcome h1{
   font-size:25px;
   margin-bottom:8px;
@@ -75,9 +74,7 @@ header{
   margin-top:12px;
 }
 .gold{color:#e5b95d}
-.section{
-  margin-top:25px;
-}
+.section{margin-top:25px}
 .section-title{
   font-size:17px;
   font-weight:750;
@@ -134,6 +131,7 @@ header{
 .member-info{
   display:flex;
   justify-content:space-between;
+  gap:10px;
   margin-top:15px;
   font-size:12px;
   color:#a0aabd;
@@ -155,7 +153,7 @@ header{
   font-weight:700;
   cursor:pointer;
 }
-.btn.gold-btn{
+.gold-btn{
   background:linear-gradient(135deg,#e7c36c,#b88b38);
   color:#111;
   border:none;
@@ -201,6 +199,30 @@ header{
   padding:30px 0;
   font-size:11px;
 }
+#loadingScreen{
+  position:fixed;
+  inset:0;
+  background:#080b14;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  text-align:center;
+  padding:20px;
+}
+.loader{
+  width:38px;
+  height:38px;
+  border:3px solid #282f40;
+  border-top-color:#d9ad55;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  margin:0 auto 15px;
+}
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+#adminContent{display:none}
 @media(min-width:700px){
   .grid{grid-template-columns:repeat(4,1fr)}
 }
@@ -209,7 +231,14 @@ header{
 
 <body>
 
-<div class="container">
+<div id="loadingScreen">
+  <div>
+    <div class="loader"></div>
+    <p style="color:#d9ad55;font-size:14px">Verifying Admin Access...</p>
+  </div>
+</div>
+
+<div class="container" id="adminContent">
 
 <header>
   <div class="brand">BRJ <span>EMPIRE</span></div>
@@ -240,13 +269,12 @@ header{
 
   <div class="card">
     <div class="stat-label">Admin Status</div>
-    <div class="stat-value gold" style="font-size:18px">Protected</div>
+    <div class="stat-value gold" style="font-size:18px">Verified</div>
   </div>
 
 </div>
 
 <div class="section">
-
   <div class="section-title">👥 Member Directory</div>
 
   <input
@@ -254,48 +282,44 @@ header{
     class="search"
     id="memberSearch"
     placeholder="Search by name or Member ID..."
+    autocomplete="off"
   >
 
   <div id="memberList">
     <div class="empty">Member directory is not connected yet.</div>
   </div>
-
 </div>
 
 <div class="section">
-
   <div class="section-title">🛡️ Admin Security</div>
 
   <div class="card">
     <div class="member-name">Admin Access Protection</div>
+
     <div class="member-info">
-      <span>Role verification</span>
-      <span class="gold">Required</span>
+      <span>Role Verification</span>
+      <span class="gold">Enabled</span>
     </div>
 
     <div class="notice">
-      Admin access must be verified securely through the database.
-      A hidden page or browser-side role check alone does not protect
-      member data. This panel currently does not have live admin authorization.
+      Admin access is checked through Supabase authentication
+      and the admin role verification function.
+      Database policies are required to protect private records.
     </div>
   </div>
-
 </div>
 
 <div class="section">
-
   <div class="section-title">📋 Recent Activity</div>
 
   <div class="card">
     <div id="activityList">
-      <div class="empty">No activity records connected yet.</div>
+      <div class="empty">Activity logs are not connected yet.</div>
     </div>
   </div>
-
 </div>
 
 <button class="btn" onclick="goDashboard()">← Back to Dashboard</button>
-
 <button class="btn gold-btn" onclick="logout()">Logout</button>
 
 <div class="bottom">
@@ -306,17 +330,69 @@ header{
 </div>
 
 <script>
+const db = window.brjSupabase || window.supabaseClient;
+
 function goDashboard(){
   window.location.href="dashboard.html";
 }
 
-async function logout(){
-  const db=window.brjSupabase||window.supabaseClient;
-  if(db){
-    await db.auth.signOut();
+async function verifyAdminAccess(){
+
+  try{
+
+    if(!db){
+      throw new Error("Database connection unavailable");
+    }
+
+    // Check current session
+    const {data:sessionData,error:sessionError} =
+      await db.auth.getSession();
+
+    if(sessionError || !sessionData.session){
+      window.location.replace("index.html");
+      return;
+    }
+
+    // Verify admin role using database function
+    const {data,error} = await db.rpc("is_admin");
+
+    if(error){
+      console.error("Admin verification error:",error.message);
+      window.location.replace("dashboard.html");
+      return;
+    }
+
+    if(data !== true){
+      alert("Access denied. Admin permission required.");
+      window.location.replace("dashboard.html");
+      return;
+    }
+
+    // Show page after verification
+    document.getElementById("loadingScreen").style.display="none";
+    document.getElementById("adminContent").style.display="block";
+
+  }catch(error){
+
+    console.error(error);
+    window.location.replace("index.html");
+
   }
-  window.location.href="index.html";
 }
+
+async function logout(){
+
+  if(!db){
+    window.location.replace("index.html");
+    return;
+  }
+
+  await db.auth.signOut();
+  window.location.replace("index.html");
+}
+
+// Run verification automatically
+verifyAdminAccess();
 </script>
 
 </body>
