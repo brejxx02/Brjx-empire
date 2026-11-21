@@ -4,186 +4,464 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080b14">
-<title>BRJ EMPIRE | Admin</title>
+<title>BRJ EMPIRE | Admin Console</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-body{background:#080b14;color:#fff;min-height:100vh}
-.container{max-width:1000px;margin:auto;padding:18px}
-header{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid #252b3a}
-.brand{font-size:22px;font-weight:900;letter-spacing:1px}
-.brand span{color:#d9ad55}
-.badge{color:#e5bb65;border:1px solid #66512c;background:#211b11;padding:7px 12px;border-radius:30px;font-size:11px}
-.welcome{margin:26px 0}
-.welcome h1{font-size:25px;margin-bottom:8px}
-.welcome p{color:#929bad;font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.card{background:linear-gradient(145deg,#151c2b,#0e1320);border:1px solid #252d3e;border-radius:17px;padding:18px}
-.label{color:#9aa5b8;font-size:12px}
-.value{font-size:27px;font-weight:800;margin-top:12px}
-.gold{color:#e5b95d}
+:root{
+  --bg:#080b14;
+  --panel:#111827;
+  --panel2:#151c2b;
+  --border:#252d3e;
+  --gold:#d9ad55;
+  --muted:#8f9bb0;
+  --green:#41c98a;
+  --red:#f06e75;
+}
+body{background:var(--bg);color:#fff;min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+.layout{min-height:100vh;display:flex}
+.sidebar{
+  width:245px;background:#0c101b;border-right:1px solid var(--border);
+  position:fixed;left:0;top:0;bottom:0;padding:22px 15px;z-index:20;
+  display:flex;flex-direction:column
+}
+.brand{font-size:23px;font-weight:900;letter-spacing:1px;padding:6px 10px 24px}
+.brand span{color:var(--gold)}
+.side-label{color:#637087;font-size:10px;letter-spacing:1.5px;padding:10px}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav button{
+  background:transparent;color:#9ba7ba;border:1px solid transparent;
+  text-align:left;padding:13px;border-radius:11px;font-size:13px
+}
+.nav button.active,.nav button:hover{
+  color:var(--gold);background:#1b1b23;border-color:#493c28
+}
+.sidebar-bottom{margin-top:auto}
+.admin-badge{padding:13px;border:1px solid var(--border);border-radius:12px;background:var(--panel)}
+.admin-badge small{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
+.admin-badge strong{font-size:13px;color:var(--gold)}
+.main{width:100%;margin-left:245px;padding:25px;max-width:1600px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.topbar h1{font-size:23px}
+.topbar p{font-size:12px;color:var(--muted);margin-top:6px}
+.top-actions{display:flex;gap:8px}
+.btn{
+  border:1px solid var(--border);background:#171e2d;color:#fff;
+  border-radius:10px;padding:11px 14px;font-size:12px;font-weight:700
+}
+.btn:hover{border-color:var(--gold)}
+.gold-btn{background:linear-gradient(135deg,#e7c36c,#b88b38);color:#111;border:none}
+.mobile-menu{display:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:25px}
+.card{
+  background:linear-gradient(145deg,#151c2b,#0e1320);
+  border:1px solid var(--border);border-radius:15px;padding:18px
+}
+.stat-label{font-size:12px;color:var(--muted)}
+.stat-value{font-size:28px;font-weight:850;margin-top:12px}
+.gold{color:var(--gold)}
+.green{color:var(--green)}
 .section{margin-top:25px}
-.title{font-size:17px;font-weight:750;margin-bottom:14px}
-.notice{border:1px solid #343047;background:#151422;color:#b5aacb;border-radius:12px;padding:13px;font-size:12px;line-height:1.6;margin-top:15px}
-.btn{width:100%;border:1px solid #313a4d;background:#171e2d;color:#fff;padding:14px;border-radius:12px;margin-top:12px;font-weight:700;cursor:pointer}
-.goldbtn{background:linear-gradient(135deg,#e7c36c,#b88b38);color:#111;border:none}
-.empty{text-align:center;padding:25px 10px;color:#8792a7;font-size:13px}
-.bottom{text-align:center;color:#68748b;padding:30px 0;font-size:11px}
-#adminContent{display:none}
-#loading{position:fixed;inset:0;background:#080b14;display:flex;align-items:center;justify-content:center;z-index:9999;text-align:center}
-.loader{width:38px;height:38px;border:3px solid #282f40;border-top-color:#d9ad55;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 15px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.section-head h2{font-size:16px}
+.section-head small{font-size:11px;color:var(--muted)}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:13px}
+.search{
+  flex:1;min-width:180px;background:#0e1421;color:#fff;
+  border:1px solid var(--border);border-radius:10px;padding:12px;outline:none
+}
+.search:focus{border-color:var(--gold)}
+.filter{
+  background:#111827;color:#fff;border:1px solid var(--border);
+  padding:11px;border-radius:10px
+}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{padding:14px 11px;text-align:left;border-bottom:1px solid #202839;font-size:12px}
+th{color:#78869c;font-weight:600}
+td{color:#dbe1ec}
+.status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:10px}
+.status.verified{color:var(--green);background:#123126}
+.status.pending{color:#e5bb65;background:#332817}
+.status.other{color:#aab5c6;background:#222a38}
+.empty{text-align:center;padding:30px;color:var(--muted);font-size:13px}
+.notice{border:1px solid var(--border);background:#101725;padding:15px;border-radius:12px;color:#9eabc0;font-size:12px;line-height:1.7}
+.activity-item{padding:13px 0;border-bottom:1px solid #202839;font-size:12px;color:#b8c3d4}
+.activity-item:last-child{border:0}
+.footer{text-align:center;color:#566176;padding:30px;font-size:10px}
+#loading{
+  position:fixed;inset:0;background:var(--bg);z-index:999;
+  display:flex;align-items:center;justify-content:center;text-align:center
+}
+.loader{width:36px;height:36px;border:3px solid #293144;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+.toast{font-size:12px;color:var(--muted);padding:12px 0}
+@media(max-width:1050px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  .sidebar{display:none;width:260px;box-shadow:20px 0 60px #0008}
+  .sidebar.open{display:flex}
+  .main{margin-left:0;padding:17px}
+  .mobile-menu{display:inline-block}
+  .topbar h1{font-size:20px}
+  .top-actions .btn{padding:10px}
+  .stats{gap:10px}
+  .card{padding:15px}
+  .stat-value{font-size:24px}
+}
 </style>
 </head>
-
 <body>
 
 <div id="loading">
   <div>
     <div class="loader"></div>
-    <p style="color:#d9ad55">Checking admin authorization...</p>
+    <p style="color:#d9ad55;font-size:13px">Verifying administrator...</p>
   </div>
 </div>
 
-<div class="container" id="adminContent">
+<div class="layout" id="app" style="display:none">
 
-<header>
+<aside class="sidebar" id="sidebar">
   <div class="brand">BRJ <span>EMPIRE</span></div>
-  <div class="badge">ADMIN PANEL</div>
-</header>
+  <div class="side-label">ADMINISTRATION</div>
 
-<div class="welcome">
-  <h1>Admin Dashboard 👑</h1>
-  <p>Welcome to the management console.</p>
-</div>
+  <nav class="nav">
+    <button class="active" data-section="overview">▦ &nbsp; Overview</button>
+    <button data-section="members">♙ &nbsp; Members</button>
+    <button data-section="kyc">▣ &nbsp; KYC Overview</button>
+    <button data-section="activity">◷ &nbsp; Activity</button>
+    <button data-section="support">✉ &nbsp; Support</button>
+    <button data-section="security">♧ &nbsp; Security</button>
+  </nav>
 
-<div class="grid">
-
-  <div class="card">
-    <div class="label">Total Members</div>
-    <div class="value" id="totalMembers">—</div>
+  <div class="sidebar-bottom">
+    <div class="admin-badge">
+      <small>ADMIN SESSION</small>
+      <strong id="adminEmail">Authorized</strong>
+    </div>
+    <button class="btn" style="width:100%;margin-top:12px" onclick="logout()">↪ Logout</button>
   </div>
+</aside>
 
-  <div class="card">
-    <div class="label">Verified Members</div>
-    <div class="value gold" id="verifiedMembers">—</div>
-  </div>
+<main class="main">
 
-  <div class="card">
-    <div class="label">Pending KYC</div>
-    <div class="value" id="pendingKyc">—</div>
-  </div>
-
-  <div class="card">
-    <div class="label">Admin Authorization</div>
-    <div class="value gold" style="font-size:17px" id="adminStatus">Verified</div>
-  </div>
-
-</div>
-
-<div class="section">
-  <div class="title">👥 Member Directory</div>
-  <div class="card">
-    <div class="empty">Member data connection will be added in a future step.</div>
-  </div>
-</div>
-
-<div class="section">
-  <div class="title">🛡️ Security</div>
-  <div class="card">
-    <div class="notice">
-      Admin authorization is checked using the deployed Supabase Edge Function.
-      Private member information is not displayed on this page.
+  <div class="topbar">
+    <div>
+      <button class="btn mobile-menu" onclick="toggleMenu()">☰</button>
+      <h1 id="pageTitle">Overview</h1>
+      <p>BRJ EMPIRE management console</p>
+    </div>
+    <div class="top-actions">
+      <button class="btn" onclick="loadMembers()">↻ Refresh</button>
     </div>
   </div>
-</div>
 
-<div class="section">
-  <div class="title">📋 Recent Activity</div>
-  <div class="card">
-    <div class="empty">Activity records are not connected yet.</div>
-  </div>
-</div>
+  <section id="overview">
 
-<button class="btn" onclick="goDashboard()">← Back to Dashboard</button>
-<button class="btn goldbtn" onclick="logout()">Logout</button>
+    <div class="stats">
+      <div class="card">
+        <div class="stat-label">Total Members</div>
+        <div class="stat-value" id="totalMembers">—</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Verified KYC</div>
+        <div class="stat-value green" id="verifiedMembers">—</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Pending KYC</div>
+        <div class="stat-value gold" id="pendingKyc">—</div>
+      </div>
+      <div class="card">
+        <div class="stat-label">Admin Authorization</div>
+        <div class="stat-value gold" style="font-size:17px" id="adminStatus">Verified</div>
+      </div>
+    </div>
 
-<div class="bottom">
-  BRJ EMPIRE • ADMIN CONSOLE
-</div>
+    <div class="section">
+      <div class="section-head">
+        <h2>Recent Members</h2>
+        <small>Latest registrations</small>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Member ID</th><th>Name</th><th>KYC</th><th>Joined</th></tr>
+            </thead>
+            <tbody id="recentTable"></tbody>
+          </table>
+        </div>
+        <div id="recentEmpty" class="empty" style="display:none">No member records found.</div>
+      </div>
+    </div>
 
+  </section>
+
+  <section id="members" style="display:none">
+    <div class="section">
+      <div class="section-head">
+        <h2>Member Directory</h2>
+        <small id="memberCount">—</small>
+      </div>
+      <div class="card">
+        <div class="toolbar">
+          <input class="search" id="searchInput" placeholder="Search name or member ID..." oninput="renderMembers()">
+          <select class="filter" id="kycFilter" onchange="renderMembers()">
+            <option value="">All KYC</option>
+            <option value="verified">Verified</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Member ID</th><th>Name</th><th>Mobile</th><th>KYC Status</th><th>Joined</th></tr>
+            </thead>
+            <tbody id="memberTable"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="memberEmpty" style="display:none">No matching members.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kyc" style="display:none">
+    <div class="section">
+      <div class="section-head"><h2>KYC Overview</h2></div>
+      <div class="stats">
+        <div class="card"><div class="stat-label">Verified</div><div class="stat-value green" id="kycVerified">—</div></div>
+        <div class="card"><div class="stat-label">Pending</div><div class="stat-value gold" id="kycPending">—</div></div>
+        <div class="card"><div class="stat-label">Other statuses</div><div class="stat-value" id="kycOther">—</div></div>
+        <div class="card"><div class="stat-label">Total records</div><div class="stat-value" id="kycTotal">—</div></div>
+      </div>
+      <div class="card" style="margin-top:15px">
+        <div class="notice">This section displays KYC status counts only. Sensitive identity documents are not displayed here.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="activity" style="display:none">
+    <div class="section">
+      <div class="section-head"><h2>Activity</h2></div>
+      <div class="card">
+        <div class="notice">Activity log connection has not been configured yet. This panel will not invent activity records.</div>
+        <div id="activityList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="support" style="display:none">
+    <div class="section">
+      <div class="section-head"><h2>Support</h2></div>
+      <div class="card">
+        <div class="notice">For support, contact the support team using the Telegram link below.</div>
+        <a href="https://t.me/LEON_DIWAPAY" target="_blank" rel="noopener" style="display:block;text-decoration:none">
+          <button class="btn gold-btn" style="width:100%;margin-top:15px">Open Telegram Support ↗</button>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="security" style="display:none">
+    <div class="section">
+      <div class="section-head"><h2>Security</h2></div>
+      <div class="card">
+        <div class="notice">
+          <b style="color:#e5bb65">Admin access protection</b><br><br>
+          This page checks administrator access through the Supabase Edge Function
+          <b>admin-check</b>. Member data access is subject to database Row Level Security (RLS).
+          <br><br>
+          Never place service-role keys or secret credentials in browser code.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast" id="message"></div>
+  <div class="footer">BRJ EMPIRE • ADMIN CONSOLE</div>
+
+</main>
 </div>
 
 <script>
 const db = window.brjSupabase || window.supabaseClient;
+let members = [];
 
-function goDashboard(){
-  location.href="dashboard.html";
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("open");
 }
 
-function showAdmin(){
-  document.getElementById("loading").style.display="none";
-  document.getElementById("adminContent").style.display="block";
+document.querySelectorAll(".nav button").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const section=button.dataset.section;
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+    button.classList.add("active");
+
+    document.querySelectorAll("main section").forEach(s=>s.style.display="none");
+    document.getElementById(section).style.display="block";
+    document.getElementById("pageTitle").textContent=button.textContent.trim();
+    document.getElementById("sidebar").classList.remove("open");
+  });
+});
+
+function statusClass(status){
+  status=(status||"pending").toLowerCase();
+  if(status==="verified"||status==="approved")return "verified";
+  if(status==="pending")return "pending";
+  return "other";
+}
+
+function statusBadge(status){
+  const s=status||"pending";
+  return `<span class="status ${statusClass(s)}">${escapeHTML(s)}</span>`;
+}
+
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[char]));
+}
+
+function formatDate(value){
+  if(!value)return "—";
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return "—";
+  return d.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
 }
 
 async function verifyAdmin(){
-
   try{
+    if(!db)throw new Error("Supabase connection missing");
 
-    if(!db){
-      throw new Error("Supabase connection missing");
-    }
-
-    const {data:sessionData,error:sessionError} =
-      await db.auth.getSession();
-
-    if(sessionError || !sessionData.session){
+    const {data:sessionData,error:sessionError}=await db.auth.getSession();
+    if(sessionError||!sessionData.session){
       location.replace("index.html");
       return;
     }
 
-    const {data,error} = await db.functions.invoke("admin-check",{
-      body:{}
-    });
-
-    if(error){
-      console.error("Function error:",error);
-      alert("Admin verification could not be completed.");
+    const {data,error}=await db.functions.invoke("admin-check",{body:{}});
+    if(error||!data||data.admin!==true){
+      alert("Admin verification failed. Access denied.");
       location.replace("dashboard.html");
       return;
     }
 
-    if(!data || data.admin !== true){
-      alert("Access denied. Admin permission required.");
-      location.replace("dashboard.html");
-      return;
-    }
+    document.getElementById("adminStatus").textContent="Verified";
+    document.getElementById("adminEmail").textContent="Authorized";
+    document.getElementById("loading").style.display="none";
+    document.getElementById("app").style.display="flex";
 
-    showAdmin();
-
+    await loadMembers();
   }catch(err){
-
     console.error(err);
     location.replace("index.html");
-
   }
 }
 
-async function logout(){
+async function loadMembers(){
+  const msg=document.getElementById("message");
+  msg.textContent="Loading member records...";
 
-  if(db){
-    await db.auth.signOut();
+  try{
+    const {data,error}=await db
+      .from("profiles")
+      .select("id,member_id,full_name,mobile,kyc_status,created_at")
+      .order("created_at",{ascending:false})
+      .limit(500);
+
+    if(error)throw error;
+
+    members=data||[];
+    updateStats();
+    renderMembers();
+    renderRecent();
+    msg.textContent="Member data refreshed.";
+  }catch(err){
+    console.error("Member loading error:",err);
+    members=[];
+    updateStats();
+    renderMembers();
+    renderRecent();
+    msg.textContent="Could not load member records. Check Supabase access policies.";
   }
+}
 
+function updateStats(){
+  const total=members.length;
+  const verified=members.filter(m=>(m.kyc_status||"").toLowerCase()==="verified").length;
+  const pending=members.filter(m=>(m.kyc_status||"pending").toLowerCase()==="pending").length;
+  const other=total-verified-pending;
+
+  document.getElementById("totalMembers").textContent=total;
+  document.getElementById("verifiedMembers").textContent=verified;
+  document.getElementById("pendingKyc").textContent=pending;
+
+  document.getElementById("kycVerified").textContent=verified;
+  document.getElementById("kycPending").textContent=pending;
+  document.getElementById("kycOther").textContent=other;
+  document.getElementById("kycTotal").textContent=total;
+}
+
+function renderMembers(){
+  const search=(document.getElementById("searchInput")?.value||"").trim().toLowerCase();
+  const filter=(document.getElementById("kycFilter")?.value||"").toLowerCase();
+
+  const filtered=members.filter(m=>{
+    const id=(m.member_id||"").toLowerCase();
+    const name=(m.full_name||"").toLowerCase();
+    const mobile=(m.mobile||"").toLowerCase();
+    const status=(m.kyc_status||"pending").toLowerCase();
+
+    const matchSearch=!search||id.includes(search)||name.includes(search)||mobile.includes(search);
+    const matchFilter=!filter||status===filter;
+    return matchSearch&&matchFilter;
+  });
+
+  document.getElementById("memberCount").textContent=filtered.length+" members";
+
+  const tbody=document.getElementById("memberTable");
+  tbody.innerHTML=filtered.map(m=>`
+    <tr>
+      <td>${escapeHTML(m.member_id||"—")}</td>
+      <td>${escapeHTML(m.full_name||"—")}</td>
+      <td>${escapeHTML(m.mobile||"—")}</td>
+      <td>${statusBadge(m.kyc_status)}</td>
+      <td>${formatDate(m.created_at)}</td>
+    </tr>
+  `).join("");
+
+  document.getElementById("memberEmpty").style.display=filtered.length?"none":"block";
+}
+
+function renderRecent(){
+  const recent=members.slice(0,5);
+  const tbody=document.getElementById("recentTable");
+
+  tbody.innerHTML=recent.map(m=>`
+    <tr>
+      <td>${escapeHTML(m.member_id||"—")}</td>
+      <td>${escapeHTML(m.full_name||"—")}</td>
+      <td>${statusBadge(m.kyc_status)}</td>
+      <td>${formatDate(m.created_at)}</td>
+    </tr>
+  `).join("");
+
+  document.getElementById("recentEmpty").style.display=recent.length?"none":"block";
+}
+
+async function logout(){
+  if(db)await db.auth.signOut();
   location.replace("index.html");
 }
 
 verifyAdmin();
 </script>
-
 </body>
 </html>
