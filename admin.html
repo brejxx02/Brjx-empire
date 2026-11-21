@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#080b14">
 <title>BRJ EMPIRE | Admin Console</title>
 
@@ -12,36 +12,31 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 :root{
-  --bg:#080b14;
-  --panel:#111827;
-  --panel2:#151c2b;
-  --border:#252d3e;
-  --gold:#d9ad55;
-  --muted:#8f9bb0;
-  --green:#41c98a;
-  --red:#f06e75;
+--bg:#080b14;--panel:#111827;--panel2:#151c2b;
+--border:#252d3e;--gold:#d9ad55;--muted:#8f9bb0;
+--green:#41c98a;--red:#f06e75;--blue:#6daaff
 }
 body{background:var(--bg);color:#fff;min-height:100vh}
-button,input{font:inherit}
+button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .layout{min-height:100vh;display:flex}
 .sidebar{
-  width:245px;background:#0c101b;border-right:1px solid var(--border);
-  position:fixed;left:0;top:0;bottom:0;padding:22px 15px;z-index:20;
-  display:flex;flex-direction:column
+width:245px;background:#0c101b;border-right:1px solid var(--border);
+position:fixed;left:0;top:0;bottom:0;padding:22px 15px;z-index:20;
+display:flex;flex-direction:column;overflow-y:auto
 }
 .brand{font-size:23px;font-weight:900;letter-spacing:1px;padding:6px 10px 24px}
 .brand span{color:var(--gold)}
 .side-label{color:#637087;font-size:10px;letter-spacing:1.5px;padding:10px}
-.nav{display:flex;flex-direction:column;gap:6px}
+.nav{display:flex;flex-direction:column;gap:5px}
 .nav button{
-  background:transparent;color:#9ba7ba;border:1px solid transparent;
-  text-align:left;padding:13px;border-radius:11px;font-size:13px
+background:transparent;color:#9ba7ba;border:1px solid transparent;
+text-align:left;padding:12px;border-radius:11px;font-size:13px
 }
 .nav button.active,.nav button:hover{
-  color:var(--gold);background:#1b1b23;border-color:#493c28
+color:var(--gold);background:#1b1b23;border-color:#493c28
 }
-.sidebar-bottom{margin-top:auto}
+.sidebar-bottom{margin-top:auto;padding-top:15px}
 .admin-badge{padding:13px;border:1px solid var(--border);border-radius:12px;background:var(--panel)}
 .admin-badge small{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
 .admin-badge strong{font-size:13px;color:var(--gold)}
@@ -49,416 +44,725 @@ button{cursor:pointer}
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .topbar h1{font-size:23px}
 .topbar p{font-size:12px;color:var(--muted);margin-top:6px}
-.top-actions{display:flex;gap:8px}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{
-  border:1px solid var(--border);background:#171e2d;color:#fff;
-  border-radius:10px;padding:11px 14px;font-size:12px;font-weight:700
+border:1px solid var(--border);background:#171e2d;color:#fff;
+border-radius:10px;padding:11px 14px;font-size:12px;font-weight:700
 }
 .btn:hover{border-color:var(--gold)}
 .gold-btn{background:linear-gradient(135deg,#e7c36c,#b88b38);color:#111;border:none}
+.red-btn{background:#401e25;color:#ff8585;border-color:#632e35}
+.green-btn{background:#143526;color:#6de0a5;border-color:#24553a}
 .mobile-menu{display:none}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:25px}
 .card{
-  background:linear-gradient(145deg,#151c2b,#0e1320);
-  border:1px solid var(--border);border-radius:15px;padding:18px
+background:linear-gradient(145deg,#151c2b,#0e1320);
+border:1px solid var(--border);border-radius:15px;padding:18px
 }
 .stat-label{font-size:12px;color:var(--muted)}
-.stat-value{font-size:28px;font-weight:850;margin-top:12px}
-.gold{color:var(--gold)}
-.green{color:var(--green)}
+.stat-value{font-size:28px;font-weight:850;margin-top:12px;word-break:break-word}
+.gold{color:var(--gold)}.green{color:var(--green)}.red{color:var(--red)}
 .section{margin-top:25px}
-.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
 .section-head h2{font-size:16px}
 .section-head small{font-size:11px;color:var(--muted)}
 .toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:13px}
 .search{
-  flex:1;min-width:180px;background:#0e1421;color:#fff;
-  border:1px solid var(--border);border-radius:10px;padding:12px;outline:none
+flex:1;min-width:180px;background:#0e1421;color:#fff;
+border:1px solid var(--border);border-radius:10px;padding:12px;outline:none
 }
 .search:focus{border-color:var(--gold)}
-.filter{
-  background:#111827;color:#fff;border:1px solid var(--border);
-  padding:11px;border-radius:10px
-}
+.filter{background:#111827;color:#fff;border:1px solid var(--border);padding:11px;border-radius:10px}
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;min-width:650px}
 th,td{padding:14px 11px;text-align:left;border-bottom:1px solid #202839;font-size:12px}
 th{color:#78869c;font-weight:600}
 td{color:#dbe1ec}
 .status{display:inline-block;padding:5px 9px;border-radius:20px;font-size:10px}
-.status.verified{color:var(--green);background:#123126}
+.status.verified,.status.approved,.status.active,.status.paid{color:var(--green);background:#123126}
 .status.pending{color:#e5bb65;background:#332817}
+.status.rejected,.status.blocked{color:#ff8585;background:#381e24}
 .status.other{color:#aab5c6;background:#222a38}
+.small-btn{padding:7px 10px;font-size:10px;border-radius:7px;border:1px solid var(--border);background:#202a3a;color:white}
 .empty{text-align:center;padding:30px;color:var(--muted);font-size:13px}
 .notice{border:1px solid var(--border);background:#101725;padding:15px;border-radius:12px;color:#9eabc0;font-size:12px;line-height:1.7}
 .activity-item{padding:13px 0;border-bottom:1px solid #202839;font-size:12px;color:#b8c3d4}
-.activity-item:last-child{border:0}
 .footer{text-align:center;color:#566176;padding:30px;font-size:10px}
+.field{width:100%;padding:12px;border:1px solid var(--border);background:#0e1421;color:white;border-radius:10px;margin:7px 0;outline:none}
+.field:focus{border-color:var(--gold)}
+textarea.field{min-height:85px;resize:vertical}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.action-row{display:flex;gap:7px;flex-wrap:wrap}
+.toast{font-size:12px;color:var(--muted);padding:12px 0;white-space:pre-wrap}
 #loading{
-  position:fixed;inset:0;background:var(--bg);z-index:999;
-  display:flex;align-items:center;justify-content:center;text-align:center
+position:fixed;inset:0;background:var(--bg);z-index:999;
+display:flex;align-items:center;justify-content:center;text-align:center
 }
 .loader{width:36px;height:36px;border:3px solid #293144;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.toast{font-size:12px;color:var(--muted);padding:12px 0}
-@media(max-width:1050px){
-  .stats{grid-template-columns:repeat(2,1fr)}
+.modal{
+position:fixed;inset:0;background:#000b;z-index:500;
+display:none;align-items:center;justify-content:center;padding:15px
 }
+.modal.show{display:flex}
+.modal-box{width:100%;max-width:440px;background:#111827;border:1px solid var(--border);border-radius:16px;padding:20px}
+.modal-box h3{margin-bottom:12px}
+.modal-actions{display:flex;gap:10px;margin-top:12px}
+.modal-actions button{flex:1}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){
-  .sidebar{display:none;width:260px;box-shadow:20px 0 60px #0008}
-  .sidebar.open{display:flex}
-  .main{margin-left:0;padding:17px}
-  .mobile-menu{display:inline-block}
-  .topbar h1{font-size:20px}
-  .top-actions .btn{padding:10px}
-  .stats{gap:10px}
-  .card{padding:15px}
-  .stat-value{font-size:24px}
+.sidebar{display:none;width:260px;box-shadow:20px 0 60px #0008}
+.sidebar.open{display:flex}
+.main{margin-left:0;padding:17px}
+.mobile-menu{display:inline-block}
+.topbar h1{font-size:20px}
+.top-actions .btn{padding:10px}
+.stats{gap:10px}
+.card{padding:15px}
+.stat-value{font-size:24px}
+.form-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
+
 <body>
 
 <div id="loading">
-  <div>
-    <div class="loader"></div>
-    <p style="color:#d9ad55;font-size:13px">Verifying administrator...</p>
-  </div>
+<div>
+<div class="loader"></div>
+<p style="color:#d9ad55;font-size:13px">Verifying administrator...</p>
+</div>
 </div>
 
 <div class="layout" id="app" style="display:none">
 
 <aside class="sidebar" id="sidebar">
-  <div class="brand">BRJ <span>EMPIRE</span></div>
-  <div class="side-label">ADMINISTRATION</div>
+<div class="brand">BRJ <span>EMPIRE</span></div>
+<div class="side-label">ADMINISTRATION</div>
 
-  <nav class="nav">
-    <button class="active" data-section="overview">▦ &nbsp; Overview</button>
-    <button data-section="members">♙ &nbsp; Members</button>
-    <button data-section="kyc">▣ &nbsp; KYC Overview</button>
-    <button data-section="activity">◷ &nbsp; Activity</button>
-    <button data-section="support">✉ &nbsp; Support</button>
-    <button data-section="security">♧ &nbsp; Security</button>
-  </nav>
+<nav class="nav">
+<button class="active" data-section="overview">▦ &nbsp; Overview</button>
+<button data-section="members">♙ &nbsp; Members</button>
+<button data-section="deposits">↓ &nbsp; Deposits</button>
+<button data-section="withdrawals">↑ &nbsp; Withdrawals</button>
+<button data-section="balance">₹ &nbsp; Manage Balance</button>
+<button data-section="history">◷ &nbsp; Balance History</button>
+<button data-section="kyc">▣ &nbsp; KYC Overview</button>
+<button data-section="activity">◴ &nbsp; Activity</button>
+<button data-section="support">✉ &nbsp; Support</button>
+<button data-section="security">♧ &nbsp; Security</button>
+</nav>
 
-  <div class="sidebar-bottom">
-    <div class="admin-badge">
-      <small>ADMIN SESSION</small>
-      <strong id="adminEmail">Authorized</strong>
-    </div>
-    <button class="btn" style="width:100%;margin-top:12px" onclick="logout()">↪ Logout</button>
-  </div>
+<div class="sidebar-bottom">
+<div class="admin-badge">
+<small>ADMIN SESSION</small>
+<strong id="adminEmail">Authorized</strong>
+</div>
+<button class="btn red-btn" style="width:100%;margin-top:12px" onclick="logout()">↪ Logout</button>
+</div>
 </aside>
 
 <main class="main">
 
-  <div class="topbar">
-    <div>
-      <button class="btn mobile-menu" onclick="toggleMenu()">☰</button>
-      <h1 id="pageTitle">Overview</h1>
-      <p>BRJ EMPIRE management console</p>
-    </div>
-    <div class="top-actions">
-      <button class="btn" onclick="loadMembers()">↻ Refresh</button>
-    </div>
-  </div>
+<div class="topbar">
+<div>
+<button class="btn mobile-menu" onclick="toggleMenu()">☰</button>
+<h1 id="pageTitle">Overview</h1>
+<p>BRJ EMPIRE management console</p>
+</div>
+<div class="top-actions">
+<button class="btn" onclick="refreshCurrent()">↻ Refresh</button>
+</div>
+</div>
 
-  <section id="overview">
+<!-- OVERVIEW -->
+<section id="overview">
 
-    <div class="stats">
-      <div class="card">
-        <div class="stat-label">Total Members</div>
-        <div class="stat-value" id="totalMembers">—</div>
-      </div>
-      <div class="card">
-        <div class="stat-label">Verified KYC</div>
-        <div class="stat-value green" id="verifiedMembers">—</div>
-      </div>
-      <div class="card">
-        <div class="stat-label">Pending KYC</div>
-        <div class="stat-value gold" id="pendingKyc">—</div>
-      </div>
-      <div class="card">
-        <div class="stat-label">Admin Authorization</div>
-        <div class="stat-value gold" style="font-size:17px" id="adminStatus">Verified</div>
-      </div>
-    </div>
+<div class="stats">
+<div class="card"><div class="stat-label">Total Members</div><div class="stat-value" id="totalMembers">—</div></div>
+<div class="card"><div class="stat-label">Verified KYC</div><div class="stat-value green" id="verifiedMembers">—</div></div>
+<div class="card"><div class="stat-label">Pending KYC</div><div class="stat-value gold" id="pendingKyc">—</div></div>
+<div class="card"><div class="stat-label">Blocked Members</div><div class="stat-value red" id="blockedMembers">—</div></div>
+<div class="card"><div class="stat-label">Deposit Requests</div><div class="stat-value gold" id="depositCount">—</div></div>
+<div class="card"><div class="stat-label">Withdrawal Requests</div><div class="stat-value gold" id="withdrawalCount">—</div></div>
+<div class="card"><div class="stat-label">Admin Authorization</div><div class="stat-value gold" style="font-size:17px" id="adminStatus">Verifying</div></div>
+</div>
 
-    <div class="section">
-      <div class="section-head">
-        <h2>Recent Members</h2>
-        <small>Latest registrations</small>
-      </div>
-      <div class="card">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Member ID</th><th>Name</th><th>KYC</th><th>Joined</th></tr>
-            </thead>
-            <tbody id="recentTable"></tbody>
-          </table>
-        </div>
-        <div id="recentEmpty" class="empty" style="display:none">No member records found.</div>
-      </div>
-    </div>
+<div class="section">
+<div class="section-head"><h2>Recent Members</h2><small>Latest registrations</small></div>
+<div class="card">
+<div class="table-wrap">
+<table>
+<thead><tr><th>Member ID</th><th>Name</th><th>KYC</th><th>Status</th><th>Joined</th></tr></thead>
+<tbody id="recentTable"></tbody>
+</table>
+</div>
+<div id="recentEmpty" class="empty" style="display:none">No member records found.</div>
+</div>
+</div>
+</section>
 
-  </section>
+<!-- MEMBERS -->
+<section id="members" style="display:none">
+<div class="section">
+<div class="section-head"><h2>Member Directory</h2><small id="memberCount">—</small></div>
+<div class="card">
+<div class="toolbar">
+<input class="search" id="searchInput" placeholder="Search name, mobile, member ID..." oninput="renderMembers()">
+<select class="filter" id="memberFilter" onchange="renderMembers()">
+<option value="">All Members</option>
+<option value="active">Active</option>
+<option value="blocked">Blocked</option>
+</select>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Member ID</th><th>Name</th><th>Mobile</th><th>KYC</th><th>Account</th><th>Action</th></tr></thead>
+<tbody id="memberTable"></tbody>
+</table>
+</div>
+<div class="empty" id="memberEmpty" style="display:none">No matching members.</div>
+</div>
+</div>
+</section>
 
-  <section id="members" style="display:none">
-    <div class="section">
-      <div class="section-head">
-        <h2>Member Directory</h2>
-        <small id="memberCount">—</small>
-      </div>
-      <div class="card">
-        <div class="toolbar">
-          <input class="search" id="searchInput" placeholder="Search name or member ID..." oninput="renderMembers()">
-          <select class="filter" id="kycFilter" onchange="renderMembers()">
-            <option value="">All KYC</option>
-            <option value="verified">Verified</option>
-            <option value="pending">Pending</option>
-          </select>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Member ID</th><th>Name</th><th>Mobile</th><th>KYC Status</th><th>Joined</th></tr>
-            </thead>
-            <tbody id="memberTable"></tbody>
-          </table>
-        </div>
-        <div class="empty" id="memberEmpty" style="display:none">No matching members.</div>
-      </div>
-    </div>
-  </section>
+<!-- DEPOSITS -->
+<section id="deposits" style="display:none">
+<div class="section">
+<div class="section-head"><h2>Deposit Management</h2><small id="depositCountLabel">Deposit Requests</small></div>
+<div class="card">
+<div class="toolbar">
+<input class="search" id="depositSearch" placeholder="Search deposit/member..." oninput="renderDeposits()">
+<select class="filter" id="depositFilter" onchange="renderDeposits()">
+<option value="">All statuses</option>
+<option value="pending">Pending</option>
+<option value="approved">Approved</option>
+<option value="rejected">Rejected</option>
+</select>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Request ID</th><th>Member</th><th>Amount</th><th>UTR / Txn</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="depositTable"></tbody>
+</table>
+</div>
+<div class="empty" id="depositEmpty" style="display:none">No deposit requests found.</div>
+</div>
+</div>
+</section>
 
-  <section id="kyc" style="display:none">
-    <div class="section">
-      <div class="section-head"><h2>KYC Overview</h2></div>
-      <div class="stats">
-        <div class="card"><div class="stat-label">Verified</div><div class="stat-value green" id="kycVerified">—</div></div>
-        <div class="card"><div class="stat-label">Pending</div><div class="stat-value gold" id="kycPending">—</div></div>
-        <div class="card"><div class="stat-label">Other statuses</div><div class="stat-value" id="kycOther">—</div></div>
-        <div class="card"><div class="stat-label">Total records</div><div class="stat-value" id="kycTotal">—</div></div>
-      </div>
-      <div class="card" style="margin-top:15px">
-        <div class="notice">This section displays KYC status counts only. Sensitive identity documents are not displayed here.</div>
-      </div>
-    </div>
-  </section>
+<!-- WITHDRAWALS -->
+<section id="withdrawals" style="display:none">
+<div class="section">
+<div class="section-head"><h2>Withdrawal Management</h2><small id="withdrawalCountLabel">Withdrawal Requests</small></div>
+<div class="card">
+<div class="toolbar">
+<input class="search" id="withdrawSearch" placeholder="Search withdrawal/member..." oninput="renderWithdrawals()">
+<select class="filter" id="withdrawFilter" onchange="renderWithdrawals()">
+<option value="">All statuses</option>
+<option value="pending">Pending</option>
+<option value="approved">Approved</option>
+<option value="paid">Paid</option>
+<option value="rejected">Rejected</option>
+</select>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Request ID</th><th>Member</th><th>Amount</th><th>Payment Details</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="withdrawTable"></tbody>
+</table>
+</div>
+<div class="empty" id="withdrawEmpty" style="display:none">No withdrawal requests found.</div>
+</div>
+</div>
+</section>
 
-  <section id="activity" style="display:none">
-    <div class="section">
-      <div class="section-head"><h2>Activity</h2></div>
-      <div class="card">
-        <div class="notice">Activity log connection has not been configured yet. This panel will not invent activity records.</div>
-        <div id="activityList"></div>
-      </div>
-    </div>
-  </section>
+<!-- MANAGE BALANCE -->
+<section id="balance" style="display:none">
+<div class="section">
+<div class="section-head"><h2>Manage Member Balance</h2></div>
+<div class="card">
+<div class="notice">
+Balance adjustments must be accurate, authorized, and recorded with a reason. Use only for verified corrections.
+</div>
 
-  <section id="support" style="display:none">
-    <div class="section">
-      <div class="section-head"><h2>Support</h2></div>
-      <div class="card">
-        <div class="notice">For support, contact the support team using the Telegram link below.</div>
-        <a href="https://t.me/LEON_DIWAPAY" target="_blank" rel="noopener" style="display:block;text-decoration:none">
-          <button class="btn gold-btn" style="width:100%;margin-top:15px">Open Telegram Support ↗</button>
-        </a>
-      </div>
-    </div>
-  </section>
+<input class="field" id="balanceMember" placeholder="Member ID or user UUID">
+<input class="field" id="balanceAmount" type="number" min="0.01" step="0.01" placeholder="Adjustment amount ₹">
 
-  <section id="security" style="display:none">
-    <div class="section">
-      <div class="section-head"><h2>Security</h2></div>
-      <div class="card">
-        <div class="notice">
-          <b style="color:#e5bb65">Admin access protection</b><br><br>
-          This page checks administrator access through the Supabase Edge Function
-          <b>admin-check</b>. Member data access is subject to database Row Level Security (RLS).
-          <br><br>
-          Never place service-role keys or secret credentials in browser code.
-        </div>
-      </div>
-    </div>
-  </section>
+<select class="field" id="balanceAction">
+<option value="credit">Add Balance (+)</option>
+<option value="debit">Deduct Balance (−)</option>
+</select>
 
-  <div class="toast" id="message"></div>
-  <div class="footer">BRJ EMPIRE • ADMIN CONSOLE</div>
+<textarea class="field" id="balanceReason" placeholder="Adjustment reason (required)"></textarea>
 
+<button class="btn gold-btn" style="width:100%" onclick="submitBalanceAdjustment()">SUBMIT ADJUSTMENT</button>
+</div>
+</div>
+</section>
+
+<!-- HISTORY -->
+<section id="history" style="display:none">
+<div class="section">
+<div class="section-head"><h2>Balance History</h2></div>
+<div class="card">
+<div class="toolbar">
+<input class="search" id="historySearch" placeholder="Search history..." oninput="renderHistory()">
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Date</th><th>Member</th><th>Type</th><th>Amount</th><th>Reason</th><th>Admin</th></tr></thead>
+<tbody id="historyTable"></tbody>
+</table>
+</div>
+<div class="empty" id="historyEmpty" style="display:none">No history loaded.</div>
+</div>
+</div>
+</section>
+
+<!-- KYC -->
+<section id="kyc" style="display:none">
+<div class="section">
+<div class="section-head"><h2>KYC Overview</h2></div>
+<div class="stats">
+<div class="card"><div class="stat-label">Verified</div><div class="stat-value green" id="kycVerified">—</div></div>
+<div class="card"><div class="stat-label">Pending</div><div class="stat-value gold" id="kycPending">—</div></div>
+<div class="card"><div class="stat-label">Other statuses</div><div class="stat-value" id="kycOther">—</div></div>
+<div class="card"><div class="stat-label">Total records</div><div class="stat-value" id="kycTotal">—</div></div>
+</div>
+<div class="card" style="margin-top:15px"><div class="notice">KYC counts only. Sensitive identity documents are not displayed.</div></div>
+</div>
+</section>
+
+<!-- ACTIVITY -->
+<section id="activity" style="display:none">
+<div class="section">
+<div class="section-head"><h2>Activity</h2></div>
+<div class="card">
+<div class="notice">Activity records will be shown here when the secure audit-log service is connected.</div>
+<div id="activityList"></div>
+</div>
+</div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support" style="display:none">
+<div class="section">
+<div class="section-head"><h2>Support</h2></div>
+<div class="card">
+<div class="notice">Contact support team.</div>
+<a href="https://t.me/LEON_DIWAPAY" target="_blank" rel="noopener" style="display:block;text-decoration:none">
+<button class="btn gold-btn" style="width:100%;margin-top:15px">Open Telegram Support ↗</button>
+</a>
+</div>
+</div>
+</section>
+
+<!-- SECURITY -->
+<section id="security" style="display:none">
+<div class="section">
+<div class="section-head"><h2>Security</h2></div>
+<div class="card">
+<div class="notice">
+<b style="color:#e5bb65">Admin Access Protection</b><br><br>
+This panel verifies access through Supabase Edge Function <b>admin-check</b>.
+Financial actions must be validated server-side and protected by Row Level Security.
+Never put service-role keys in browser code.
+</div>
+</div>
+</div>
+</section>
+
+<div class="toast" id="message"></div>
+<div class="footer">BRJ EMPIRE • ADMIN CONSOLE</div>
 </main>
 </div>
 
+<!-- ACTION MODAL -->
+<div class="modal" id="actionModal">
+<div class="modal-box">
+<h3 id="modalTitle">Confirm action</h3>
+<p id="modalText" style="color:var(--muted);font-size:13px;line-height:1.6"></p>
+<input id="modalReason" class="field" placeholder="Reason (required)">
+<div class="modal-actions">
+<button class="btn" onclick="closeModal()">CANCEL</button>
+<button class="btn gold-btn" id="modalConfirm">CONFIRM</button>
+</div>
+</div>
+</div>
+
 <script>
-const db = window.brjSupabase || window.supabaseClient;
-let members = [];
+const db=window.brjSupabase||window.supabaseClient;
+let members=[],deposits=[],withdrawals=[],balanceHistory=[];
+let currentSection="overview",pendingAction=null;
+
+const FN={
+members:"admin-members",
+deposits:"admin-deposits",
+withdrawals:"admin-withdrawals",
+balance:"admin-balance-adjust",
+status:"admin-user-status",
+history:"admin-balance-history"
+};
+
+function toast(t){
+document.getElementById("message").textContent=t;
+}
 
 function toggleMenu(){
-  document.getElementById("sidebar").classList.toggle("open");
+document.getElementById("sidebar").classList.toggle("open");
 }
 
 document.querySelectorAll(".nav button").forEach(button=>{
-  button.addEventListener("click",()=>{
-    const section=button.dataset.section;
-    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
-    button.classList.add("active");
+button.addEventListener("click",()=>{
+const section=button.dataset.section;
+currentSection=section;
 
-    document.querySelectorAll("main section").forEach(s=>s.style.display="none");
-    document.getElementById(section).style.display="block";
-    document.getElementById("pageTitle").textContent=button.textContent.trim();
-    document.getElementById("sidebar").classList.remove("open");
-  });
+document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+
+document.querySelectorAll("main section").forEach(s=>s.style.display="none");
+document.getElementById(section).style.display="block";
+
+document.getElementById("pageTitle").textContent=button.textContent.trim();
+document.getElementById("sidebar").classList.remove("open");
+});
 });
 
-function statusClass(status){
-  status=(status||"pending").toLowerCase();
-  if(status==="verified"||status==="approved")return "verified";
-  if(status==="pending")return "pending";
-  return "other";
-}
-
-function statusBadge(status){
-  const s=status||"pending";
-  return `<span class="status ${statusClass(s)}">${escapeHTML(s)}</span>`;
-}
-
 function escapeHTML(value){
-  return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[char]));
+return String(value??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
 }
 
-function formatDate(value){
-  if(!value)return "—";
-  const d=new Date(value);
-  if(Number.isNaN(d.getTime()))return "—";
-  return d.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
+function formatDate(v){
+if(!v)return "—";
+const d=new Date(v);
+return isNaN(d.getTime())?"—":d.toLocaleDateString("en-IN");
+}
+
+function badge(status){
+status=String(status||"pending").toLowerCase();
+let cl=["verified","approved","active","paid"].includes(status)?"verified":
+status==="pending"?"pending":
+["blocked","rejected"].includes(status)?"blocked":"other";
+return `<span class="status ${cl}">${escapeHTML(status)}</span>`;
+}
+
+async function callAdmin(fn,payload={}){
+if(!db)throw new Error("Supabase client missing.");
+const {data,error}=await db.functions.invoke(fn,{body:payload});
+if(error)throw error;
+return data;
 }
 
 async function verifyAdmin(){
-  try{
-    if(!db)throw new Error("Supabase connection missing");
+try{
+if(!db)throw new Error("Supabase connection missing");
 
-    const {data:sessionData,error:sessionError}=await db.auth.getSession();
-    if(sessionError||!sessionData.session){
-      location.replace("index.html");
-      return;
-    }
+const {data:sd,error:se}=await db.auth.getSession();
+if(se||!sd.session){
+location.replace("index.html");
+return;
+}
 
-    const {data,error}=await db.functions.invoke("admin-check",{body:{}});
-    if(error||!data||data.admin!==true){
-      alert("Admin verification failed. Access denied.");
-      location.replace("dashboard.html");
-      return;
-    }
+const {data,error}=await db.functions.invoke("admin-check",{body:{}});
+if(error||!data||data.admin!==true){
+alert("Admin verification failed. Access denied.");
+location.replace("dashboard.html");
+return;
+}
 
-    document.getElementById("adminStatus").textContent="Verified";
-    document.getElementById("adminEmail").textContent="Authorized";
-    document.getElementById("loading").style.display="none";
-    document.getElementById("app").style.display="flex";
+document.getElementById("adminStatus").textContent="Verified";
+document.getElementById("adminEmail").textContent=sd.session.user.email||"Authorized";
+document.getElementById("loading").style.display="none";
+document.getElementById("app").style.display="flex";
 
-    await loadMembers();
-  }catch(err){
-    console.error(err);
-    location.replace("index.html");
-  }
+await refreshCurrent();
+
+}catch(e){
+console.error(e);
+location.replace("index.html");
+}
+}
+
+async function refreshCurrent(){
+await loadMembers();
+await loadDeposits();
+await loadWithdrawals();
+await loadHistory();
 }
 
 async function loadMembers(){
-  const msg=document.getElementById("message");
-  msg.textContent="Loading member records...";
+try{
+const data=await callAdmin(FN.members,{action:"list"});
+members=Array.isArray(data)?data:(data.members||[]);
+renderMembers();
+renderRecent();
+updateStats();
+toast("Members refreshed.");
+}catch(e){
+console.error(e);
+toast("Members unavailable. Configure "+FN.members+" Edge Function.");
+members=[];
+renderMembers();renderRecent();updateStats();
+}
+}
 
-  try{
-    const {data,error}=await db
-      .from("profiles")
-      .select("id,member_id,full_name,mobile,kyc_status,created_at")
-      .order("created_at",{ascending:false})
-      .limit(500);
+async function loadDeposits(){
+try{
+const data=await callAdmin(FN.deposits,{action:"list"});
+deposits=Array.isArray(data)?data:(data.requests||data.deposits||[]);
+renderDeposits();updateStats();
+}catch(e){
+console.error(e);
+deposits=[];
+renderDeposits();updateStats();
+}
+}
 
-    if(error)throw error;
+async function loadWithdrawals(){
+try{
+const data=await callAdmin(FN.withdrawals,{action:"list"});
+withdrawals=Array.isArray(data)?data:(data.requests||data.withdrawals||[]);
+renderWithdrawals();updateStats();
+}catch(e){
+console.error(e);
+withdrawals=[];
+renderWithdrawals();updateStats();
+}
+}
 
-    members=data||[];
-    updateStats();
-    renderMembers();
-    renderRecent();
-    msg.textContent="Member data refreshed.";
-  }catch(err){
-    console.error("Member loading error:",err);
-    members=[];
-    updateStats();
-    renderMembers();
-    renderRecent();
-    msg.textContent="Could not load member records. Check Supabase access policies.";
-  }
+async function loadHistory(){
+try{
+const data=await callAdmin(FN.history,{action:"list"});
+balanceHistory=Array.isArray(data)?data:(data.history||[]);
+renderHistory();
+}catch(e){
+console.error(e);
+balanceHistory=[];
+renderHistory();
+}
 }
 
 function updateStats(){
-  const total=members.length;
-  const verified=members.filter(m=>(m.kyc_status||"").toLowerCase()==="verified").length;
-  const pending=members.filter(m=>(m.kyc_status||"pending").toLowerCase()==="pending").length;
-  const other=total-verified-pending;
+const total=members.length;
+const verified=members.filter(m=>(m.kyc_status||"").toLowerCase()==="verified").length;
+const pending=members.filter(m=>(m.kyc_status||"pending").toLowerCase()==="pending").length;
+const blocked=members.filter(m=>m.blocked===true||m.status==="blocked").length;
 
-  document.getElementById("totalMembers").textContent=total;
-  document.getElementById("verifiedMembers").textContent=verified;
-  document.getElementById("pendingKyc").textContent=pending;
+document.getElementById("totalMembers").textContent=total;
+document.getElementById("verifiedMembers").textContent=verified;
+document.getElementById("pendingKyc").textContent=pending;
+document.getElementById("blockedMembers").textContent=blocked;
+document.getElementById("depositCount").textContent=deposits.filter(x=>x.status==="pending").length;
+document.getElementById("withdrawalCount").textContent=withdrawals.filter(x=>x.status==="pending").length;
 
-  document.getElementById("kycVerified").textContent=verified;
-  document.getElementById("kycPending").textContent=pending;
-  document.getElementById("kycOther").textContent=other;
-  document.getElementById("kycTotal").textContent=total;
-}
-
-function renderMembers(){
-  const search=(document.getElementById("searchInput")?.value||"").trim().toLowerCase();
-  const filter=(document.getElementById("kycFilter")?.value||"").toLowerCase();
-
-  const filtered=members.filter(m=>{
-    const id=(m.member_id||"").toLowerCase();
-    const name=(m.full_name||"").toLowerCase();
-    const mobile=(m.mobile||"").toLowerCase();
-    const status=(m.kyc_status||"pending").toLowerCase();
-
-    const matchSearch=!search||id.includes(search)||name.includes(search)||mobile.includes(search);
-    const matchFilter=!filter||status===filter;
-    return matchSearch&&matchFilter;
-  });
-
-  document.getElementById("memberCount").textContent=filtered.length+" members";
-
-  const tbody=document.getElementById("memberTable");
-  tbody.innerHTML=filtered.map(m=>`
-    <tr>
-      <td>${escapeHTML(m.member_id||"—")}</td>
-      <td>${escapeHTML(m.full_name||"—")}</td>
-      <td>${escapeHTML(m.mobile||"—")}</td>
-      <td>${statusBadge(m.kyc_status)}</td>
-      <td>${formatDate(m.created_at)}</td>
-    </tr>
-  `).join("");
-
-  document.getElementById("memberEmpty").style.display=filtered.length?"none":"block";
+document.getElementById("kycVerified").textContent=verified;
+document.getElementById("kycPending").textContent=pending;
+document.getElementById("kycOther").textContent=total-verified-pending;
+document.getElementById("kycTotal").textContent=total;
 }
 
 function renderRecent(){
-  const recent=members.slice(0,5);
-  const tbody=document.getElementById("recentTable");
+const rows=members.slice(0,5);
+document.getElementById("recentTable").innerHTML=rows.map(m=>`
+<tr>
+<td>${escapeHTML(m.member_id||m.id||"—")}</td>
+<td>${escapeHTML(m.full_name||m.name||"—")}</td>
+<td>${badge(m.kyc_status)}</td>
+<td>${badge(m.blocked?"blocked":"active")}</td>
+<td>${formatDate(m.created_at)}</td>
+</tr>`).join("");
+document.getElementById("recentEmpty").style.display=rows.length?"none":"block";
+}
 
-  tbody.innerHTML=recent.map(m=>`
-    <tr>
-      <td>${escapeHTML(m.member_id||"—")}</td>
-      <td>${escapeHTML(m.full_name||"—")}</td>
-      <td>${statusBadge(m.kyc_status)}</td>
-      <td>${formatDate(m.created_at)}</td>
-    </tr>
-  `).join("");
+function renderMembers(){
+const q=(document.getElementById("searchInput")?.value||"").toLowerCase().trim();
+const f=document.getElementById("memberFilter")?.value||"";
+const filtered=members.filter(m=>{
+const id=String(m.member_id||m.id||"").toLowerCase();
+const name=String(m.full_name||m.name||"").toLowerCase();
+const mobile=String(m.mobile||m.phone||"").toLowerCase();
+const blocked=m.blocked===true||m.status==="blocked";
+return (!q||id.includes(q)||name.includes(q)||mobile.includes(q))&&
+(!f||(f==="blocked"?blocked:!blocked));
+});
 
-  document.getElementById("recentEmpty").style.display=recent.length?"none":"block";
+document.getElementById("memberCount").textContent=filtered.length+" members";
+document.getElementById("memberTable").innerHTML=filtered.map(m=>{
+const blocked=m.blocked===true||m.status==="blocked";
+const uid=m.id;
+return `<tr>
+<td>${escapeHTML(m.member_id||uid||"—")}</td>
+<td>${escapeHTML(m.full_name||m.name||"—")}</td>
+<td>${escapeHTML(m.mobile||m.phone||"—")}</td>
+<td>${badge(m.kyc_status)}</td>
+<td>${badge(blocked?"blocked":"active")}</td>
+<td><button class="small-btn ${blocked?"green-btn":"red-btn"}" onclick="changeUserStatus('${escapeHTML(uid)}',${!blocked})">${blocked?"UNBLOCK":"BLOCK"}</button></td>
+</tr>`;
+}).join("");
+document.getElementById("memberEmpty").style.display=filtered.length?"none":"block";
+}
+
+function renderDeposits(){
+const q=(document.getElementById("depositSearch")?.value||"").toLowerCase();
+const f=document.getElementById("depositFilter")?.value||"";
+const list=deposits.filter(d=>
+(!q||String(d.id||"").toLowerCase().includes(q)||String(d.member_id||"").toLowerCase().includes(q))&&
+(!f||String(d.status||"").toLowerCase()===f)
+);
+document.getElementById("depositCountLabel").textContent=list.length+" requests";
+document.getElementById("depositTable").innerHTML=list.map(d=>`
+<tr>
+<td>${escapeHTML(d.id||"—")}</td>
+<td>${escapeHTML(d.member_id||d.user_id||"—")}</td>
+<td>₹${escapeHTML(d.amount||0)}</td>
+<td>${escapeHTML(d.utr||d.transaction_id||"—")}</td>
+<td>${badge(d.status)}</td>
+<td>
+${d.status==="pending"?`
+<div class="action-row">
+<button class="small-btn green-btn" onclick="confirmAction('deposit','${escapeHTML(d.id)}','approve')">Approve</button>
+<button class="small-btn red-btn" onclick="confirmAction('deposit','${escapeHTML(d.id)}','reject')">Reject</button>
+</div>`:"—"}
+</td>
+</tr>`).join("");
+document.getElementById("depositEmpty").style.display=list.length?"none":"block";
+}
+
+function renderWithdrawals(){
+const q=(document.getElementById("withdrawSearch")?.value||"").toLowerCase();
+const f=document.getElementById("withdrawFilter")?.value||"";
+const list=withdrawals.filter(w=>
+(!q||String(w.id||"").toLowerCase().includes(q)||String(w.member_id||"").toLowerCase().includes(q))&&
+(!f||String(w.status||"").toLowerCase()===f)
+);
+document.getElementById("withdrawalCountLabel").textContent=list.length+" requests";
+document.getElementById("withdrawTable").innerHTML=list.map(w=>`
+<tr>
+<td>${escapeHTML(w.id||"—")}</td>
+<td>${escapeHTML(w.member_id||w.user_id||"—")}</td>
+<td>₹${escapeHTML(w.amount||0)}</td>
+<td>${escapeHTML(w.upi_id||w.bank_details||"—")}</td>
+<td>${badge(w.status)}</td>
+<td>
+${w.status==="pending"?`
+<div class="action-row">
+<button class="small-btn green-btn" onclick="confirmAction('withdrawal','${escapeHTML(w.id)}','approve')">Approve</button>
+<button class="small-btn red-btn" onclick="confirmAction('withdrawal','${escapeHTML(w.id)}','reject')">Reject</button>
+</div>`:
+w.status==="approved"?`
+<button class="small-btn gold-btn" onclick="confirmAction('withdrawal','${escapeHTML(w.id)}','paid')">Mark Paid</button>`:"—"}
+</td>
+</tr>`).join("");
+document.getElementById("withdrawEmpty").style.display=list.length?"none":"block";
+}
+
+function renderHistory(){
+const q=(document.getElementById("historySearch")?.value||"").toLowerCase();
+const list=balanceHistory.filter(h=>
+!q||JSON.stringify(h).toLowerCase().includes(q)
+);
+document.getElementById("historyTable").innerHTML=list.map(h=>`
+<tr>
+<td>${formatDate(h.created_at)}</td>
+<td>${escapeHTML(h.member_id||h.user_id||"—")}</td>
+<td>${escapeHTML(h.type||h.action||"—")}</td>
+<td>₹${escapeHTML(h.amount||0)}</td>
+<td>${escapeHTML(h.reason||"—")}</td>
+<td>${escapeHTML(h.admin_id||"—")}</td>
+</tr>`).join("");
+document.getElementById("historyEmpty").style.display=list.length?"none":"block";
+}
+
+function confirmAction(type,id,action){
+pendingAction={type,id,action};
+document.getElementById("modalTitle").textContent="Confirm "+action;
+document.getElementById("modalText").textContent=
+"Are you sure you want to "+action+" this "+type+" request? The server must verify this action.";
+document.getElementById("modalReason").value="";
+document.getElementById("actionModal").classList.add("show");
+document.getElementById("modalConfirm").onclick=executeAction;
+}
+
+function closeModal(){
+document.getElementById("actionModal").classList.remove("show");
+pendingAction=null;
+}
+
+async function executeAction(){
+if(!pendingAction)return;
+const reason=document.getElementById("modalReason").value.trim();
+if(!reason){alert("Please enter a reason.");return;}
+
+const {type,id,action}=pendingAction;
+closeModal();
+
+try{
+if(type==="deposit"){
+await callAdmin(FN.deposits,{action,id,status:action,reason});
+await loadDeposits();
+}else{
+await callAdmin(FN.withdrawals,{action,id,status:action,reason});
+await loadWithdrawals();
+}
+toast("Request action submitted.");
+}catch(e){
+console.error(e);
+toast("Action failed. Backend function/permission may not be configured.");
+}
+}
+
+async function changeUserStatus(userId,blocked){
+if(!userId){alert("Member ID missing.");return;}
+const reason=prompt("Enter reason for "+(blocked?"blocking":"unblocking")+" this user:");
+if(!reason||!reason.trim())return;
+try{
+await callAdmin(FN.status,{action:blocked?"block":"unblock",user_id:userId,blocked,reason:reason.trim()});
+await loadMembers();
+toast("User status updated.");
+}catch(e){
+console.error(e);
+toast("Status update failed. Configure admin-user-status function.");
+}
+}
+
+async function submitBalanceAdjustment(){
+const member=document.getElementById("balanceMember").value.trim();
+const amount=Number(document.getElementById("balanceAmount").value);
+const action=document.getElementById("balanceAction").value;
+const reason=document.getElementById("balanceReason").value.trim();
+
+if(!member||!Number.isFinite(amount)||amount<=0||!reason){
+alert("Member, valid amount, and reason are required.");
+return;
+}
+
+if(!confirm(`${action==="credit"?"ADD":"DEDUCT"} ₹${amount}?\nMember: ${member}\nReason: ${reason}`))return;
+
+try{
+await callAdmin(FN.balance,{
+action,
+member_id:member,
+amount,
+reason
+});
+document.getElementById("balanceMember").value="";
+document.getElementById("balanceAmount").value="";
+document.getElementById("balanceReason").value="";
+await loadMembers();
+await loadHistory();
+toast("Balance adjustment request sent.");
+}catch(e){
+console.error(e);
+toast("Balance adjustment failed. Configure admin-balance-adjust Edge Function.");
+}
 }
 
 async function logout(){
-  if(db)await db.auth.signOut();
-  location.replace("index.html");
+if(db)await db.auth.signOut();
+location.replace("index.html");
 }
 
 verifyAdmin();
