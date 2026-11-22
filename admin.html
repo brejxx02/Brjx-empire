@@ -94,12 +94,9 @@ textarea.field{min-height:85px;resize:vertical}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .action-row{display:flex;gap:7px;flex-wrap:wrap}
 .toast{font-size:12px;color:var(--muted);padding:12px 0;white-space:pre-wrap}
-#loading{
-position:fixed;inset:0;background:var(--bg);z-index:999;
-display:flex;align-items:center;justify-content:center;text-align:center
-}
-.loader{width:36px;height:36px;border:3px solid #293144;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
-@keyframes spin{to{transform:rotate(360deg)}}
+
+/* VERIFY SCREEN REMOVED */
+
 .modal{
 position:fixed;inset:0;background:#000b;z-index:500;
 display:none;align-items:center;justify-content:center;padding:15px
@@ -127,14 +124,10 @@ display:none;align-items:center;justify-content:center;padding:15px
 
 <body>
 
-<div id="loading">
-<div>
-<div class="loader"></div>
-<p style="color:#d9ad55;font-size:13px">Verifying administrator...</p>
-</div>
-</div>
+<!-- VERIFY LOADING SCREEN REMOVED -->
 
-<div class="layout" id="app" style="display:none">
+<!-- APP NOW VISIBLE -->
+<div class="layout" id="app" style="display:flex">
 
 <aside class="sidebar" id="sidebar">
 <div class="brand">BRJ <span>EMPIRE</span></div>
@@ -156,7 +149,7 @@ display:none;align-items:center;justify-content:center;padding:15px
 <div class="sidebar-bottom">
 <div class="admin-badge">
 <small>ADMIN SESSION</small>
-<strong id="adminEmail">Authorized</strong>
+<strong id="adminEmail">Checking session...</strong>
 </div>
 <button class="btn red-btn" style="width:100%;margin-top:12px" onclick="logout()">↪ Logout</button>
 </div>
@@ -185,7 +178,7 @@ display:none;align-items:center;justify-content:center;padding:15px
 <div class="card"><div class="stat-label">Blocked Members</div><div class="stat-value red" id="blockedMembers">—</div></div>
 <div class="card"><div class="stat-label">Deposit Requests</div><div class="stat-value gold" id="depositCount">—</div></div>
 <div class="card"><div class="stat-label">Withdrawal Requests</div><div class="stat-value gold" id="withdrawalCount">—</div></div>
-<div class="card"><div class="stat-label">Admin Authorization</div><div class="stat-value gold" style="font-size:17px" id="adminStatus">Verifying</div></div>
+<div class="card"><div class="stat-label">Admin Authorization</div><div class="stat-value gold" style="font-size:17px" id="adminStatus">Checking</div></div>
 </div>
 
 <div class="section">
@@ -395,6 +388,7 @@ Never put service-role keys in browser code.
 const db=window.brjSupabase||window.supabaseClient;
 let members=[],deposits=[],withdrawals=[],balanceHistory=[];
 let currentSection="overview",pendingAction=null;
+let isAdminVerified=false;
 
 const FN={
 members:"admin-members",
@@ -451,6 +445,7 @@ return `<span class="status ${cl}">${escapeHTML(status)}</span>`;
 
 async function callAdmin(fn,payload={}){
 if(!db)throw new Error("Supabase client missing.");
+if(!isAdminVerified)throw new Error("Admin verification is still pending.");
 const {data,error}=await db.functions.invoke(fn,{body:payload});
 if(error)throw error;
 return data;
@@ -473,9 +468,9 @@ location.replace("dashboard.html");
 return;
 }
 
+isAdminVerified=true;
 document.getElementById("adminStatus").textContent="Verified";
 document.getElementById("adminEmail").textContent=sd.session.user.email||"Authorized";
-document.getElementById("loading").style.display="none";
 document.getElementById("app").style.display="flex";
 
 await refreshCurrent();
@@ -487,6 +482,10 @@ location.replace("index.html");
 }
 
 async function refreshCurrent(){
+if(!isAdminVerified){
+toast("Admin verification pending.");
+return;
+}
 await loadMembers();
 await loadDeposits();
 await loadWithdrawals();
@@ -715,6 +714,7 @@ toast("Action failed. Backend function/permission may not be configured.");
 }
 
 async function changeUserStatus(userId,blocked){
+if(!isAdminVerified){alert("Admin verification pending.");return;}
 if(!userId){alert("Member ID missing.");return;}
 const reason=prompt("Enter reason for "+(blocked?"blocking":"unblocking")+" this user:");
 if(!reason||!reason.trim())return;
@@ -729,6 +729,8 @@ toast("Status update failed. Configure admin-user-status function.");
 }
 
 async function submitBalanceAdjustment(){
+if(!isAdminVerified){alert("Admin verification pending.");return;}
+
 const member=document.getElementById("balanceMember").value.trim();
 const amount=Number(document.getElementById("balanceAmount").value);
 const action=document.getElementById("balanceAction").value;
@@ -761,6 +763,7 @@ toast("Balance adjustment failed. Configure admin-balance-adjust Edge Function."
 }
 
 async function logout(){
+isAdminVerified=false;
 if(db)await db.auth.signOut();
 location.replace("index.html");
 }
