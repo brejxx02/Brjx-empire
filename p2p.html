@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#080a10">
 <title>BRJ EMPIRE | P2P Transfer</title>
+
 <style>
 *{
     margin:0;
@@ -12,281 +13,505 @@
     box-sizing:border-box;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
+
 :root{
     --bg:#080a10;
-    --card:#111722;
-    --gold:#e6bb58;
-    --gold2:#ffe29a;
-    --text:#f4f5f7;
-    --muted:#8792a4;
-    --border:#242e3c;
+    --gold:#eac16a;
+    --gold-light:#f8dfa0;
+    --muted:#8995a6;
+    --border:#2c3848;
     --green:#56d59b;
     --red:#ef8994;
 }
+
 body{
-    background:var(--bg);
-    color:var(--text);
+    background:
+    radial-gradient(ellipse at 50% -20%,#282216 0%,transparent 45%),
+    var(--bg);
+    color:#fff;
     min-height:100vh;
 }
+
 button{
     cursor:pointer;
     -webkit-tap-highlight-color:transparent;
 }
+
+/* HEADER */
+
 header{
+    height:72px;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:rgba(10,14,22,.94);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(234,193,106,.18);
     position:sticky;
     top:0;
     z-index:50;
-    background:rgba(8,10,16,.96);
-    backdrop-filter:blur(18px);
-    border-bottom:1px solid #242b37;
 }
-.header-inner{
-    max-width:700px;
-    height:68px;
-    margin:auto;
-    padding:0 17px;
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
+
 .back-btn{
-    width:40px;
-    height:40px;
-    border-radius:12px;
-    border:1px solid #303746;
-    background:#151b26;
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    background:#171e2a;
+    border:1px solid #354052;
     color:var(--gold);
-    font-size:21px;
+    font-size:25px;
 }
+
 .brand{
     font-size:19px;
-    font-weight:900;
+    font-weight:950;
     letter-spacing:2px;
 }
-.brand span{color:var(--gold)}
+
+.brand span{
+    color:var(--gold);
+}
+
+.header-status{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-size:9px;
+    color:#a9cdb3;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.status-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#55d58a;
+    box-shadow:0 0 10px #55d58a;
+}
+
+/* MAIN */
+
 .wrapper{
-    max-width:700px;
+    max-width:680px;
     margin:auto;
-    padding:22px 16px 50px;
+    padding:27px 16px 55px;
 }
-.page-heading{
-    margin:10px 0 23px;
-}
+
+/* HEADING */
+
 .page-heading small{
     color:var(--gold);
     font-size:10px;
     font-weight:900;
-    letter-spacing:2px;
+    letter-spacing:2.5px;
 }
+
 .page-heading h1{
-    font-size:26px;
-    margin-top:9px;
+    font-size:32px;
+    font-weight:950;
+    margin-top:12px;
+    letter-spacing:-1px;
 }
+
+.page-heading h1 span{
+    color:var(--gold);
+}
+
 .page-heading p{
     color:var(--muted);
     font-size:12px;
-    margin-top:8px;
+    line-height:1.8;
+    margin-top:9px;
 }
+
 /* BALANCE */
+
 .balance-card{
-    padding:23px;
-    border-radius:21px;
-    border:1px solid #5a492b;
+    position:relative;
+    overflow:hidden;
+    margin-top:25px;
+    padding:25px 23px;
+    border-radius:23px;
+    border:1px solid rgba(234,193,106,.45);
+
     background:
-    radial-gradient(circle at 100% 0%,rgba(230,187,88,.16),transparent 45%),
-    linear-gradient(135deg,#242116,#171d27);
+    radial-gradient(circle at 95% 5%,rgba(255,219,135,.24),transparent 38%),
+    radial-gradient(circle at 0% 100%,rgba(175,124,35,.12),transparent 45%),
+    linear-gradient(135deg,#292419,#171b23 75%);
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
+
+.balance-card:after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border:1px solid rgba(255,221,150,.13);
+    border-radius:50%;
+    right:-75px;
+    bottom:-110px;
+}
+
 .balance-top{
     display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:center;
 }
-.balance-top span{
-    color:#b4b2a7;
-    font-size:12px;
+
+.balance-label{
+    color:#d3c39f;
+    font-size:10px;
+    font-weight:850;
+    letter-spacing:1.5px;
 }
+
 .wallet-icon{
-    width:40px;
-    height:40px;
-    border-radius:13px;
+    width:42px;
+    height:42px;
     display:grid;
     place-items:center;
-    background:#302819;
-    font-size:20px;
+    border-radius:13px;
+    background:rgba(234,193,106,.12);
+    border:1px solid rgba(234,193,106,.2);
+    font-size:21px;
 }
+
 .balance{
-    color:var(--gold2);
-    font-size:34px;
-    font-weight:900;
-    margin-top:17px;
+    font-size:39px;
+    font-weight:950;
+    color:var(--gold-light);
+    margin-top:16px;
+    letter-spacing:-1px;
 }
+
 .balance-note{
-    color:#8994a6;
     font-size:10px;
-    margin-top:7px;
+    color:#aaa38e;
+    margin-top:9px;
 }
+
+.balance-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:22px;
+    padding-top:15px;
+    border-top:1px solid rgba(255,255,255,.1);
+    color:#b9b3a3;
+    font-size:10px;
+}
+
+/* SECTION TITLE */
+
+.section-title{
+    margin:30px 0 14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:var(--gold);
+    font-size:11px;
+    font-weight:950;
+    letter-spacing:1.5px;
+}
+
+.section-title span{
+    color:#788497;
+    font-size:9px;
+    letter-spacing:.5px;
+}
+
 /* TRANSFER CARD */
+
 .card{
     margin-top:20px;
-    padding:21px;
-    background:linear-gradient(145deg,#151c28,#10151e);
-    border:1px solid var(--border);
-    border-radius:19px;
+    padding:22px 18px;
+    background:linear-gradient(145deg,#151e2a,#10151e);
+    border:1px solid #303b4c;
+    border-radius:21px;
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
 }
+
 .card-heading{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:21px;
+    margin-bottom:23px;
 }
+
 .card-heading h2{
-    font-size:16px;
+    font-size:17px;
+    font-weight:900;
 }
+
 .card-heading span{
+    width:39px;
+    height:39px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:rgba(234,193,106,.12);
     color:var(--gold);
-    font-size:19px;
+    font-size:23px;
 }
+
 .form-group{
-    margin-top:17px;
+    margin-bottom:20px;
 }
+
 label{
     display:block;
-    color:#aab4c2;
+    color:#c0cad8;
     font-size:11px;
-    margin-bottom:9px;
+    font-weight:750;
+    margin-bottom:10px;
 }
-.input-wrap{
-    position:relative;
-}
+
 input{
     width:100%;
     padding:15px;
-    border-radius:11px;
-    background:#090d14;
-    border:1px solid #303d50;
-    color:white;
+    border-radius:12px;
+    border:1px solid #344154;
     outline:none;
+    background:#090e16;
+    color:#fff;
     font-size:13px;
+    transition:.2s;
 }
+
 input:focus{
     border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(234,193,106,.07);
 }
+
 input::placeholder{
-    color:#647184;
+    color:#697587;
 }
+
+/* VERIFY */
+
 .verify-btn{
     width:100%;
     margin-top:11px;
-    padding:13px;
-    background:#211d16;
-    border:1px solid #5a492b;
+    padding:14px;
+    background:rgba(234,193,106,.09);
+    border:1px solid rgba(234,193,106,.35);
     color:var(--gold);
     border-radius:11px;
     font-size:11px;
-    font-weight:900;
+    font-weight:950;
+    letter-spacing:.7px;
+    transition:.2s;
 }
+
+.verify-btn:active{
+    transform:scale(.98);
+}
+
 .receiver-info{
     display:none;
-    margin-top:13px;
-    padding:14px;
-    border-radius:12px;
-    background:#14251e;
-    border:1px solid #28513c;
+    margin-top:14px;
+    padding:16px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#12251d,#101c19);
+    border:1px solid #315d45;
+    animation:fade .25s ease;
 }
+
 .receiver-info.show{
     display:block;
 }
+
+.receiver-top{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.receiver-avatar{
+    width:40px;
+    height:40px;
+    display:grid;
+    place-items:center;
+    border-radius:12px;
+    background:#203e30;
+    font-size:19px;
+}
+
 .receiver-info strong{
     color:var(--green);
     font-size:12px;
 }
+
 .receiver-info p{
     color:#a9b8b0;
-    font-size:11px;
-    margin-top:6px;
+    font-size:10px;
+    margin-top:5px;
 }
+
+/* AMOUNT */
+
 .amount-box{
     position:relative;
 }
+
 .amount-box input{
-    padding-left:35px;
-    font-size:18px;
-    font-weight:800;
+    padding-left:39px;
+    font-size:19px;
+    font-weight:850;
 }
+
 .rupee{
     position:absolute;
-    left:14px;
-    top:14px;
+    left:15px;
+    top:15px;
     color:var(--gold);
     font-size:17px;
+    font-weight:900;
 }
+
+.quick-amounts{
+    display:flex;
+    gap:9px;
+    margin-top:11px;
+}
+
+.quick-amounts button{
+    flex:1;
+    padding:11px 3px;
+    background:#1b2635;
+    color:#e5cd96;
+    border:1px solid #39485c;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:850;
+}
+
+.quick-amounts button:active{
+    background:#33301f;
+    border-color:var(--gold);
+}
+
+/* TRANSFER BUTTON */
+
 .transfer-btn{
     width:100%;
-    margin-top:23px;
-    padding:16px;
+    padding:17px;
+    margin-top:5px;
     border:0;
-    border-radius:12px;
-    background:linear-gradient(135deg,#f0cc70,#d5a541);
-    color:#17140d;
-    font-weight:900;
+    border-radius:13px;
+    background:linear-gradient(135deg,#f7dfa0,#d6a847);
+    color:#17130b;
     font-size:12px;
+    font-weight:950;
+    letter-spacing:1px;
+    box-shadow:0 8px 25px rgba(219,177,86,.16);
+    transition:.2s;
 }
+
+.transfer-btn:active{
+    transform:scale(.98);
+}
+
 .transfer-btn:disabled{
     opacity:.5;
-    cursor:not-allowed;
 }
-/* INFORMATION */
-.info-box{
-    margin-top:18px;
-    padding:15px;
-    border-radius:13px;
-    background:#171e2a;
-    border:1px solid #2d394b;
-}
-.info-box h3{
-    color:var(--gold);
-    font-size:12px;
-}
-.info-box p{
-    color:#929daf;
-    font-size:11px;
-    line-height:1.8;
-    margin-top:8px;
-}
-/* HISTORY */
-.history-heading{
-    margin-top:28px;
-    margin-bottom:14px;
+
+/* SECURITY */
+
+.security-box{
     display:flex;
-    justify-content:space-between;
-    align-items:center;
+    gap:12px;
+    align-items:flex-start;
+    padding:16px;
+    margin-top:18px;
+    border-radius:15px;
+    background:linear-gradient(135deg,#111e1a,#101a19);
+    border:1px solid #304c3d;
 }
-.history-heading h2{
-    font-size:16px;
+
+.security-icon{
+    font-size:22px;
 }
-.history-heading span{
-    color:var(--muted);
+
+.security-text strong{
+    display:block;
+    font-size:11px;
+    color:#b7d9c0;
+}
+
+.security-text p{
     font-size:10px;
+    color:#8ea99a;
+    line-height:1.8;
+    margin-top:6px;
 }
+
+/* INFO */
+
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+}
+
+.info-item{
+    padding:16px;
+    border-radius:15px;
+    background:#111923;
+    border:1px solid #273344;
+}
+
+.info-item span{
+    font-size:20px;
+}
+
+.info-item strong{
+    display:block;
+    font-size:11px;
+    margin-top:10px;
+}
+
+.info-item p{
+    font-size:9px;
+    color:#8390a2;
+    line-height:1.6;
+    margin-top:6px;
+}
+
+/* HISTORY */
+
+.history-card{
+    padding:17px;
+    background:linear-gradient(145deg,#141d29,#101620);
+    border:1px solid #2c3848;
+    border-radius:17px;
+}
+
 .history-empty{
-    padding:28px 15px;
-    background:#111722;
-    border:1px solid var(--border);
-    border-radius:16px;
+    padding:27px 10px;
     text-align:center;
 }
+
 .history-empty div{
-    font-size:30px;
+    font-size:35px;
 }
+
 .history-empty h3{
     font-size:13px;
     margin-top:12px;
 }
+
 .history-empty p{
     color:var(--muted);
-    font-size:11px;
+    font-size:10px;
     margin-top:8px;
+    line-height:1.7;
 }
+
 .history-item{
     padding:15px;
     border:1px solid var(--border);
@@ -297,20 +522,25 @@ input::placeholder{
     justify-content:space-between;
     gap:10px;
 }
+
 .history-item strong{
     font-size:12px;
 }
+
 .history-item small{
     display:block;
     color:var(--muted);
     font-size:10px;
     margin-top:6px;
 }
+
 .history-item b{
     color:var(--red);
     font-size:13px;
 }
-/* MODAL */
+
+/* MODALS */
+
 .modal{
     display:none;
     position:fixed;
@@ -319,70 +549,85 @@ input::placeholder{
     background:rgba(0,0,0,.78);
     align-items:flex-end;
     justify-content:center;
-    backdrop-filter:blur(5px);
+    backdrop-filter:blur(6px);
 }
+
 .modal.show{
     display:flex;
 }
+
 .modal-box{
     width:100%;
     max-width:550px;
-    padding:23px;
-    border-radius:23px 23px 0 0;
+    padding:24px;
+    border-radius:24px 24px 0 0;
     border:1px solid #303b4c;
-    background:#111722;
+    background:linear-gradient(145deg,#151e2a,#10151e);
     animation:slideUp .25s ease;
     max-height:85vh;
     overflow-y:auto;
 }
+
 @keyframes slideUp{
     from{transform:translateY(40px);opacity:.3}
     to{transform:translateY(0);opacity:1}
 }
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(7px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
 .modal-head{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:22px;
+    margin-bottom:21px;
 }
+
 .modal-head h2{
     font-size:17px;
 }
+
 .close-btn{
-    width:36px;
-    height:36px;
-    border-radius:10px;
+    width:37px;
+    height:37px;
+    border-radius:11px;
     background:#202938;
     border:1px solid #354155;
     color:white;
     font-size:17px;
 }
-.pin-input{
-    text-align:center;
-    letter-spacing:12px;
-    font-size:24px;
-    font-weight:900;
-}
+
 .modal-text{
     color:var(--muted);
     font-size:11px;
     line-height:1.8;
-    margin-bottom:15px;
+    margin-bottom:16px;
 }
+
+.pin-input{
+    text-align:center;
+    letter-spacing:12px;
+    font-size:24px;
+    font-weight:950;
+}
+
 .modal-btn{
     width:100%;
-    padding:14px;
-    margin-top:15px;
-    border-radius:11px;
-    background:linear-gradient(135deg,#f0cc70,#d5a541);
+    padding:15px;
+    margin-top:17px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#f7dfa0,#d6a847);
     border:0;
-    color:#17140d;
+    color:#17130b;
     font-size:12px;
-    font-weight:900;
+    font-weight:950;
 }
+
 .secondary-btn{
     width:100%;
-    padding:13px;
+    padding:14px;
     margin-top:10px;
     background:#151d29;
     border:1px solid #303b4c;
@@ -390,14 +635,17 @@ input::placeholder{
     color:#b8c2d0;
     font-size:11px;
 }
+
 /* RECEIPT */
+
 .receipt{
     text-align:center;
-    padding:15px 5px;
+    padding:10px 3px;
 }
+
 .success-icon{
-    width:65px;
-    height:65px;
+    width:67px;
+    height:67px;
     margin:auto;
     display:grid;
     place-items:center;
@@ -407,165 +655,359 @@ input::placeholder{
     border-radius:50%;
     font-size:30px;
 }
+
 .receipt h2{
-    margin-top:16px;
+    margin-top:17px;
     font-size:20px;
 }
+
 .receipt-amount{
-    color:var(--gold2);
-    font-size:31px;
-    font-weight:900;
-    margin:18px 0;
+    color:var(--gold-light);
+    font-size:32px;
+    font-weight:950;
+    margin:19px 0;
 }
+
 .receipt-row{
     display:flex;
     justify-content:space-between;
     gap:10px;
-    padding:13px 0;
+    padding:14px 0;
     border-bottom:1px solid #283342;
     font-size:11px;
 }
+
 .receipt-row span:first-child{
     color:var(--muted);
 }
+
 .receipt-row span:last-child{
     overflow-wrap:anywhere;
     text-align:right;
 }
+
 /* TOAST */
+
 .toast{
     position:fixed;
-    bottom:30px;
+    bottom:27px;
     left:50%;
     transform:translate(-50%,20px);
     opacity:0;
     pointer-events:none;
-    transition:.25s;
     z-index:500;
     background:#202b3a;
-    border:1px solid #39495f;
-    padding:13px 17px;
+    border:1px solid #46566c;
+    padding:14px 19px;
     border-radius:12px;
-    color:#fff;
+    color:white;
     font-size:12px;
-    text-align:center;
     width:max-content;
     max-width:90%;
+    text-align:center;
+    transition:.25s;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
+
 .toast.show{
     opacity:1;
     transform:translate(-50%,0);
 }
+
+/* FOOTER */
+
 .footer{
     text-align:center;
     color:#697587;
     font-size:10px;
     margin-top:30px;
-    line-height:1.8;
+    line-height:1.9;
 }
+
+@media(max-width:380px){
+    .page-heading h1{font-size:28px}
+    .balance{font-size:34px}
+    .card{padding:18px 14px}
+}
+
 @media(min-width:700px){
     .wrapper{padding-top:35px}
 }
 </style>
 </head>
+
 <body>
+
 <header>
-    <div class="header-inner">
-        <button class="back-btn" onclick="goDashboard()">←</button>
-        <div class="brand">BRJ <span>EMPIRE</span></div>
+
+    <button class="back-btn" onclick="goDashboard()">‹</button>
+
+    <div class="brand">BRJ <span>EMPIRE</span></div>
+
+    <div class="header-status">
+        <div class="status-dot"></div>
+        SECURE CENTER
     </div>
+
 </header>
+
 <main class="wrapper">
+
     <div class="page-heading">
+
         <small>BRJ EMPIRE · MEMBER SERVICES</small>
-        <h1>P2P Transfer</h1>
-        <p>Transfer funds securely to another BRJ EMPIRE member.</p>
+
+        <h1>P2P <span>Transfer.</span></h1>
+
+        <p>
+            Send funds securely to another verified
+            BRJ EMPIRE member.
+        </p>
+
     </div>
+
     <!-- BALANCE -->
+
     <section class="balance-card">
+
         <div class="balance-top">
-            <span>Available Wallet Balance</span>
+
+            <div class="balance-label">
+                AVAILABLE WALLET BALANCE
+            </div>
+
             <div class="wallet-icon">💰</div>
+
         </div>
-        <div class="balance">₹ <span id="walletBalance">0.00</span></div>
+
+        <div class="balance">
+            ₹ <span id="walletBalance">0.00</span>
+        </div>
+
         <div class="balance-note">
-            Your verified available balance.
+            Your verified available wallet balance.
         </div>
+
+        <div class="balance-bottom">
+
+            <span>BRJ EMPIRE WALLET</span>
+
+            <span>MEMBER ACCOUNT</span>
+
+        </div>
+
     </section>
+
     <!-- TRANSFER -->
+
+    <div class="section-title">
+        TRANSFER MONEY
+        <span>MEMBER TO MEMBER</span>
+    </div>
+
     <section class="card">
+
         <div class="card-heading">
+
             <h2>Send Money</h2>
+
             <span>⇄</span>
+
         </div>
+
+        <!-- RECEIVER -->
+
         <div class="form-group">
-            <label>Receiver Member ID</label>
+
+            <label>RECEIVER MEMBER ID</label>
+
             <input
                 id="receiverId"
                 type="text"
                 placeholder="Enter receiver Member ID"
-                autocomplete="off"
-            >
-            <button class="verify-btn" onclick="verifyReceiver()">
-                VERIFY RECEIVER
+                autocomplete="off">
+
+            <button
+                class="verify-btn"
+                id="verifyBtn"
+                onclick="verifyReceiver()">
+
+                VERIFY RECEIVER →
+
             </button>
+
             <div class="receiver-info" id="receiverInfo">
-                <strong>✓ Receiver Verified</strong>
-                <p id="receiverName">Member details</p>
+
+                <div class="receiver-top">
+
+                    <div class="receiver-avatar">👤</div>
+
+                    <div>
+
+                        <strong>✓ Receiver Verified</strong>
+
+                        <p id="receiverName">Member details</p>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
+
+        <!-- AMOUNT -->
+
         <div class="form-group">
-            <label>Transfer Amount</label>
+
+            <label>TRANSFER AMOUNT</label>
+
             <div class="amount-box">
+
                 <span class="rupee">₹</span>
+
                 <input
                     id="transferAmount"
                     type="number"
                     min="1"
                     step="1"
-                    placeholder="0.00"
-                >
+                    placeholder="0.00">
+
             </div>
+
+            <div class="quick-amounts">
+
+                <button onclick="setAmount(200)">₹200</button>
+
+                <button onclick="setAmount(500)">₹500</button>
+
+                <button onclick="setAmount(1000)">₹1,000</button>
+
+            </div>
+
         </div>
-        <button class="transfer-btn" id="continueBtn" onclick="continueTransfer()">
+
+        <button
+            class="transfer-btn"
+            id="continueBtn"
+            onclick="continueTransfer()">
+
             CONTINUE TRANSFER →
+
         </button>
+
     </section>
-    <div class="info-box">
-        <h3>🔐 Transfer Security</h3>
-        <p>
-            Always verify the receiver's Member ID before sending funds.
-            Never share your transaction PIN or account password.
-            Transfers should only be completed after server-side verification.
-        </p>
+
+    <!-- SECURITY -->
+
+    <div class="security-box">
+
+        <div class="security-icon">🛡️</div>
+
+        <div class="security-text">
+
+            <strong>SECURE MEMBER TRANSFER</strong>
+
+            <p>
+                Always verify the receiver's Member ID before
+                sending funds. Never share your transaction
+                PIN or account password.
+            </p>
+
+        </div>
+
     </div>
+
+    <!-- INFORMATION -->
+
+    <div class="section-title">
+        TRANSFER INFORMATION
+    </div>
+
+    <div class="info-grid">
+
+        <div class="info-item">
+
+            <span>🔐</span>
+
+            <strong>Secure Verification</strong>
+
+            <p>
+                Receiver verification is required before transfer.
+            </p>
+
+        </div>
+
+        <div class="info-item">
+
+            <span>⚡</span>
+
+            <strong>Transaction Security</strong>
+
+            <p>
+                Transfers require secure server-side processing.
+            </p>
+
+        </div>
+
+    </div>
+
     <!-- HISTORY -->
-    <div class="history-heading">
-        <h2>P2P History</h2>
-        <span>RECENT TRANSFERS</span>
+
+    <div class="section-title">
+        P2P TRANSACTION HISTORY
+        <span>RECENT ACTIVITY</span>
     </div>
-    <div id="historyList">
+
+    <div class="history-card" id="historyList">
+
         <div class="history-empty">
+
             <div>📂</div>
+
             <h3>No transfers available</h3>
-            <p>Your P2P transfer records will appear here.</p>
+
+            <p>
+                Your P2P transaction history will appear here
+                after database integration.
+            </p>
+
         </div>
+
     </div>
+
     <div class="footer">
-        BRJ EMPIRE · P2P MEMBER SERVICES<br>
+
+        BRJ EMPIRE · P2P MEMBER SERVICES
+
+        <br>
+
         Secure Member Transfer Portal
+
     </div>
+
 </main>
+
 <!-- PIN MODAL -->
-<div class="modal" id="pinModal" onclick="backdropClose(event,'pinModal')">
+
+<div class="modal" id="pinModal"
+     onclick="backdropClose(event,'pinModal')">
+
     <div class="modal-box">
+
         <div class="modal-head">
+
             <h2>🔐 Transaction PIN</h2>
-            <button class="close-btn" onclick="closeModal('pinModal')">✕</button>
+
+            <button class="close-btn"
+                    onclick="closeModal('pinModal')">✕</button>
+
         </div>
+
         <p class="modal-text">
             Enter your 4-digit transaction PIN to continue.
         </p>
+
         <input
             type="password"
             id="transactionPin"
@@ -573,192 +1015,373 @@ input::placeholder{
             maxlength="4"
             inputmode="numeric"
             placeholder="••••"
-        >
-        <button class="modal-btn" onclick="submitTransfer()">
-            CONFIRM TRANSFER
+            autocomplete="off">
+
+        <button
+            class="modal-btn"
+            onclick="submitTransfer()">
+
+            CONFIRM TRANSFER →
+
         </button>
-        <button class="secondary-btn" onclick="forgotPin()">
+
+        <button
+            class="secondary-btn"
+            onclick="forgotPin()">
+
             Forgot Transaction PIN?
+
         </button>
+
     </div>
+
 </div>
+
 <!-- RECEIPT MODAL -->
-<div class="modal" id="receiptModal" onclick="backdropClose(event,'receiptModal')">
+
+<div class="modal" id="receiptModal"
+     onclick="backdropClose(event,'receiptModal')">
+
     <div class="modal-box">
+
         <div class="modal-head">
+
             <h2>Transfer Receipt</h2>
-            <button class="close-btn" onclick="closeModal('receiptModal')">✕</button>
+
+            <button class="close-btn"
+                    onclick="closeModal('receiptModal')">✕</button>
+
         </div>
+
         <div class="receipt">
+
             <div class="success-icon">✓</div>
+
             <h2>Transfer Successful</h2>
-            <div class="receipt-amount" id="receiptAmount">₹0.00</div>
+
+            <div class="receipt-amount" id="receiptAmount">
+                ₹0.00
+            </div>
+
             <div class="receipt-row">
                 <span>Receiver ID</span>
                 <span id="receiptReceiver">---</span>
             </div>
+
             <div class="receipt-row">
                 <span>Transaction ID</span>
                 <span id="receiptTransaction">---</span>
             </div>
+
             <div class="receipt-row">
                 <span>Status</span>
                 <span style="color:var(--green)">Successful</span>
             </div>
+
             <div class="receipt-row">
                 <span>Date</span>
                 <span id="receiptDate">---</span>
             </div>
+
         </div>
-        <button class="modal-btn" onclick="closeModal('receiptModal')">
+
+        <button
+            class="modal-btn"
+            onclick="closeModal('receiptModal')">
+
             DONE
+
         </button>
+
     </div>
+
 </div>
-<!-- FORGOT PIN INFORMATION -->
+
+<!-- FORGOT PIN -->
+
 <div class="modal" id="forgotModal">
+
     <div class="modal-box">
+
         <div class="modal-head">
+
             <h2>Forgot PIN</h2>
-            <button class="close-btn" onclick="closeModal('forgotModal')">✕</button>
+
+            <button class="close-btn"
+                    onclick="closeModal('forgotModal')">✕</button>
+
         </div>
+
         <p class="modal-text">
+
             PIN recovery requires verified email OTP authentication.
-            This feature will be enabled after the secure server-side
-            recovery service is connected.
+            This feature will be enabled after the secure
+            server-side recovery service is connected.
+
         </p>
-        <button class="modal-btn" onclick="closeModal('forgotModal')">
+
+        <button
+            class="modal-btn"
+            onclick="closeModal('forgotModal')">
+
             OK
+
         </button>
+
     </div>
+
 </div>
+
 <div class="toast" id="toast"></div>
+
+<!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase.js"></script>
+
 <script>
+
 let currentUser=null;
 let receiverUser=null;
 let currentBalance=0;
 let verifiedReceiverId="";
+
 const db=window.brjSupabase||window.supabaseClient;
+
+/* TOAST */
+
 function showToast(message){
+
     const toast=document.getElementById("toast");
+
     toast.textContent=message;
+
     toast.classList.add("show");
+
     clearTimeout(window.toastTimer);
+
     window.toastTimer=setTimeout(()=>{
+
         toast.classList.remove("show");
-    },2600);
+
+    },2800);
+
 }
+
+/* NAVIGATION */
+
 function goDashboard(){
+
     location.href="dashboard.html";
+
 }
+
+/* MODALS */
+
 function closeModal(id){
+
     document.getElementById(id).classList.remove("show");
+
 }
+
 function backdropClose(event,id){
+
     if(event.target.id===id){
+
         closeModal(id);
+
     }
+
 }
+
 function openModal(id){
+
     document.getElementById(id).classList.add("show");
+
 }
+
+/* QUICK AMOUNT */
+
+function setAmount(amount){
+
+    document.getElementById("transferAmount").value=amount;
+
+}
+
 /* LOAD USER */
+
 async function loadP2P(){
+
     if(!db){
+
         showToast("Database connection unavailable.");
+
         return;
+
     }
+
     try{
+
         const {data,error}=await db.auth.getSession();
+
         if(error||!data.session){
+
             location.href="index.html";
+
             return;
+
         }
+
         currentUser=data.session.user;
-        /*
-        Wallet balance will be loaded from the verified
-        wallet database after its table and column names
-        are confirmed.
-        */
+
         document.getElementById("walletBalance").textContent="0.00";
+
     }catch(error){
+
         console.error(error);
+
         showToast("Unable to load account.");
+
     }
+
 }
+
 /* VERIFY RECEIVER */
+
 async function verifyReceiver(){
+
     if(!currentUser){
+
         showToast("Please login first.");
+
         return;
+
     }
+
     const input=document.getElementById("receiverId");
+
     const id=input.value.trim().toUpperCase();
+
     if(!id){
+
         showToast("Enter receiver Member ID.");
+
         return;
+
     }
+
     const myId=currentUser.id.substring(0,8).toUpperCase();
+
     if(id===myId){
+
         showToast("You cannot transfer to yourself.");
+
         return;
+
     }
-    const info=document.getElementById("receiverInfo");
-    info.classList.remove("show");
+
+    document.getElementById("receiverInfo")
+        .classList.remove("show");
+
     receiverUser=null;
+
     verifiedReceiverId="";
+
     showToast("Receiver verification service needs database setup.");
+
     /*
-    Member lookup must be implemented through a secure
-    server-side Edge Function. Supabase Auth user records
-    must not be exposed directly to browser clients.
+    Receiver lookup must be implemented through
+    a secure Supabase Edge Function.
+
+    Auth user records must never be exposed
+    directly to browser clients.
     */
+
 }
+
 /* CONTINUE */
+
 function continueTransfer(){
+
     if(!receiverUser||!verifiedReceiverId){
+
         showToast("Please verify receiver first.");
+
         return;
+
     }
+
     const amount=Number(
         document.getElementById("transferAmount").value
     );
+
     if(!Number.isFinite(amount)||amount<=0){
+
         showToast("Enter a valid amount.");
+
         return;
+
     }
+
     if(amount>currentBalance){
+
         showToast("Insufficient wallet balance.");
+
         return;
+
     }
+
     document.getElementById("transactionPin").value="";
+
     openModal("pinModal");
+
 }
+
 /* TRANSFER */
+
 async function submitTransfer(){
+
     const pin=document.getElementById("transactionPin").value;
+
     if(!/^\d{4}$/.test(pin)){
+
         showToast("Enter a valid 4-digit PIN.");
+
         return;
+
     }
+
     /*
-    IMPORTANT:
-    No balance is deducted and no transfer is marked
-    successful here. Secure PIN verification and atomic
-    wallet debit/credit must happen through a Supabase
-    Edge Function before a real transfer can be completed.
+    REAL TRANSFER NOT ENABLED.
+
+    Server-side PIN verification, wallet debit,
+    wallet credit and transaction history must
+    be handled atomically through a secure
+    Supabase Edge Function.
+
+    No fake successful transfer is generated.
     */
+
     showToast("Secure transfer service is not connected yet.");
+
 }
+
 /* FORGOT PIN */
+
 function forgotPin(){
+
     closeModal("pinModal");
+
     openModal("forgotModal");
+
 }
+
 /* START */
+
 loadP2P();
+
 </script>
+
 </body>
 </html>
