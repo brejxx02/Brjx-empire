@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080a10">
+<title>BRJ EMPIRE | Notifications</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+
+:root{
+    --bg:#080a10;
+    --card:#121925;
+    --gold:#e6bb58;
+    --gold2:#ffe29a;
+    --text:#f4f5f7;
+    --muted:#8792a4;
+    --border:#293444;
+    --green:#56d59b;
+}
+
+body{
+    background:
+    radial-gradient(ellipse at 50% -10%,rgba(230,187,88,.15),transparent 48%),
+    radial-gradient(circle at 100% 50%,rgba(230,187,88,.035),transparent 35%),
+    #080a10;
+    color:var(--text);
+    min-height:100vh;
+    padding:0 15px 40px;
+}
+
+button{
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.container{
+    max-width:520px;
+    margin:auto;
+}
+
+/* HEADER */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:17px 0;
+    border-bottom:1px solid rgba(230,187,88,.14);
+    margin-bottom:30px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#ffe7a5,#d3a34c,#916326);
+    color:#17120a;
+    font-size:23px;
+    font-weight:1000;
+    box-shadow:0 5px 20px rgba(230,187,88,.18);
+}
+
+.brand-name{
+    font-size:17px;
+    font-weight:950;
+    letter-spacing:1.5px;
+}
+
+.brand-sub{
+    color:var(--gold);
+    font-size:9px;
+    letter-spacing:2.5px;
+    margin-top:5px;
+    font-weight:800;
+}
+
+.back{
+    width:43px;
+    height:43px;
+    border-radius:13px;
+    border:1px solid #354052;
+    background:linear-gradient(145deg,#1b2431,#111722);
+    color:white;
+    font-size:25px;
+    display:grid;
+    place-items:center;
+    transition:.2s;
+}
+
+.back:active{
+    transform:scale(.92);
+    border-color:var(--gold);
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:25px 21px;
+    border-radius:22px;
+    border:1px solid rgba(230,187,88,.25);
+    background:
+    radial-gradient(circle at 100% 0%,rgba(230,187,88,.20),transparent 48%),
+    linear-gradient(145deg,#252116,#171e29 65%,#101620);
+    box-shadow:0 12px 35px rgba(0,0,0,.22);
+}
+
+.hero-label{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:var(--gold);
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.hero-label::before{
+    content:"";
+    width:7px;
+    height:7px;
+    background:var(--gold);
+    border-radius:50%;
+    box-shadow:0 0 10px var(--gold);
+}
+
+.hero h1{
+    font-size:29px;
+    font-weight:900;
+    margin-top:15px;
+    letter-spacing:-.5px;
+}
+
+.hero p{
+    color:#a5afbd;
+    font-size:12px;
+    line-height:1.7;
+    margin-top:9px;
+}
+
+.hero-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-top:22px;
+    padding-top:17px;
+    border-top:1px solid rgba(255,255,255,.09);
+}
+
+.live-status{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:#69dca2;
+    font-size:10px;
+    font-weight:800;
+}
+
+.live-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#56d59b;
+    box-shadow:0 0 9px #56d59b;
+}
+
+.hero-bottom small{
+    color:#8895a7;
+    font-size:10px;
+}
+
+/* SUMMARY */
+
+.summary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:20px;
+}
+
+.summary-card{
+    position:relative;
+    overflow:hidden;
+    padding:19px 16px;
+    border:1px solid #303b4c;
+    background:
+    radial-gradient(circle at 100% 0%,rgba(230,187,88,.09),transparent 55%),
+    linear-gradient(145deg,#192331,#101620);
+    border-radius:17px;
+}
+
+.summary-card small{
+    display:block;
+    color:#a0acbc;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.4px;
+}
+
+.summary-value{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:11px;
+}
+
+.summary-card strong{
+    font-size:29px;
+    color:var(--gold2);
+    font-weight:950;
+}
+
+.summary-icon{
+    width:37px;
+    height:37px;
+    border-radius:11px;
+    background:rgba(230,187,88,.11);
+    display:grid;
+    place-items:center;
+    font-size:18px;
+}
+
+.summary-card.unread-card strong{
+    color:#f2f4f8;
+}
+
+.summary-card.unread-card .summary-icon{
+    background:rgba(80,150,255,.12);
+}
+
+/* SECTION HEADER */
+
+.activity{
+    margin-top:30px;
+}
+
+.toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:16px;
+}
+
+.toolbar-left h3{
+    font-size:17px;
+    font-weight:850;
+}
+
+.toolbar-left p{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:5px;
+}
+
+.refresh{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:linear-gradient(145deg,#242116,#171e29);
+    border:1px solid #65502d;
+    color:var(--gold);
+    padding:11px 14px;
+    border-radius:11px;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.5px;
+    transition:.2s;
+}
+
+.refresh:active{
+    transform:scale(.95);
+}
+
+.refresh.loading-btn span{
+    display:inline-block;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+/* MESSAGE */
+
+.message{
+    display:none;
+    padding:13px 15px;
+    border-radius:12px;
+    margin-bottom:15px;
+    font-size:11px;
+    line-height:1.6;
+    overflow-wrap:anywhere;
+}
+
+.message.error{
+    display:block;
+    background:#351a20;
+    border:1px solid #66313a;
+    color:#ffb3b3;
+}
+
+/* NOTIFICATION CARD */
+
+.notification{
+    position:relative;
+    display:flex;
+    gap:13px;
+    padding:18px 15px;
+    margin-bottom:12px;
+    border-radius:17px;
+    border:1px solid #293545;
+    background:
+    linear-gradient(145deg,#17212e,#101620);
+    transition:border-color .25s,transform .2s,background .25s;
+    animation:fadeUp .35s ease both;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(12px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.notification.unread{
+    border-color:rgba(230,187,88,.38);
+    background:
+    radial-gradient(circle at 100% 0%,rgba(230,187,88,.09),transparent 50%),
+    linear-gradient(145deg,#202a36,#111821);
+}
+
+.notification:active{
+    transform:scale(.99);
+}
+
+.icon{
+    width:45px;
+    height:45px;
+    flex-shrink:0;
+    border-radius:14px;
+    background:linear-gradient(145deg,#342b1b,#201c16);
+    border:1px solid rgba(230,187,88,.19);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.content{
+    flex:1;
+    min-width:0;
+    padding-right:4px;
+}
+
+.content h4{
+    font-size:13px;
+    font-weight:850;
+    color:#f4f5f7;
+    line-height:1.5;
+    margin:1px 0 7px;
+    overflow-wrap:anywhere;
+}
+
+.content p{
+    color:#a6b1c0;
+    font-size:11px;
+    line-height:1.8;
+    overflow-wrap:anywhere;
+}
+
+.date{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#758398;
+    font-size:10px;
+    margin-top:12px;
+}
+
+.read-btn{
+    margin-top:13px;
+    padding:9px 13px;
+    border-radius:9px;
+    border:1px solid #78602f;
+    background:linear-gradient(135deg,#332a1b,#211d16);
+    color:var(--gold2);
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.7px;
+    transition:.2s;
+}
+
+.read-btn:active{
+    transform:scale(.96);
+    background:#40331c;
+}
+
+.read-label{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    color:#61d69a;
+    font-size:10px;
+    font-weight:800;
+    margin-top:12px;
+}
+
+.unread-dot{
+    position:absolute;
+    top:19px;
+    right:15px;
+    width:8px;
+    height:8px;
+    background:var(--gold);
+    border-radius:50%;
+    box-shadow:0 0 10px rgba(230,187,88,.6);
+}
+
+/* LOADING */
+
+.loading{
+    text-align:center;
+    padding:45px 15px;
+    border-radius:17px;
+    border:1px solid #293545;
+    background:#121925;
+}
+
+.loader{
+    width:34px;
+    height:34px;
+    margin:0 auto 15px;
+    border:3px solid #303a48;
+    border-top-color:var(--gold);
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+}
+
+.loading p{
+    color:var(--gold);
+    font-size:12px;
+    font-weight:700;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:48px 20px;
+    border-radius:19px;
+    background:
+    radial-gradient(circle at 50% 0%,rgba(230,187,88,.09),transparent 55%),
+    linear-gradient(145deg,#171f2b,#101620);
+    border:1px solid #303b4b;
+}
+
+.empty-icon{
+    width:76px;
+    height:76px;
+    margin:0 auto 17px;
+    display:grid;
+    place-items:center;
+    border-radius:23px;
+    background:#252116;
+    border:1px solid #64502e;
+    font-size:32px;
+}
+
+.empty h3{
+    font-size:16px;
+    font-weight:850;
+}
+
+.empty p{
+    color:#8995a7;
+    font-size:11px;
+    line-height:1.8;
+    margin-top:9px;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    margin-top:30px;
+    padding-top:20px;
+    border-top:1px solid #202a37;
+}
+
+.footer-brand{
+    color:#dcb45e;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.footer p{
+    color:#667386;
+    font-size:9px;
+    margin-top:8px;
+    letter-spacing:.7px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:360px){
+
+    .hero h1{
+        font-size:25px;
+    }
+
+    .summary-card{
+        padding:15px 12px;
+    }
+
+    .summary-card strong{
+        font-size:25px;
+    }
+
+    .notification{
+        padding:15px 12px;
+        gap:10px;
+    }
+
+    .icon{
+        width:40px;
+        height:40px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="brand">
+
+            <div class="logo">B</div>
+
+            <div>
+                <div class="brand-name">BRJ EMPIRE</div>
+                <div class="brand-sub">NOTIFICATION CENTER</div>
+            </div>
+
+        </div>
+
+        <button class="back" onclick="goBack()">‹</button>
+
+    </header>
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-label">
+            MEMBER NOTIFICATION CENTER
+        </div>
+
+        <h1>Notifications 🔔</h1>
+
+        <p>
+            Stay informed with your latest account updates,
+            important announcements and security alerts.
+        </p>
+
+        <div class="hero-bottom">
+
+            <div class="live-status">
+                <span class="live-dot"></span>
+                ACCOUNT UPDATES
+            </div>
+
+            <small>BRJ EMPIRE</small>
+
+        </div>
+
+    </section>
+
+
+    <!-- SUMMARY -->
+
+    <section class="summary">
+
+        <div class="summary-card">
+
+            <small>Total Notifications</small>
+
+            <div class="summary-value">
+
+                <strong id="totalCount">0</strong>
+
+                <div class="summary-icon">🔔</div>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card unread-card">
+
+            <small>Unread Notifications</small>
+
+            <div class="summary-value">
+
+                <strong id="unreadCount">0</strong>
+
+                <div class="summary-icon">📩</div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACTIVITY -->
+
+    <section class="activity">
+
+        <div id="message" class="message"></div>
+
+        <div class="toolbar">
+
+            <div class="toolbar-left">
+
+                <h3>Recent Activity</h3>
+
+                <p>Your latest notifications</p>
+
+            </div>
+
+            <button class="refresh" id="refreshBtn"
+                onclick="loadNotifications()">
+
+                <span>↻</span> REFRESH
+
+            </button>
+
+        </div>
+
+
+        <div id="notificationList">
+
+            <div class="loading">
+
+                <div class="loader"></div>
+
+                <p>Loading notifications...</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-brand">
+            BRJ EMPIRE
+        </div>
+
+        <p>
+            © BRJ EMPIRE · ALL RIGHTS RESERVED
+        </p>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+const db = window.brjSupabase || window.supabaseClient;
+
+let currentUser = null;
+
+
+const notificationIcons = {
+
+    DEPOSIT:"💰",
+    WITHDRAWAL:"💸",
+    TEAM:"👥",
+    SECURITY:"🔐",
+    ANNOUNCEMENT:"📢",
+    GENERAL:"🔔"
+
+};
+
+
+/* BACK BUTTON */
+
+function goBack(){
+
+    if(document.referrer &&
+       new URL(document.referrer).origin === location.origin){
+
+        history.back();
+
+    }else{
+
+        location.href="dashboard.html";
+
+    }
+
+}
+
+
+/* ERROR */
+
+function showError(message){
+
+    const box=document.getElementById("message");
+
+    box.className="message error";
+    box.textContent=message;
+
+}
+
+
+/* ESCAPE HTML */
+
+function escapeHTML(value){
+
+    return String(value ?? "").replace(/[&<>"']/g,function(char){
+
+        return {
+
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+
+        }[char];
+
+    });
+
+}
+
+
+/* DATE */
+
+function formatDate(date){
+
+    const parsed=new Date(date);
+
+    if(isNaN(parsed.getTime())) return "Date unavailable";
+
+    return parsed.toLocaleString("en-IN",{
+
+        day:"2-digit",
+        month:"short",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+
+    });
+
+}
+
+
+/* INITIALIZE */
+
+async function initialize(){
+
+    if(!db){
+
+        showError("Supabase connection not found.");
+        return;
+
+    }
+
+    try{
+
+        const {data,error}=await db.auth.getSession();
+
+        if(error) throw error;
+
+        currentUser=data.session?.user;
+
+        if(!currentUser){
+
+            location.href="index.html";
+            return;
+
+        }
+
+        await loadNotifications();
+
+    }catch(error){
+
+        console.error(error);
+
+        showError(error.message || "Unable to load notifications.");
+
+    }
+
+}
+
+
+/* LOAD NOTIFICATIONS */
+
+async function loadNotifications(){
+
+    if(!currentUser) return;
+
+    const list=document.getElementById("notificationList");
+
+    const refresh=document.getElementById("refreshBtn");
+
+    const message=document.getElementById("message");
+
+    message.className="message";
+    message.textContent="";
+
+    refresh.classList.add("loading-btn");
+
+    list.innerHTML=`
+
+        <div class="loading">
+
+            <div class="loader"></div>
+
+            <p>Loading notifications...</p>
+
+        </div>
+
+    `;
+
+    try{
+
+        const {data,error}=await db
+
+            .from("notifications")
+
+            .select("*")
+
+            .eq("user_id",currentUser.id)
+
+            .order("created_at",{ascending:false})
+
+            .limit(100);
+
+
+        if(error) throw error;
+
+
+        const notifications=data || [];
+
+        const unread=notifications.filter(
+            item=>!item.is_read
+        ).length;
+
+
+        document.getElementById("totalCount").textContent=
+            notifications.length;
+
+        document.getElementById("unreadCount").textContent=
+            unread;
+
+
+        if(notifications.length===0){
+
+            list.innerHTML=`
+
+                <div class="empty">
+
+                    <div class="empty-icon">🔔</div>
+
+                    <h3>No Notifications Yet</h3>
+
+                    <p>
+                        You are all caught up!
+                        Your new account updates will appear here.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        list.innerHTML=notifications.map((item,index)=>{
+
+            const type=String(
+                item.notification_type || "GENERAL"
+            ).toUpperCase();
+
+            const icon=notificationIcons[type] || "🔔";
+
+
+            return `
+
+                <div class="notification ${item.is_read?"":"unread"}"
+                     style="animation-delay:${Math.min(index*0.04,0.4)}s">
+
+                    ${!item.is_read
+                        ? '<div class="unread-dot"></div>'
+                        : ''
+                    }
+
+                    <div class="icon">
+                        ${icon}
+                    </div>
+
+                    <div class="content">
+
+                        <h4>
+                            ${escapeHTML(item.title)}
+                        </h4>
+
+                        <p>
+                            ${escapeHTML(item.message)}
+                        </p>
+
+                        <div class="date">
+                            🕒 ${formatDate(item.created_at)}
+                        </div>
+
+                        ${
+                            !item.is_read
+
+                            ? `
+
+                                <button class="read-btn"
+                                    onclick="markRead('${escapeHTML(item.id)}')">
+
+                                    ✓ MARK AS READ
+
+                                </button>
+
+                            `
+
+                            : `
+
+                                <div class="read-label">
+                                    ✓ Read
+                                </div>
+
+                            `
+
+                        }
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    }catch(error){
+
+        console.error(error);
+
+        list.innerHTML="";
+
+        showError(
+            error.message || "Could not load notifications."
+        );
+
+    }finally{
+
+        refresh.classList.remove("loading-btn");
+
+    }
+
+}
+
+
+/* MARK AS READ */
+
+async function markRead(id){
+
+    try{
+
+        const {data,error}=await db.rpc(
+
+            "mark_notification_read",
+
+            {
+
+                notification_id:id
+
+            }
+
+        );
+
+
+        if(error) throw error;
+
+
+        if(!data){
+
+            throw new Error(
+                "Notification could not be updated."
+            );
+
+        }
+
+
+        await loadNotifications();
+
+
+    }catch(error){
+
+        console.error(error);
+
+        showError(
+            error.message || "Unable to mark notification as read."
+        );
+
+    }
+
+}
+
+
+/* START */
+
+initialize();
+
+</script>
+
+</body>
+</html>
