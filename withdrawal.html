@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#080a10">
+<title>BRJ EMPIRE | Withdrawal</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    background:#080a10;
+    color:#fff;
+    min-height:100vh;
+}
+
+header{
+    height:68px;
+    padding:0 17px;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    background:#0c1018;
+    border-bottom:1px solid #252e3b;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.back-btn{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    background:#171e2a;
+    border:1px solid #354052;
+    color:#edc66c;
+    font-size:25px;
+}
+
+.logo{
+    font-size:19px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:#eac16a;
+}
+
+.container{
+    max-width:650px;
+    padding:23px 15px 50px;
+    margin:auto;
+}
+
+.heading small{
+    color:#eac16a;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.heading h1{
+    font-size:28px;
+    margin-top:10px;
+}
+
+.heading p{
+    font-size:12px;
+    color:#8e9aab;
+    margin-top:8px;
+    line-height:1.7;
+}
+
+/* BALANCE CARD */
+
+.balance-card{
+    position:relative;
+    overflow:hidden;
+    margin-top:24px;
+    padding:23px;
+    border-radius:20px;
+    border:1px solid #796035;
+    background:
+    radial-gradient(circle at 100% 0,rgba(238,192,93,.22),transparent 45%),
+    linear-gradient(135deg,#282216,#151a23);
+}
+
+.balance-card:after{
+    content:"";
+    position:absolute;
+    height:150px;
+    width:150px;
+    border:1px solid rgba(238,192,93,.12);
+    border-radius:50%;
+    right:-50px;
+    bottom:-80px;
+}
+
+.balance-label{
+    color:#c9b88e;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+.balance-amount{
+    font-size:35px;
+    font-weight:900;
+    color:#f4d991;
+    margin-top:12px;
+}
+
+.balance-note{
+    font-size:10px;
+    color:#a5a9ae;
+    margin-top:9px;
+}
+
+/* SECTION */
+
+.section-title{
+    margin:28px 0 14px;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1.5px;
+    color:#eac66f;
+}
+
+/* METHODS */
+
+.methods{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.method{
+    padding:18px 12px;
+    background:#121a26;
+    border:1px solid #303c4e;
+    border-radius:16px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.method.active{
+    border:1px solid #e7bd60;
+    background:linear-gradient(145deg,#292419,#151b25);
+    box-shadow:0 0 20px rgba(230,187,88,.08);
+}
+
+.method-icon{
+    font-size:27px;
+}
+
+.method h3{
+    font-size:13px;
+    margin-top:10px;
+}
+
+.method p{
+    font-size:9px;
+    color:#8995a6;
+    margin-top:6px;
+}
+
+/* FORM */
+
+.form-card{
+    margin-top:17px;
+    padding:20px;
+    background:linear-gradient(145deg,#161e2b,#10151e);
+    border:1px solid #303b4c;
+    border-radius:19px;
+}
+
+.form-title{
+    font-size:16px;
+    margin-bottom:19px;
+}
+
+.field{
+    margin-bottom:17px;
+}
+
+.field label{
+    display:block;
+    color:#b2bdcc;
+    font-size:11px;
+    margin-bottom:9px;
+}
+
+.field input{
+    width:100%;
+    padding:14px;
+    border-radius:11px;
+    border:1px solid #344154;
+    outline:none;
+    background:#090e16;
+    color:#fff;
+    font-size:13px;
+}
+
+.field input:focus{
+    border-color:#e5bb60;
+}
+
+.field input::placeholder{
+    color:#697587;
+}
+
+.amount-wrap{
+    position:relative;
+}
+
+.amount-wrap span{
+    position:absolute;
+    left:14px;
+    top:14px;
+    color:#eac66f;
+    font-weight:900;
+}
+
+.amount-wrap input{
+    padding-left:34px;
+}
+
+.quick-amounts{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.quick-amounts button{
+    flex:1;
+    padding:9px 3px;
+    background:#1c2635;
+    color:#d8c38e;
+    border:1px solid #39485c;
+    border-radius:9px;
+    font-size:10px;
+}
+
+/* UPI/BANK */
+
+.details-box{
+    display:none;
+    animation:fade .25s ease;
+}
+
+.details-box.active{
+    display:block;
+}
+
+@keyframes fade{
+    from{opacity:0;transform:translateY(7px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* PIN */
+
+.pin-input{
+    letter-spacing:10px;
+    font-size:19px!important;
+    text-align:center;
+    font-weight:900;
+}
+
+/* BUTTON */
+
+.withdraw-btn{
+    width:100%;
+    padding:16px;
+    margin-top:7px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,#f4d98e,#d4a443);
+    color:#17130b;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1px;
+    box-shadow:0 7px 20px rgba(219,177,86,.12);
+}
+
+.withdraw-btn:disabled{
+    opacity:.6;
+}
+
+/* INFO */
+
+.info-box{
+    margin-top:18px;
+    padding:15px;
+    border-radius:13px;
+    background:#111c19;
+    border:1px solid #304c3d;
+    color:#a7c4b0;
+    font-size:10px;
+    line-height:1.8;
+}
+
+/* HISTORY */
+
+.history-card{
+    margin-top:15px;
+    padding:17px;
+    background:#121a25;
+    border:1px solid #2c3848;
+    border-radius:15px;
+}
+
+.empty-history{
+    padding:25px 10px;
+    text-align:center;
+    color:#7e8a9b;
+    font-size:11px;
+}
+
+.empty-history div{
+    font-size:29px;
+    margin-bottom:10px;
+}
+
+.toast{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translate(-50%,20px);
+    opacity:0;
+    pointer-events:none;
+    z-index:100;
+    background:#202b3a;
+    border:1px solid #39495f;
+    padding:13px 18px;
+    border-radius:12px;
+    color:white;
+    font-size:12px;
+    width:max-content;
+    max-width:90%;
+    transition:.25s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+@media(max-width:360px){
+    .balance-amount{font-size:29px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <button class="back-btn" onclick="history.back()">‹</button>
+    <div class="logo">BRJ <span>EMPIRE</span></div>
+</header>
+
+<main class="container">
+
+    <div class="heading">
+        <small>BRJ EMPIRE · FINANCIAL CENTER</small>
+        <h1>Withdraw Funds</h1>
+        <p>
+            Submit a withdrawal request using your preferred
+            payment method.
+        </p>
+    </div>
+
+    <!-- BALANCE -->
+
+    <div class="balance-card">
+
+        <div class="balance-label">
+            AVAILABLE WITHDRAWAL BALANCE
+        </div>
+
+        <div class="balance-amount">
+            ₹ <span id="balance">0.00</span>
+        </div>
+
+        <div class="balance-note">
+            Balance will be displayed after wallet integration.
+        </div>
+
+    </div>
+
+    <!-- PAYMENT METHOD -->
+
+    <div class="section-title">
+        SELECT WITHDRAWAL METHOD
+    </div>
+
+    <div class="methods">
+
+        <div class="method active" id="upiMethod"
+             onclick="selectMethod('UPI')">
+
+            <div class="method-icon">📱</div>
+
+            <h3>UPI Transfer</h3>
+
+            <p>Withdraw to your UPI ID</p>
+
+        </div>
+
+        <div class="method" id="bankMethod"
+             onclick="selectMethod('BANK')">
+
+            <div class="method-icon">🏦</div>
+
+            <h3>Bank Transfer</h3>
+
+            <p>Withdraw to bank account</p>
+
+        </div>
+
+    </div>
+
+    <!-- FORM -->
+
+    <div class="form-card">
+
+        <h2 class="form-title">Withdrawal Details</h2>
+
+        <div class="field">
+
+            <label>Withdrawal Amount</label>
+
+            <div class="amount-wrap">
+
+                <span>₹</span>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="Enter amount"
+                    min="1"
+                    step="1">
+
+            </div>
+
+            <div class="quick-amounts">
+                <button onclick="setAmount(200)">₹200</button>
+                <button onclick="setAmount(500)">₹500</button>
+                <button onclick="setAmount(1000)">₹1000</button>
+            </div>
+
+        </div>
+
+        <!-- UPI DETAILS -->
+
+        <div class="details-box active" id="upiDetails">
+
+            <div class="field">
+
+                <label>UPI ID</label>
+
+                <input
+                    type="text"
+                    id="upiId"
+                    placeholder="example@upi">
+
+            </div>
+
+            <div class="field">
+
+                <label>Account Holder Name</label>
+
+                <input
+                    type="text"
+                    id="upiName"
+                    placeholder="Enter your name">
+
+            </div>
+
+        </div>
+
+        <!-- BANK DETAILS -->
+
+        <div class="details-box" id="bankDetails">
+
+            <div class="field">
+
+                <label>Account Holder Name</label>
+
+                <input
+                    type="text"
+                    id="bankName"
+                    placeholder="Enter account holder name">
+
+            </div>
+
+            <div class="field">
+
+                <label>Bank Account Number</label>
+
+                <input
+                    type="text"
+                    id="accountNumber"
+                    placeholder="Enter account number"
+                    inputmode="numeric">
+
+            </div>
+
+            <div class="field">
+
+                <label>Confirm Account Number</label>
+
+                <input
+                    type="text"
+                    id="confirmAccount"
+                    placeholder="Re-enter account number"
+                    inputmode="numeric">
+
+            </div>
+
+            <div class="field">
+
+                <label>IFSC Code</label>
+
+                <input
+                    type="text"
+                    id="ifsc"
+                    placeholder="Example: SBIN0001234"
+                    maxlength="11">
+
+            </div>
+
+            <div class="field">
+
+                <label>Bank Name</label>
+
+                <input
+                    type="text"
+                    id="bankNameField"
+                    placeholder="Enter bank name">
+
+            </div>
+
+        </div>
+
+        <!-- TRANSACTION PIN -->
+
+        <div class="field">
+
+            <label>4-Digit Transaction PIN</label>
+
+            <input
+                type="password"
+                id="transactionPin"
+                class="pin-input"
+                placeholder="••••"
+                maxlength="4"
+                inputmode="numeric"
+                autocomplete="off">
+
+        </div>
+
+        <button
+            class="withdraw-btn"
+            id="withdrawBtn"
+            onclick="submitWithdrawal()">
+
+            SUBMIT WITHDRAWAL REQUEST →
+
+        </button>
+
+    </div>
+
+    <div class="info-box">
+        🔐 Your withdrawal request will be subject to
+        account verification and admin approval.
+        Never share your transaction PIN with anyone.
+    </div>
+
+    <!-- HISTORY -->
+
+    <div class="section-title">
+        RECENT WITHDRAWAL HISTORY
+    </div>
+
+    <div class="history-card">
+
+        <div class="empty-history">
+            <div>📄</div>
+            Withdrawal history will appear here
+            after backend integration.
+        </div>
+
+    </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+let selectedMethod="UPI";
+let currentUser=null;
+
+const db=window.brjSupabase||window.supabaseClient;
+
+function showToast(message){
+
+    const toast=document.getElementById("toast");
+
+    toast.textContent=message;
+    toast.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer=setTimeout(()=>{
+        toast.classList.remove("show");
+    },2800);
+
+}
+
+/* LOGIN CHECK */
+
+async function loadAccount(){
+
+    if(!db){
+        showToast("Database connection unavailable.");
+        return;
+    }
+
+    const {data,error}=await db.auth.getSession();
+
+    if(error||!data.session){
+        location.href="index.html";
+        return;
+    }
+
+    currentUser=data.session.user;
+
+}
+
+/* SELECT METHOD */
+
+function selectMethod(method){
+
+    selectedMethod=method;
+
+    document.getElementById("upiMethod")
+        .classList.toggle("active",method==="UPI");
+
+    document.getElementById("bankMethod")
+        .classList.toggle("active",method==="BANK");
+
+    document.getElementById("upiDetails")
+        .classList.toggle("active",method==="UPI");
+
+    document.getElementById("bankDetails")
+        .classList.toggle("active",method==="BANK");
+
+}
+
+/* QUICK AMOUNT */
+
+function setAmount(amount){
+
+    document.getElementById("amount").value=amount;
+
+}
+
+/* SUBMIT WITHDRAWAL */
+
+async function submitWithdrawal(){
+
+    if(!db||!currentUser){
+        showToast("Please login first.");
+        return;
+    }
+
+    const amount=Number(
+        document.getElementById("amount").value
+    );
+
+    const pin=document.getElementById("transactionPin").value;
+
+    if(!Number.isFinite(amount)||amount<=0){
+        showToast("Enter a valid withdrawal amount.");
+        return;
+    }
+
+    if(!/^[0-9]{4}$/.test(pin)){
+        showToast("Enter your 4-digit transaction PIN.");
+        return;
+    }
+
+    let paymentDetails={};
+
+    if(selectedMethod==="UPI"){
+
+        const upi=document.getElementById("upiId").value.trim();
+        const name=document.getElementById("upiName").value.trim();
+
+        if(!/^[^\s@]+@[^\s@]+$/.test(upi)){
+            showToast("Enter a valid UPI ID.");
+            return;
+        }
+
+        if(!name){
+            showToast("Enter account holder name.");
+            return;
+        }
+
+        paymentDetails={
+            upi_id:upi,
+            account_holder:name
+        };
+
+    }else{
+
+        const name=document.getElementById("bankName").value.trim();
+        const account=document.getElementById("accountNumber").value.trim();
+        const confirm=document.getElementById("confirmAccount").value.trim();
+        const ifsc=document.getElementById("ifsc").value.trim().toUpperCase();
+        const bank=document.getElementById("bankNameField").value.trim();
+
+        if(!name||!account||!confirm||!ifsc||!bank){
+            showToast("Complete all bank details.");
+            return;
+        }
+
+        if(!/^[0-9]{6,20}$/.test(account)){
+            showToast("Enter a valid bank account number.");
+            return;
+        }
+
+        if(account!==confirm){
+            showToast("Bank account numbers do not match.");
+            return;
+        }
+
+        if(!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)){
+            showToast("Enter a valid IFSC code.");
+            return;
+        }
+
+        paymentDetails={
+            account_holder:name,
+            account_number:account,
+            ifsc_code:ifsc,
+            bank_name:bank
+        };
+
+    }
+
+    const btn=document.getElementById("withdrawBtn");
+
+    btn.disabled=true;
+    btn.textContent="SUBMITTING...";
+
+    try{
+
+        const {data,error}=await db.rpc(
+            "submit_withdrawal_request",
+            {
+                p_amount:amount,
+                p_method:selectedMethod,
+                p_payment_details:paymentDetails,
+                p_transaction_pin:pin
+            }
+        );
+
+        if(error){
+            throw error;
+        }
+
+        document.getElementById("amount").value="";
+        document.getElementById("transactionPin").value="";
+
+        showToast("Withdrawal request submitted successfully!");
+
+    }catch(error){
+
+        console.error(error);
+
+        showToast(
+            error.message||"Withdrawal service is not configured."
+        );
+
+    }finally{
+
+        btn.disabled=false;
+        btn.textContent="SUBMIT WITHDRAWAL REQUEST →";
+
+    }
+
+}
+
+/* START */
+
+loadAccount();
+
+</script>
+
+</body>
+</html>
