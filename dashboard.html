@@ -1073,42 +1073,239 @@ header{
     </div>
 </section>
 
-<!-- MEMBERSHIPS -->
-<section class="section" id="packagesSection">
-    <div class="section-head">
-        <h2>Membership Options</h2>
-        <span>BRJ MEMBERSHIP</span>
+<!-- BRJ EMPIRE PREMIUM PACKAGE SECTION -->
+
+<style>
+.brj-packages{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+    margin:22px 0;
+}
+
+.brj-package{
+    position:relative;
+    padding:23px 21px;
+    border-radius:21px;
+    border:1px solid rgba(234,198,111,.20);
+    background:
+    radial-gradient(circle at 100% 0%,rgba(234,198,111,.12),transparent 45%),
+    linear-gradient(145deg,#1c2737,#0c111a);
+    overflow:hidden;
+    transition:.3s ease;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.brj-package:active{
+    transform:scale(.98);
+}
+
+.brj-package.pro{
+    border:1px solid #c49b4e;
+    background:
+    radial-gradient(circle at 100% 0%,rgba(255,208,105,.22),transparent 50%),
+    linear-gradient(145deg,#302819,#111720);
+    box-shadow:0 8px 30px rgba(212,164,67,.12);
+}
+
+.brj-package.vip{
+    border:1px solid rgba(183,145,255,.55);
+    background:
+    radial-gradient(circle at 100% 0%,rgba(160,115,255,.22),transparent 50%),
+    linear-gradient(145deg,#241d35,#10131e);
+}
+
+.brj-package h3{
+    color:#eac66f;
+    font-size:12px;
+    letter-spacing:2px;
+    font-weight:900;
+}
+
+.brj-package h2{
+    font-size:20px;
+    margin-top:13px;
+    color:#fff;
+    font-weight:800;
+}
+
+.brj-package .price{
+    font-size:37px;
+    font-weight:950;
+    color:#f4d991;
+    margin:13px 0;
+    letter-spacing:-1px;
+}
+
+.brj-package p{
+    font-size:12px;
+    color:#aab5c5;
+    line-height:1.8;
+}
+
+.brj-package button{
+    width:100%;
+    margin-top:20px;
+    padding:15px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,#f4d98e,#d4a443);
+    color:#17130b;
+    font-size:12px;
+    font-weight:950;
+    letter-spacing:1px;
+    cursor:pointer;
+    box-shadow:0 5px 18px rgba(212,164,67,.18);
+}
+
+.brj-package.vip button{
+    background:linear-gradient(135deg,#d5baff,#9161df);
+    color:#170d27;
+}
+
+.brj-package .tag{
+    position:absolute;
+    top:17px;
+    right:17px;
+    background:linear-gradient(135deg,#f4d98e,#d4a443);
+    color:#17130b;
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:9px;
+    font-weight:950;
+    letter-spacing:1px;
+}
+
+.brj-package.vip .tag{
+    background:linear-gradient(135deg,#d5baff,#9161df);
+}
+
+.brj-package .package-line{
+    height:1px;
+    background:rgba(255,255,255,.08);
+    margin:17px 0;
+}
+
+.brj-package .package-icon{
+    font-size:25px;
+    margin-bottom:12px;
+}
+
+.brj-package .package-label{
+    color:#78869a;
+    font-size:10px;
+    letter-spacing:1px;
+    font-weight:800;
+}
+</style>
+
+<section id="brjHomePackages">
+
+```
+<div style="margin-bottom:20px;">
+    <div style="color:#eac66f;font-size:10px;letter-spacing:3px;font-weight:900;">
+        BRJ EMPIRE MEMBERSHIP
     </div>
 
-    <div class="packages">
+    <h2 style="color:#fff;font-size:22px;margin-top:8px;font-weight:900;">
+        Choose Your Package
+    </h2>
 
-        <div class="package">
-            <div class="package-tag">BRJ STARTER</div>
-            <h3>Starter Membership</h3>
-            <div class="price">₹200</div>
-            <p>Basic membership details and applicable terms.</p>
-            <button class="package-btn" disabled>ACTIVATION UNAVAILABLE</button>
-        </div>
+    <p style="color:#8793a5;font-size:11px;margin-top:7px;">
+        Select your preferred membership package.
+    </p>
+</div>
 
-        <div class="package vip">
-            <div class="package-tag">BRJ PRO</div>
-            <h3>Pro Membership</h3>
-            <div class="price">₹500</div>
-            <p>Membership details and eligibility information.</p>
-            <button class="package-btn" disabled>ACTIVATION UNAVAILABLE</button>
-        </div>
+<div class="brj-packages">
 
-        <div class="package">
-            <div class="package-tag">BRJ VIP</div>
-            <h3>VIP Membership</h3>
-            <div class="price">₹1,000</div>
-            <p>Premium membership details and applicable terms.</p>
-            <button class="package-btn" disabled>ACTIVATION UNAVAILABLE</button>
-        </div>
+    <!-- STARTER -->
+
+    <div class="brj-package">
+
+        <div class="package-icon">💎</div>
+
+        <h3>BRJ STARTER</h3>
+
+        <h2>Starter Package</h2>
+
+        <div class="price">₹200</div>
+
+        <div class="package-line"></div>
+
+        <div class="package-label">MEMBERSHIP PLAN</div>
+
+        <p style="margin-top:8px;">
+            Get started with BRJ EMPIRE membership.
+        </p>
+
+        <button onclick="location.href='deposit.html'">
+            SELECT PACKAGE &nbsp; →
+        </button>
 
     </div>
+
+    <!-- PRO -->
+
+    <div class="brj-package pro">
+
+        <div class="tag">★ POPULAR</div>
+
+        <div class="package-icon">👑</div>
+
+        <h3>BRJ PRO</h3>
+
+        <h2>Pro Package</h2>
+
+        <div class="price">₹500</div>
+
+        <div class="package-line"></div>
+
+        <div class="package-label">PREMIUM MEMBERSHIP</div>
+
+        <p style="margin-top:8px;">
+            Explore the BRJ EMPIRE Pro membership.
+        </p>
+
+        <button onclick="location.href='deposit.html'">
+            SELECT PACKAGE &nbsp; →
+        </button>
+
+    </div>
+
+    <!-- VIP -->
+
+    <div class="brj-package vip">
+
+        <div class="tag">EXCLUSIVE</div>
+
+        <div class="package-icon">🏆</div>
+
+        <h3 style="color:#c5a5ff;">BRJ VIP</h3>
+
+        <h2>VIP Package</h2>
+
+        <div class="price" style="color:#d5baff;">₹1,000</div>
+
+        <div class="package-line"></div>
+
+        <div class="package-label">ELITE MEMBERSHIP</div>
+
+        <p style="margin-top:8px;">
+            Explore the exclusive BRJ EMPIRE VIP membership.
+        </p>
+
+        <button onclick="location.href='deposit.html'">
+            SELECT PACKAGE &nbsp; →
+        </button>
+
+    </div>
+
+</div>
+```
+
 </section>
 
+<!-- END BRJ PREMIUM PACKAGE SECTION -->
 <!-- REFERRAL -->
 <section class="section" id="referralSection">
     <div class="referral">
@@ -1399,13 +1596,13 @@ function submitP2P(){
 
 /* SHORTCUTS */
 function goDeposit(){
-    closeSideMenu();
-    showToast("Deposit information unavailable.");
+    location.href="deposit.html";
+
 }
 
 function goWithdraw(){
-    closeSideMenu();
-    showToast("Withdrawal information unavailable.");
+    location.href="withdrawal.html";
+
 }
 
 function goSecurity(){
