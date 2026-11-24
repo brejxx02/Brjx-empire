@@ -1580,7 +1580,7 @@ function submitP2P(){
         return;
     }
 
-    if(currentUser && receiver===currentUser.id.substring(0,8).toUpperCase()){
+    if(currentUser && receiver===currentUser.id.){
         showToast("You cannot transfer to your own account.");
         return;
     }
@@ -1690,7 +1690,7 @@ async function loadDashboard(){
         const meta=user.user_metadata||{};
         const name=meta.full_name||meta.name||"Member";
         const mobile=meta.mobile||"Not provided";
-        const shortId=user.id.substring(0,8).toUpperCase();
+        const shortId=user.id.;
 
         referralCode=shortId;
 
@@ -1722,6 +1722,277 @@ async function loadDashboard(){
 }
 
 loadDashboard();
+</script>
+
+<script>
+let currentUser = null;
+let currentMemberId = "";
+let referralCode = "";
+
+function showToast(text){
+    const toast=document.getElementById("toast");
+    toast.textContent=text;
+    toast.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+    window.toastTimer=setTimeout(()=>{
+        toast.classList.remove("show");
+    },2600);
+}
+
+/* SIDEBAR */
+function toggleMenu(){
+    const sidebar=document.getElementById("sidebar");
+    const overlay=document.getElementById("sideOverlay");
+
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+}
+
+function closeSideMenu(){
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sideOverlay").classList.remove("show");
+}
+
+function goProfile(){
+    location.href="profile.html";
+}
+
+/* MODALS */
+function openHistory(){
+    closeSideMenu();
+    document.getElementById("historyModal").classList.add("show");
+}
+
+function closeModal(id){
+    document.getElementById(id).classList.remove("show");
+}
+
+function modalBackdropClose(event,id){
+    if(event.target.id===id)closeModal(id);
+}
+
+function openNotifications(){
+    closeSideMenu();
+    document.getElementById("notificationModal").classList.add("show");
+}
+
+/* HISTORY TABS */
+function setHistoryTab(button,type){
+    document.querySelectorAll("#historyModal .tab").forEach(t=>{
+        t.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    const content=document.getElementById("historyContent");
+
+    content.innerHTML=`
+        <div class="empty-icon">📂</div>
+        <h3>No ${type==="All"?"transaction":type.toLowerCase()} records available</h3>
+        <p>Verified ${type==="All"?"transaction":type.toLowerCase()} records will appear here when available.</p>
+    `;
+}
+
+/* P2P */
+function openP2P(){
+    closeSideMenu();
+
+    document.getElementById("p2pReceiver").value="";
+    document.getElementById("p2pAmount").value="";
+
+    document.getElementById("p2pBalance").textContent=
+        document.getElementById("walletBalance").textContent;
+
+    document.getElementById("p2pModal").classList.add("show");
+}
+
+function submitP2P(){
+    const receiver=document.getElementById("p2pReceiver").value.trim();
+    const amount=document.getElementById("p2pAmount").value;
+
+    if(!receiver){
+        showToast("Enter receiver Member ID.");
+        return;
+    }
+
+    if(currentMemberId && receiver===currentMemberId){
+        showToast("You cannot transfer to your own account.");
+        return;
+    }
+
+    if(!amount||Number(amount)<=0){
+        showToast("Enter a valid transfer amount.");
+        return;
+    }
+
+    showToast("Transfer could not be completed.");
+}
+
+/* SHORTCUTS */
+function goDeposit(){
+    location.href="deposit.html";
+}
+
+function goWithdraw(){
+    location.href="withdrawal.html";
+}
+
+function goSecurity(){
+    closeSideMenu();
+    showToast("Security settings can be managed from your account.");
+}
+
+function goSupport(){
+    closeSideMenu();
+    window.open("https://t.me/LEON_DIWAPAY","_blank");
+}
+
+/* REFERRAL */
+async function copyReferral(){
+    const input=document.getElementById("referralLink");
+    const link=input.value;
+
+    try{
+        if(navigator.clipboard&&window.isSecureContext){
+            await navigator.clipboard.writeText(link);
+        }else{
+            input.focus();
+            input.select();
+            if(!document.execCommand("copy"))throw new Error("copy failed");
+        }
+        showToast("Referral link copied!");
+    }catch{
+        showToast("Copy failed. Please copy manually.");
+    }
+}
+
+async function shareReferral(){
+    const link=document.getElementById("referralLink").value;
+
+    if(navigator.share){
+        try{
+            await navigator.share({
+                title:"BRJ EMPIRE",
+                text:"Join BRJ EMPIRE using my invitation link.",
+                url:link
+            });
+        }catch(e){
+            if(e.name!=="AbortError")showToast("Unable to share.");
+        }
+    }else{
+        copyReferral();
+    }
+}
+
+/* LOGOUT */
+async function logout(){
+    const db=window.brjSupabase||window.supabaseClient;
+
+    if(!db)return location.href="index.html";
+
+    const {error}=await db.auth.signOut();
+
+    if(error){
+        showToast("Logout failed.");
+        return;
+    }
+
+    location.href="index.html";
+}
+
+/* LOAD MEMBER */
+async function loadDashboard(){
+
+    const db=window.brjSupabase||window.supabaseClient;
+
+    if(!db){
+        showToast("Database connection unavailable.");
+        return;
+    }
+
+    try{
+
+        const {data,error}=await db.auth.getSession();
+
+        if(error||!data.session){
+            location.href="index.html";
+            return;
+        }
+
+        currentUser=data.session.user;
+
+        const user=currentUser;
+        const meta=user.user_metadata||{};
+
+        const name=meta.full_name||meta.name||"Member";
+        const mobile=meta.mobile||"Not provided";
+
+        // FETCH AUTOMATIC MEMBER ID FROM SUPABASE
+        const {data:memberData,error:memberError}=await db
+            .from("brj_member_ids")
+            .select("member_id")
+            .eq("user_id",user.id)
+            .maybeSingle();
+
+        if(memberError){
+            console.error("Member ID error:",memberError);
+            showToast("Unable to load Member ID.");
+        }
+
+        if(memberData && memberData.member_id!==null){
+
+            currentMemberId=String(memberData.member_id);
+
+        }else{
+
+            currentMemberId="";
+
+            console.warn("Member ID not found for this account.");
+
+        }
+
+        // USE REAL MEMBER ID
+        const displayId=currentMemberId||"ID Pending";
+
+        referralCode=currentMemberId;
+
+        document.getElementById("memberName").textContent=name;
+        document.getElementById("profileName").textContent=name;
+        document.getElementById("profileEmail").textContent=user.email||"Not available";
+        document.getElementById("profileMobile").textContent=mobile;
+
+        document.getElementById("memberId").textContent=displayId;
+        document.getElementById("memberIdRow").textContent=displayId;
+
+        document.getElementById("sideMemberName").textContent=name;
+        document.getElementById("sideMemberId").textContent=displayId;
+
+        if(user.created_at){
+            document.getElementById("memberSince").textContent=
+                new Date(user.created_at).toLocaleDateString("en-IN");
+        }
+
+        // REFERRAL LINK
+        const link=location.origin+
+            location.pathname.replace("dashboard.html","index.html")+
+            "?ref="+encodeURIComponent(referralCode);
+
+        document.getElementById("referralLink").value=
+            currentMemberId ? link : "Member ID not available";
+
+        console.log("BRJ EMPIRE Member ID:",currentMemberId);
+
+    }catch(err){
+
+        console.error(err);
+        showToast("Unable to load account.");
+
+    }
+}
+
+loadDashboard();
+
 </script>
 
 </body>
