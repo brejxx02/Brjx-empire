@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#080a10">
+<title>BRJ EMPIRE | Packages</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    background:#080a10;
+    color:#fff;
+    min-height:100vh;
+}
+
+header{
+    height:68px;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#0c1018;
+    border-bottom:1px solid #282f3b;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.back{
+    width:39px;
+    height:39px;
+    border-radius:12px;
+    border:1px solid #394252;
+    background:#171e2a;
+    color:#f0c86b;
+    font-size:25px;
+}
+
+.logo{
+    font-size:19px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:#e9bd5b;
+}
+
+.container{
+    max-width:650px;
+    margin:auto;
+    padding:25px 16px 45px;
+}
+
+.hero{
+    text-align:center;
+    padding:25px 10px 30px;
+}
+
+.hero-label{
+    display:inline-block;
+    padding:8px 15px;
+    border:1px solid #735b2d;
+    border-radius:30px;
+    color:#eac66f;
+    background:#201b11;
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:800;
+}
+
+.hero h1{
+    font-size:29px;
+    margin-top:17px;
+    letter-spacing:.5px;
+}
+
+.hero h1 span{
+    color:#edc76d;
+}
+
+.hero p{
+    color:#929dad;
+    font-size:12px;
+    line-height:1.8;
+    margin-top:10px;
+}
+
+.section-title{
+    font-size:13px;
+    color:#e9c36b;
+    letter-spacing:1.5px;
+    margin:12px 0 17px;
+    font-weight:800;
+}
+
+.packages{
+    display:grid;
+    gap:17px;
+}
+
+.card{
+    position:relative;
+    overflow:hidden;
+    padding:23px 21px;
+    border:1px solid #303b4c;
+    border-radius:21px;
+    background:linear-gradient(145deg,#192231,#10151e);
+    transition:.25s;
+}
+
+.card:before{
+    content:"";
+    position:absolute;
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    background:rgba(225,181,83,.07);
+    right:-70px;
+    top:-90px;
+    filter:blur(5px);
+}
+
+.card.featured{
+    border:1px solid #9b7837;
+    background:
+    radial-gradient(circle at 100% 0,rgba(235,190,92,.20),transparent 45%),
+    linear-gradient(145deg,#292419,#121821);
+    box-shadow:0 0 25px rgba(219,174,77,.08);
+}
+
+.card-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.package-name{
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:2px;
+    color:#eac66f;
+}
+
+.badge{
+    font-size:9px;
+    padding:7px 11px;
+    border-radius:20px;
+    color:#16120a;
+    background:#eac66f;
+    font-weight:900;
+}
+
+.card h2{
+    font-size:19px;
+    margin-top:17px;
+}
+
+.price{
+    font-size:39px;
+    font-weight:900;
+    color:#f3d68f;
+    margin-top:13px;
+    letter-spacing:-1px;
+}
+
+.price small{
+    font-size:12px;
+    color:#9da7b5;
+    font-weight:500;
+    letter-spacing:0;
+}
+
+.description{
+    color:#9ba7b8;
+    font-size:11px;
+    line-height:1.8;
+    margin-top:9px;
+}
+
+.divider{
+    height:1px;
+    background:#344052;
+    margin:19px 0;
+}
+
+.feature{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:11px 0;
+    color:#d0d6df;
+    font-size:11px;
+}
+
+.check{
+    width:19px;
+    height:19px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#263c31;
+    color:#73e0a4;
+    font-size:11px;
+}
+
+.buy-btn{
+    width:100%;
+    padding:15px;
+    margin-top:14px;
+    border:0;
+    border-radius:12px;
+    background:linear-gradient(135deg,#f4d68a,#d7a842);
+    color:#17130b;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:1px;
+    box-shadow:0 5px 20px rgba(218,173,75,.15);
+}
+
+.buy-btn:active{
+    transform:scale(.98);
+}
+
+.bottom-note{
+    margin-top:24px;
+    padding:15px;
+    border:1px solid #293748;
+    border-radius:14px;
+    background:#111925;
+    color:#929eae;
+    font-size:10px;
+    line-height:1.8;
+    text-align:center;
+}
+
+.bottom-note span{
+    color:#eac66f;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+    <button class="back" onclick="history.back()">‹</button>
+    <div class="logo">BRJ <span>EMPIRE</span></div>
+</header>
+
+<div class="container">
+
+```
+<div class="hero">
+
+    <div class="hero-label">
+        ✦ EXCLUSIVE MEMBERSHIP ✦
+    </div>
+
+    <h1>Choose Your <span>Package</span></h1>
+
+    <p>
+        Select your preferred membership package
+        and continue to the next step.
+    </p>
+
+</div>
+
+<div class="section-title">
+    AVAILABLE PACKAGES
+</div>
+
+<div class="packages">
+
+    <!-- PACKAGE 200 -->
+
+    <div class="card">
+
+        <div class="card-top">
+            <div class="package-name">BRJ STARTER</div>
+            <div class="badge">BASIC</div>
+        </div>
+
+        <h2>Starter Package</h2>
+
+        <div class="price">₹200 <small>/ Package</small></div>
+
+        <p class="description">
+            Your starting point with BRJ EMPIRE membership.
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            Starter Membership
+        </div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            Member Dashboard Access
+        </div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            Account Support
+        </div>
+
+        <button class="buy-btn" onclick="buyPackage(200,'Starter')">
+            BUY PACKAGE →
+        </button>
+
+    </div>
+
+
+    <!-- PACKAGE 500 -->
+
+    <div class="card featured">
+
+        <div class="card-top">
+            <div class="package-name">BRJ PRO</div>
+            <div class="badge">POPULAR</div>
+        </div>
+
+        <h2>Pro Package</h2>
+
+        <div class="price">₹500 <small>/ Package</small></div>
+
+        <p class="description">
+            An upgraded membership option for BRJ EMPIRE members.
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            Pro Membership
+        </div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            Member Dashboard Access
+        </div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            Account Support
+        </div>
+
+        <button class="buy-btn" onclick="buyPackage(500,'Pro')">
+            BUY PACKAGE →
+        </button>
+
+    </div>
+
+
+    <!-- PACKAGE 1000 -->
+
+    <div class="card">
+
+        <div class="card-top">
+            <div class="package-name">BRJ VIP</div>
+            <div class="badge">PREMIUM</div>
+        </div>
+
+        <h2>VIP Package</h2>
+
+        <div class="price">₹1,000 <small>/ Package</small></div>
+
+        <p class="description">
+            Premium membership option with applicable member services.
+        </p>
+
+        <div class="divider"></div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            VIP Membership
+        </div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            Member Dashboard Access
+        </div>
+
+        <div class="feature">
+            <span class="check">✓</span>
+            Account Support
+        </div>
+
+        <button class="buy-btn" onclick="buyPackage(1000,'VIP')">
+            BUY PACKAGE →
+        </button>
+
+    </div>
+
+</div>
+
+<div class="bottom-note">
+    🔒 <span>SECURE MEMBERSHIP PROCESS</span><br>
+    Package selection is the first step. Membership activation
+    requires successful payment verification.
+</div>
+```
+
+</div>
+
+<script>
+
+function buyPackage(amount,name){
+
+    const params=new URLSearchParams();
+
+    params.set("amount",amount);
+    params.set("package",name);
+
+    location.href="payment.html?"+params.toString();
+
+}
+
+</script>
+
+</body>
+</html>
