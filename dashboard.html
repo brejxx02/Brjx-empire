@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#080a10">
 <title>BRJ EMPIRE | Premium</title>
 
@@ -35,11 +35,7 @@ button,a{
     -webkit-tap-highlight-color:transparent;
 }
 
-button{
-    cursor:pointer;
-}
-
-/* HEADER */
+button{cursor:pointer}
 
 header{
     position:sticky;
@@ -58,6 +54,7 @@ header{
     display:flex;
     align-items:center;
     justify-content:space-between;
+    gap:12px;
 }
 
 .brand{
@@ -66,9 +63,7 @@ header{
     letter-spacing:2px;
 }
 
-.brand span{
-    color:var(--gold);
-}
+.brand span{color:var(--gold)}
 
 .header-actions{
     display:flex;
@@ -95,8 +90,6 @@ header{
     border-radius:50%;
     background:#e6bb58;
 }
-
-/* PAGE */
 
 .wrapper{
     max-width:1100px;
@@ -160,9 +153,7 @@ header{
     color:#8994a5;
 }
 
-.section{
-    margin-top:26px;
-}
+.section{margin-top:26px}
 
 .section-head{
     display:flex;
@@ -171,9 +162,7 @@ header{
     margin-bottom:14px;
 }
 
-.section-head h2{
-    font-size:17px;
-}
+.section-head h2{font-size:17px}
 
 .section-head span{
     font-size:10px;
@@ -270,9 +259,7 @@ header{
     transition:.2s;
 }
 
-.quick:active{
-    transform:scale(.96);
-}
+.quick:active{transform:scale(.96)}
 
 .quick-icon{
     font-size:22px;
@@ -301,9 +288,7 @@ header{
     transition:.25s;
 }
 
-.package:active{
-    transform:scale(.985);
-}
+.package:active{transform:scale(.985)}
 
 .package.vip{
     border-color:#78602f;
@@ -350,9 +335,7 @@ header{
     font-weight:800;
 }
 
-.package-btn:disabled{
-    opacity:.6;
-}
+.package-btn:disabled{opacity:.6}
 
 /* REFERRAL */
 
@@ -363,9 +346,7 @@ header{
     padding:20px;
 }
 
-.referral h3{
-    font-size:15px;
-}
+.referral h3{font-size:15px}
 
 .referral p{
     color:#939fb0;
@@ -438,9 +419,7 @@ header{
     min-width:0;
 }
 
-.kyc-info h3{
-    font-size:13px;
-}
+.kyc-info h3{font-size:13px}
 
 .kyc-info p{
     color:var(--muted);
@@ -475,13 +454,9 @@ header{
     font-size:12px;
 }
 
-.row:last-child{
-    border-bottom:none;
-}
+.row:last-child{border-bottom:none}
 
-.row span:first-child{
-    color:var(--muted);
-}
+.row span:first-child{color:var(--muted)}
 
 .row span:last-child{
     text-align:right;
@@ -503,9 +478,7 @@ header{
     font-size:13px;
 }
 
-.history-btn span:last-child{
-    color:var(--gold);
-}
+.history-btn span:last-child{color:var(--gold)}
 
 /* MODAL */
 
@@ -520,9 +493,7 @@ header{
     backdrop-filter:blur(5px);
 }
 
-.modal.show{
-    display:flex;
-}
+.modal.show{display:flex}
 
 .modal-box{
     width:100%;
@@ -548,9 +519,7 @@ header{
     margin-bottom:17px;
 }
 
-.modal-head h2{
-    font-size:18px;
-}
+.modal-head h2{font-size:18px}
 
 .close-btn{
     width:36px;
@@ -594,9 +563,7 @@ header{
     border-radius:14px;
 }
 
-.history-content .empty-icon{
-    font-size:30px;
-}
+.history-content .empty-icon{font-size:30px}
 
 .history-content h3{
     margin-top:12px;
@@ -622,9 +589,7 @@ header{
     color:#aeb9c8;
 }
 
-.notification-item strong{
-    color:var(--gold);
-}
+.notification-item strong{color:var(--gold)}
 
 /* SUPPORT */
 
@@ -676,9 +641,7 @@ header{
     font-size:10px;
 }
 
-.bottom-nav a.active{
-    color:var(--gold);
-}
+.bottom-nav a.active{color:var(--gold)}
 
 .nav-icon{
     font-size:19px;
@@ -708,7 +671,7 @@ header{
     opacity:0;
     pointer-events:none;
     transition:.25s;
-    z-index:300;
+    z-index:500;
     background:#202b3a;
     border:1px solid #39495f;
     padding:13px 17px;
@@ -740,16 +703,174 @@ header{
     margin-top:18px;
 }
 
+/* SIDEBAR */
+
+.menu-toggle{
+    font-size:22px;
+    color:var(--gold);
+    border-color:#5a492b;
+    flex-shrink:0;
+}
+
+.side-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.65);
+    z-index:400;
+    display:none;
+}
+
+.side-overlay.show{display:block}
+
+.sidebar{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    height:100dvh;
+    width:285px;
+    max-width:85%;
+    background:#0d121b;
+    border-right:1px solid #5a492b;
+    z-index:401;
+    transform:translateX(-100%);
+    transition:transform .28s ease;
+    overflow-y:auto;
+    padding:20px 15px calc(30px + env(safe-area-inset-bottom));
+}
+
+.sidebar.open{transform:translateX(0)}
+
+.sidebar-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 5px 22px;
+    border-bottom:1px solid var(--border);
+}
+
+.sidebar-brand{
+    font-size:19px;
+    font-weight:900;
+    letter-spacing:1.5px;
+}
+
+.sidebar-brand span{color:var(--gold)}
+
+.sidebar-close{
+    width:36px;
+    height:36px;
+    background:#171f2c;
+    color:white;
+    border:1px solid #303b4c;
+    border-radius:10px;
+    font-size:20px;
+}
+
+.sidebar-user{
+    padding:17px 12px;
+    margin:15px 0;
+    background:linear-gradient(135deg,#252116,#151c27);
+    border:1px solid #5a492b;
+    border-radius:15px;
+}
+
+.sidebar-user strong{
+    display:block;
+    font-size:14px;
+    overflow-wrap:anywhere;
+}
+
+.sidebar-user small{
+    display:block;
+    margin-top:6px;
+    color:var(--gold);
+    font-size:10px;
+}
+
+.sidebar-menu{display:grid;gap:5px}
+
+.sidebar-link{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:13px 12px;
+    border:1px solid transparent;
+    border-radius:11px;
+    background:transparent;
+    color:#b7c0ce;
+    text-decoration:none;
+    font-size:12px;
+    text-align:left;
+}
+
+.sidebar-link:active,
+.sidebar-link:hover{
+    background:#171f2b;
+    border-color:#303b4c;
+    color:var(--gold);
+}
+
+.sidebar-link .side-icon{
+    width:24px;
+    text-align:center;
+    font-size:17px;
+}
+
+.sidebar-divider{
+    height:1px;
+    background:#252e3b;
+    margin:10px 4px;
+}
+
+/* P2P UI */
+
+.p2p-card{
+    background:linear-gradient(145deg,#151c28,#10151e);
+    border:1px solid #5a492b;
+    border-radius:18px;
+    padding:20px;
+}
+
+.p2p-card input{
+    width:100%;
+    margin-top:10px;
+    padding:14px;
+    border-radius:11px;
+    background:#090d14;
+    border:1px solid #303d50;
+    color:#fff;
+    outline:none;
+    font-size:13px;
+}
+
+.p2p-card input:focus{border-color:var(--gold)}
+
+.p2p-btn{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border-radius:11px;
+    border:1px solid #5a492b;
+    background:linear-gradient(135deg,#f0cc70,#d5a541);
+    color:#17140d;
+    font-weight:900;
+    font-size:12px;
+}
+
+.p2p-note{
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.7;
+    margin-top:12px;
+}
+
 @media(min-width:700px){
-    .packages{
-        grid-template-columns:repeat(3,1fr);
-    }
-    .wrapper{
-        padding-top:30px;
-    }
-    .hero h1{
-        font-size:34px;
-    }
+    .packages{grid-template-columns:repeat(3,1fr)}
+    .wrapper{padding-top:30px}
+    .hero h1{font-size:34px}
+    .sidebar{width:300px}
 }
 
 @media(max-width:360px){
@@ -765,14 +886,104 @@ header{
 
 <header>
     <div class="header-inner">
+
+        <button class="icon-btn menu-toggle" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+
         <div class="brand">BRJ <span>EMPIRE</span></div>
 
         <div class="header-actions">
             <button class="icon-btn" onclick="openNotifications()">♧<span class="dot"></span></button>
             <button class="icon-btn" onclick="goProfile()">👤</button>
         </div>
+
     </div>
 </header>
+
+<!-- SIDEBAR -->
+<div class="side-overlay" id="sideOverlay" onclick="closeSideMenu()"></div>
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-head">
+        <div class="sidebar-brand">BRJ <span>EMPIRE</span></div>
+        <button class="sidebar-close" onclick="closeSideMenu()">×</button>
+    </div>
+
+    <div class="sidebar-user">
+        <strong id="sideMemberName">Member Account</strong>
+        <small>ID: <span id="sideMemberId">---</span></small>
+    </div>
+
+    <div class="sidebar-menu">
+
+        <a class="sidebar-link" href="dashboard.html">
+            <span class="side-icon">🏠</span> Dashboard
+        </a>
+
+        <a class="sidebar-link" href="#walletSection" onclick="closeSideMenu()">
+            <span class="side-icon">💰</span> My Wallet
+        </a>
+
+        <a class="sidebar-link" href="#roiSection" onclick="closeSideMenu()">
+            <span class="side-icon">📈</span> ROI Overview
+        </a>
+
+        <a class="sidebar-link" href="#packagesSection" onclick="closeSideMenu()">
+            <span class="side-icon">💼</span> Membership Options
+        </a>
+
+        <a class="sidebar-link" href="javascript:void(0)" onclick="openP2P()">
+            <span class="side-icon">🔄</span> P2P Transfer
+        </a>
+
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goDeposit()">
+            <span class="side-icon">📥</span> Deposit
+        </a>
+
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goWithdraw()">
+            <span class="side-icon">📤</span> Withdraw
+        </a>
+
+        <a class="sidebar-link" href="team.html">
+            <span class="side-icon">👥</span> My Team
+        </a>
+
+        <a class="sidebar-link" href="#referralSection" onclick="closeSideMenu()">
+            <span class="side-icon">🎁</span> Referral Rewards
+        </a>
+
+        <a class="sidebar-link" href="javascript:void(0)" onclick="openHistory()">
+            <span class="side-icon">📜</span> Transaction History
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a class="sidebar-link" href="profile.html">
+            <span class="side-icon">🪪</span> My Profile
+        </a>
+
+        <a class="sidebar-link" href="javascript:void(0)" onclick="openNotifications()">
+            <span class="side-icon">🔔</span> Notifications
+        </a>
+
+        <a class="sidebar-link" href="settings.html">
+            <span class="side-icon">⚙️</span> Settings
+        </a>
+
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goSecurity()">
+            <span class="side-icon">🔐</span> Security
+        </a>
+
+        <a class="sidebar-link" href="javascript:void(0)" onclick="goSupport()">
+            <span class="side-icon">🎧</span> Support Center
+        </a>
+
+        <a class="sidebar-link" href="javascript:void(0)" onclick="logout()">
+            <span class="side-icon">🚪</span> Logout
+        </a>
+
+    </div>
+</aside>
 
 <main class="wrapper">
 
@@ -787,7 +998,8 @@ header{
     </div>
 </section>
 
-<section class="section">
+<!-- WALLET -->
+<section class="section" id="walletSection">
     <div class="wallet">
         <div class="wallet-top">
             <small>Wallet Overview</small>
@@ -798,12 +1010,13 @@ header{
         <div class="balance-note">Balance is shown only when verified wallet data is available.</div>
 
         <div class="wallet-actions">
-            <button class="btn-gold" onclick="showToast('Deposit feature is not connected yet.')">＋ DEPOSIT</button>
-            <button class="btn-dark" onclick="showToast('Withdrawal feature is not connected yet.')">↗ WITHDRAW</button>
+            <button class="btn-gold" onclick="goDeposit()">＋ DEPOSIT</button>
+            <button class="btn-dark" onclick="goWithdraw()">↗ WITHDRAW</button>
         </div>
     </div>
 </section>
 
+<!-- QUICK SERVICES -->
 <section class="section">
     <div class="section-head">
         <h2>Quick Services</h2>
@@ -833,7 +1046,35 @@ header{
     </div>
 </section>
 
-<section class="section">
+<!-- ROI OVERVIEW -->
+<section class="section" id="roiSection">
+    <div class="section-head">
+        <h2>ROI Overview</h2>
+        <span>ACCOUNT SUMMARY</span>
+    </div>
+
+    <div class="account">
+        <div class="row">
+            <span>Total Investment</span>
+            <span>₹ 0.00</span>
+        </div>
+        <div class="row">
+            <span>Total Earnings</span>
+            <span>₹ 0.00</span>
+        </div>
+        <div class="row">
+            <span>Pending Earnings</span>
+            <span>₹ 0.00</span>
+        </div>
+        <div class="row">
+            <span>Active Investments</span>
+            <span>0</span>
+        </div>
+    </div>
+</section>
+
+<!-- MEMBERSHIPS -->
+<section class="section" id="packagesSection">
     <div class="section-head">
         <h2>Membership Options</h2>
         <span>BRJ MEMBERSHIP</span>
@@ -868,7 +1109,8 @@ header{
     </div>
 </section>
 
-<section class="section">
+<!-- REFERRAL -->
+<section class="section" id="referralSection">
     <div class="referral">
         <h3>🔗 Invitation Center</h3>
         <p>Share your personal referral link with friends.</p>
@@ -882,6 +1124,7 @@ header{
     </div>
 </section>
 
+<!-- KYC -->
 <section class="section">
     <div class="section-head">
         <h2>Identity Verification</h2>
@@ -897,6 +1140,7 @@ header{
     </div>
 </section>
 
+<!-- ACCOUNT INFO -->
 <section class="section">
     <div class="section-head">
         <h2>Account Information</h2>
@@ -911,6 +1155,7 @@ header{
     </div>
 </section>
 
+<!-- HISTORY BUTTON -->
 <section class="section">
     <button class="history-btn" onclick="openHistory()">
         <span>📜 Transaction History</span>
@@ -928,6 +1173,53 @@ header{
 </div>
 
 </main>
+
+<!-- P2P TRANSFER MODAL -->
+<div class="modal" id="p2pModal" onclick="modalBackdropClose(event,'p2pModal')">
+    <div class="modal-box">
+
+        <div class="modal-head">
+            <h2>🔄 Member Transfer</h2>
+            <button class="close-btn" onclick="closeModal('p2pModal')">✕</button>
+        </div>
+
+        <div class="p2p-card">
+
+            <div class="wallet-top">
+                <small>Available Balance</small>
+                <div class="wallet-icon">💰</div>
+            </div>
+
+            <div class="balance">₹ <span id="p2pBalance">0.00</span></div>
+
+            <p class="p2p-note">
+                Transfer funds to another BRJ EMPIRE member using their Member ID.
+            </p>
+
+            <label style="display:block;margin-top:20px;font-size:11px;color:#aab4c2">
+                Receiver Member ID
+            </label>
+
+            <input id="p2pReceiver" placeholder="Enter receiver's Member ID">
+
+            <label style="display:block;margin-top:16px;font-size:11px;color:#aab4c2">
+                Transfer Amount (₹)
+            </label>
+
+            <input id="p2pAmount" type="number" min="1" placeholder="Enter amount">
+
+            <button class="p2p-btn" onclick="submitP2P()">
+                CONTINUE TRANSFER
+            </button>
+
+            <p class="p2p-note">
+                Always verify the receiver's identity and Member ID before proceeding.
+            </p>
+
+        </div>
+
+    </div>
+</div>
 
 <!-- HISTORY MODAL -->
 <div class="modal" id="historyModal" onclick="modalBackdropClose(event,'historyModal')">
@@ -948,12 +1240,12 @@ header{
         <div class="history-content" id="historyContent">
             <div class="empty-icon">📂</div>
             <h3>No records available</h3>
-            <p>Your verified transaction records will appear here when connected.</p>
+            <p>Your transaction records will appear here when connected.</p>
         </div>
     </div>
 </div>
 
-<!-- NOTIFICATION MODAL -->
+<!-- NOTIFICATIONS -->
 <div class="modal" id="notificationModal" onclick="modalBackdropClose(event,'notificationModal')">
     <div class="modal-box">
         <div class="modal-head">
@@ -973,18 +1265,27 @@ header{
     </div>
 </div>
 
-<!-- TELEGRAM SUPPORT -->
+<!-- SUPPORT -->
 <a class="support-float"
    href="https://t.me/LEON_DIWAPAY"
    target="_blank"
    rel="noopener noreferrer"
    aria-label="Telegram Support">➤</a>
 
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-    <a href="dashboard.html" class="active"><div class="nav-icon">⌂</div>Home</a>
-    <a href="team.html"><div class="nav-icon">♧</div>Team</a>
-    <a href="profile.html"><div class="nav-icon">◉</div>Profile</a>
-    <a href="settings.html"><div class="nav-icon">⚙</div>Settings</a>
+    <a href="dashboard.html" class="active">
+        <div class="nav-icon">⌂</div>Home
+    </a>
+    <a href="team.html">
+        <div class="nav-icon">♧</div>Team
+    </a>
+    <a href="profile.html">
+        <div class="nav-icon">◉</div>Profile
+    </a>
+    <a href="settings.html">
+        <div class="nav-icon">⚙</div>Settings
+    </a>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -997,21 +1298,37 @@ let currentUser = null;
 let referralCode = "";
 
 function showToast(text){
-    const toast = document.getElementById("toast");
-    toast.textContent = text;
+    const toast=document.getElementById("toast");
+    toast.textContent=text;
     toast.classList.add("show");
 
     clearTimeout(window.toastTimer);
-    window.toastTimer = setTimeout(()=>{
+    window.toastTimer=setTimeout(()=>{
         toast.classList.remove("show");
     },2600);
+}
+
+/* SIDEBAR */
+function toggleMenu(){
+    const sidebar=document.getElementById("sidebar");
+    const overlay=document.getElementById("sideOverlay");
+
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+}
+
+function closeSideMenu(){
+    document.getElementById("sidebar").classList.remove("open");
+    document.getElementById("sideOverlay").classList.remove("show");
 }
 
 function goProfile(){
     location.href="profile.html";
 }
 
+/* MODALS */
 function openHistory(){
+    closeSideMenu();
     document.getElementById("historyModal").classList.add("show");
 }
 
@@ -1020,17 +1337,20 @@ function closeModal(id){
 }
 
 function modalBackdropClose(event,id){
-    if(event.target.id===id) closeModal(id);
+    if(event.target.id===id)closeModal(id);
 }
 
 function openNotifications(){
+    closeSideMenu();
     document.getElementById("notificationModal").classList.add("show");
 }
 
+/* HISTORY TABS */
 function setHistoryTab(button,type){
     document.querySelectorAll("#historyModal .tab").forEach(t=>{
         t.classList.remove("active");
     });
+
     button.classList.add("active");
 
     const content=document.getElementById("historyContent");
@@ -1042,55 +1362,63 @@ function setHistoryTab(button,type){
     `;
 }
 
-async function loadDashboard(){
-    const db=window.brjSupabase||window.supabaseClient;
+/* P2P */
+function openP2P(){
+    closeSideMenu();
 
-    if(!db){
-        showToast("Database connection unavailable.");
+    document.getElementById("p2pReceiver").value="";
+    document.getElementById("p2pAmount").value="";
+
+    document.getElementById("p2pBalance").textContent=
+        document.getElementById("walletBalance").textContent;
+
+    document.getElementById("p2pModal").classList.add("show");
+}
+
+function submitP2P(){
+    const receiver=document.getElementById("p2pReceiver").value.trim();
+    const amount=document.getElementById("p2pAmount").value;
+
+    if(!receiver){
+        showToast("Enter receiver Member ID.");
         return;
     }
 
-    try{
-        const {data,error}=await db.auth.getSession();
-
-        if(error||!data.session){
-            location.href="index.html";
-            return;
-        }
-
-        currentUser=data.session.user;
-        const user=currentUser;
-        const meta=user.user_metadata||{};
-        const name=meta.full_name||meta.name||"Member";
-        const mobile=meta.mobile||"Not provided";
-        const shortId=user.id.substring(0,8).toUpperCase();
-
-        referralCode=shortId;
-
-        document.getElementById("memberName").textContent=name;
-        document.getElementById("profileName").textContent=name;
-        document.getElementById("profileEmail").textContent=user.email||"Not available";
-        document.getElementById("profileMobile").textContent=mobile;
-        document.getElementById("memberId").textContent=shortId;
-        document.getElementById("memberIdRow").textContent=shortId;
-
-        if(user.created_at){
-            document.getElementById("memberSince").textContent=
-                new Date(user.created_at).toLocaleDateString("en-IN");
-        }
-
-        const link=location.origin+
-            location.pathname.replace("dashboard.html","index.html")+
-            "?ref="+encodeURIComponent(referralCode);
-
-        document.getElementById("referralLink").value=link;
-
-    }catch(err){
-        console.error(err);
-        showToast("Unable to load account.");
+    if(currentUser && receiver===currentUser.id.substring(0,8).toUpperCase()){
+        showToast("You cannot transfer to your own account.");
+        return;
     }
+
+    if(!amount||Number(amount)<=0){
+        showToast("Enter a valid transfer amount.");
+        return;
+    }
+
+    showToast("Transfer could not be completed.");
 }
 
+/* SHORTCUTS */
+function goDeposit(){
+    closeSideMenu();
+    showToast("Deposit information unavailable.");
+}
+
+function goWithdraw(){
+    closeSideMenu();
+    showToast("Withdrawal information unavailable.");
+}
+
+function goSecurity(){
+    closeSideMenu();
+    showToast("Security settings can be managed from your account.");
+}
+
+function goSupport(){
+    closeSideMenu();
+    window.open("https://t.me/LEON_DIWAPAY","_blank");
+}
+
+/* REFERRAL */
 async function copyReferral(){
     const input=document.getElementById("referralLink");
     const link=input.value;
@@ -1101,7 +1429,7 @@ async function copyReferral(){
         }else{
             input.focus();
             input.select();
-            if(!document.execCommand("copy")) throw new Error("copy failed");
+            if(!document.execCommand("copy"))throw new Error("copy failed");
         }
         showToast("Referral link copied!");
     }catch{
@@ -1120,23 +1448,81 @@ async function shareReferral(){
                 url:link
             });
         }catch(e){
-            if(e.name!=="AbortError") showToast("Unable to share.");
+            if(e.name!=="AbortError")showToast("Unable to share.");
         }
     }else{
         copyReferral();
     }
 }
 
+/* LOGOUT */
 async function logout(){
     const db=window.brjSupabase||window.supabaseClient;
-    if(!db) return location.href="index.html";
+
+    if(!db)return location.href="index.html";
 
     const {error}=await db.auth.signOut();
+
     if(error){
         showToast("Logout failed.");
         return;
     }
+
     location.href="index.html";
+}
+
+/* LOAD MEMBER */
+async function loadDashboard(){
+    const db=window.brjSupabase||window.supabaseClient;
+
+    if(!db){
+        showToast("Database connection unavailable.");
+        return;
+    }
+
+    try{
+        const {data,error}=await db.auth.getSession();
+
+        if(error||!data.session){
+            location.href="index.html";
+            return;
+        }
+
+        currentUser=data.session.user;
+
+        const user=currentUser;
+        const meta=user.user_metadata||{};
+        const name=meta.full_name||meta.name||"Member";
+        const mobile=meta.mobile||"Not provided";
+        const shortId=user.id.substring(0,8).toUpperCase();
+
+        referralCode=shortId;
+
+        document.getElementById("memberName").textContent=name;
+        document.getElementById("profileName").textContent=name;
+        document.getElementById("profileEmail").textContent=user.email||"Not available";
+        document.getElementById("profileMobile").textContent=mobile;
+        document.getElementById("memberId").textContent=shortId;
+        document.getElementById("memberIdRow").textContent=shortId;
+
+        document.getElementById("sideMemberName").textContent=name;
+        document.getElementById("sideMemberId").textContent=shortId;
+
+        if(user.created_at){
+            document.getElementById("memberSince").textContent=
+                new Date(user.created_at).toLocaleDateString("en-IN");
+        }
+
+        const link=location.origin+
+            location.pathname.replace("dashboard.html","index.html")+
+            "?ref="+encodeURIComponent(referralCode);
+
+        document.getElementById("referralLink").value=link;
+
+    }catch(err){
+        console.error(err);
+        showToast("Unable to load account.");
+    }
 }
 
 loadDashboard();
