@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080a10">
-<title>BRJ EMPIRE | Secure Payment</title>
+
+<title>BRJ EMPIRE | Premium Checkout</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
@@ -18,35 +19,42 @@
 }
 
 :root{
-    --gold:#e4b85e;
-    --gold2:#bd8738;
-    --bg:#080a10;
-    --card:#121823;
-    --muted:#8995a7;
-    --border:rgba(228,184,94,.19);
+    --gold:#f1cc7b;
+    --gold2:#c18c3e;
+    --bg:#07090e;
+    --card:#111722;
+    --muted:#8e9aab;
+    --border:rgba(241,204,123,.17);
 }
 
 body{
     background:
-    radial-gradient(ellipse at 50% -10%,rgba(190,139,55,.15),transparent 45%),
-    #080a10;
+    radial-gradient(ellipse at 50% -10%,rgba(207,158,69,.18),transparent 45%),
+    radial-gradient(ellipse at 100% 45%,rgba(184,134,54,.055),transparent 40%),
+    #07090e;
     color:#fff;
     min-height:100vh;
-    padding:20px 16px 45px;
+    padding:18px 15px 45px;
+}
+
+button{
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
 }
 
 .container{
-    max-width:480px;
+    max-width:490px;
     margin:auto;
 }
 
 /* HEADER */
 
 .header{
+    height:65px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    margin:8px 0 28px;
+    margin-bottom:30px;
 }
 
 .brand{
@@ -58,399 +66,92 @@ body{
 .logo{
     width:46px;
     height:46px;
-    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:linear-gradient(145deg,#f0ca79,#9d6927);
-    color:#15100a;
-    font-size:20px;
+    border-radius:15px;
+    background:linear-gradient(145deg,#ffe5a5,#c18a39);
+    color:#171109;
+    font-size:23px;
     font-weight:1000;
-    box-shadow:0 5px 22px rgba(228,184,94,.2);
+    box-shadow:0 5px 25px rgba(222,174,88,.25);
 }
 
 .brand-name{
     font-size:17px;
-    font-weight:900;
-    letter-spacing:1.2px;
+    font-weight:950;
+    letter-spacing:1.5px;
+}
+
+.brand-name span{
+    color:var(--gold);
 }
 
 .brand-sub{
-    font-size:10px;
-    color:var(--gold);
-    letter-spacing:2px;
-    margin-top:3px;
+    font-size:9px;
+    color:#b18c4c;
+    letter-spacing:2.5px;
+    margin-top:4px;
 }
 
 .back{
-    width:42px;
-    height:42px;
-    border-radius:13px;
+    width:43px;
+    height:43px;
+    border-radius:14px;
+    border:1px solid #303846;
     background:#151c27;
-    border:1px solid #303947;
     color:white;
-    font-size:24px;
-    cursor:pointer;
-}
-
-/* TITLE */
-
-.page-title{
-    margin-bottom:23px;
-}
-
-.page-title .small{
-    color:var(--gold);
-    font-size:11px;
-    font-weight:800;
-    letter-spacing:2px;
-    margin-bottom:9px;
-}
-
-.page-title h1{
-    font-size:28px;
-    font-weight:850;
-    letter-spacing:-.8px;
-}
-
-.page-title p{
-    color:var(--muted);
-    font-size:13px;
-    margin-top:8px;
-}
-
-/* PACKAGE CARD */
-
-.package-card{
-    position:relative;
-    overflow:hidden;
-    padding:23px;
-    border-radius:22px;
-    background:
-    linear-gradient(125deg,rgba(228,184,94,.13),transparent 55%),
-    linear-gradient(145deg,#19212d,#10151e);
-    border:1px solid var(--border);
-    margin-bottom:20px;
-}
-
-.package-card:after{
-    content:"BRJ";
-    position:absolute;
-    right:-10px;
-    bottom:-34px;
-    font-size:105px;
-    font-weight:1000;
-    color:rgba(228,184,94,.035);
-}
-
-.package-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.package-label{
-    color:#aab5c5;
-    font-size:11px;
-    letter-spacing:1.5px;
-    font-weight:700;
-}
-
-.package-badge{
-    color:#171109;
-    background:linear-gradient(135deg,#f2d28d,#c38e3c);
-    font-size:10px;
-    padding:7px 12px;
-    border-radius:20px;
-    font-weight:900;
-}
-
-.package-name{
     font-size:25px;
-    font-weight:850;
-    margin-top:17px;
 }
 
-.package-price{
-    font-size:39px;
-    font-weight:950;
-    color:var(--gold);
-    margin-top:4px;
-}
+/* HERO */
 
-.package-bottom{
-    border-top:1px solid rgba(255,255,255,.09);
-    margin-top:20px;
-    padding-top:15px;
-    display:flex;
-    justify-content:space-between;
-    font-size:12px;
-    color:#aab5c5;
-}
-
-.package-bottom strong{
-    color:#fff;
-}
-
-/* SECTION */
-
-.section{
-    background:linear-gradient(145deg,#151d29,#10151e);
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:21px;
-    padding:21px;
-    margin-bottom:17px;
-}
-
-.section-heading{
-    display:flex;
-    align-items:center;
-    gap:11px;
-    margin-bottom:19px;
-}
-
-.section-icon{
-    width:39px;
-    height:39px;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(228,184,94,.12);
-    font-size:18px;
-}
-
-.section-heading h3{
-    font-size:16px;
-    font-weight:800;
-}
-
-.section-heading p{
-    font-size:11px;
-    color:var(--muted);
-    margin-top:4px;
-}
-
-/* QR */
-
-.qr-box{
-    border:1px dashed rgba(228,184,94,.4);
-    background:rgba(228,184,94,.035);
-    border-radius:17px;
-    padding:20px;
+.hero{
     text-align:center;
+    margin:10px 0 26px;
 }
 
-.qr-placeholder{
-    width:175px;
-    height:175px;
-    margin:0 auto 15px;
-    border-radius:13px;
-    border:1px dashed #9d793e;
-    background:#0b1018;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    gap:9px;
-    color:#a9b3c2;
-}
-
-.qr-symbol{
-    font-size:48px;
-    color:var(--gold);
-}
-
-.qr-placeholder small{
-    font-size:10px;
-    letter-spacing:1px;
-}
-
-.qr-title{
-    font-size:14px;
-    font-weight:800;
-}
-
-.qr-sub{
-    font-size:11px;
-    color:var(--muted);
-    margin-top:5px;
-}
-
-.upi-details{
-    margin-top:18px;
-    background:#0b1018;
-    border:1px solid #293342;
-    border-radius:14px;
-    padding:15px;
-}
-
-.upi-label{
-    color:var(--muted);
-    font-size:11px;
-    margin-bottom:9px;
-}
-
-.upi-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:8px;
-}
-
-.upi-id{
-    font-size:13px;
-    font-weight:800;
-    word-break:break-all;
-}
-
-.copy-btn{
-    flex-shrink:0;
-    border:0;
-    border-radius:9px;
-    background:linear-gradient(135deg,#f0ca79,#c18a39);
-    color:#171109;
-    font-size:11px;
-    font-weight:900;
-    padding:10px 13px;
-}
-
-/* INPUT */
-
-.field{
-    margin-bottom:19px;
-}
-
-.field label{
-    display:block;
-    font-size:12px;
-    color:#c5ceda;
-    font-weight:700;
-    margin-bottom:9px;
-}
-
-.input{
-    width:100%;
-    height:51px;
-    padding:0 15px;
-    border-radius:12px;
-    outline:none;
-    background:#0b1018;
-    border:1px solid #303b4b;
-    color:#fff;
-    font-size:14px;
-}
-
-.input:focus{
-    border-color:var(--gold);
-}
-
-.input::placeholder{
-    color:#667386;
-}
-
-/* FILE UPLOAD */
-
-.upload-box{
-    position:relative;
-    border:1px dashed rgba(228,184,94,.42);
-    background:rgba(228,184,94,.035);
-    padding:24px 15px;
-    border-radius:15px;
-    text-align:center;
-}
-
-.upload-icon{
-    font-size:32px;
-    margin-bottom:9px;
-}
-
-.upload-box strong{
-    display:block;
-    font-size:13px;
-}
-
-.upload-box p{
-    font-size:11px;
-    color:var(--muted);
-    margin-top:7px;
-}
-
-.upload-box input{
-    width:100%;
-    margin-top:15px;
-    font-size:11px;
-    color:#b9c4d2;
-}
-
-.file-name{
-    font-size:11px;
-    color:var(--gold);
-    margin-top:10px;
-    word-break:break-all;
-}
-
-/* INSTRUCTIONS */
-
-.instructions{
-    background:rgba(228,184,94,.055);
-    border:1px solid rgba(228,184,94,.15);
-    border-radius:14px;
-    padding:15px;
-    margin-bottom:18px;
-}
-
-.instructions h4{
-    color:var(--gold);
-    font-size:12px;
-    margin-bottom:10px;
-}
-
-.instructions p{
-    color:#aeb8c7;
-    font-size:11px;
-    line-height:1.8;
-}
-
-/* BUTTON */
-
-.submit-btn{
-    width:100%;
-    height:55px;
-    border:0;
-    border-radius:14px;
-    background:linear-gradient(115deg,#f1cd82,#c28b3c);
-    color:#15100a;
-    font-size:14px;
-    font-weight:950;
-    letter-spacing:.6px;
-    box-shadow:0 7px 22px rgba(205,153,66,.16);
-}
-
-.submit-btn:disabled{
-    opacity:.55;
-    cursor:not-allowed;
-}
-
-/* SECURITY */
-
-.security{
-    display:flex;
-    justify-content:center;
+.hero-tag{
+    display:inline-flex;
     align-items:center;
     gap:7px;
-    color:#8592a3;
-    font-size:11px;
+    padding:8px 15px;
+    border-radius:30px;
+    border:1px solid rgba(241,204,123,.25);
+    background:rgba(241,204,123,.07);
+    color:var(--gold);
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.hero h1{
+    font-size:29px;
+    font-weight:950;
+    letter-spacing:-1px;
     margin-top:17px;
 }
+
+.hero h1 span{
+    color:var(--gold);
+}
+
+.hero p{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.8;
+    margin-top:10px;
+}
+
+/* STATUS */
 
 .status{
     display:none;
-    padding:14px;
+    padding:15px;
     border-radius:13px;
-    margin-bottom:17px;
+    margin-bottom:18px;
     font-size:13px;
-    line-height:1.6;
+    line-height:1.7;
 }
 
 .status.success{
@@ -467,18 +168,409 @@ body{
     color:#ffb3b3;
 }
 
+/* PACKAGE CARD */
+
+.package-card{
+    position:relative;
+    overflow:hidden;
+    padding:24px;
+    border-radius:23px;
+    border:1px solid rgba(241,204,123,.34);
+    background:
+    radial-gradient(circle at 100% 0,rgba(241,204,123,.18),transparent 48%),
+    linear-gradient(140deg,#242016,#121923 75%);
+    box-shadow:0 12px 40px rgba(0,0,0,.25);
+    margin-bottom:22px;
+}
+
+.package-card:after{
+    content:"BRJ";
+    position:absolute;
+    right:-10px;
+    bottom:-35px;
+    font-size:105px;
+    font-weight:1000;
+    color:rgba(241,204,123,.045);
+    pointer-events:none;
+}
+
+.package-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.package-label{
+    color:#aeb8c6;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+
+.package-badge{
+    padding:7px 12px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#ffe6a5,#c18b3b);
+    color:#171109;
+    font-size:9px;
+    font-weight:950;
+    letter-spacing:1px;
+}
+
+.package-name{
+    font-size:23px;
+    font-weight:900;
+    margin-top:19px;
+}
+
+.package-price{
+    font-size:43px;
+    font-weight:1000;
+    letter-spacing:-1.5px;
+    color:#f6d895;
+    margin-top:5px;
+}
+
+.package-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-top:1px solid rgba(255,255,255,.1);
+    margin-top:20px;
+    padding-top:16px;
+    color:#a9b4c2;
+    font-size:11px;
+}
+
+.package-bottom strong{
+    color:#fff;
+}
+
+/* SECTION */
+
+.section{
+    background:
+    linear-gradient(145deg,rgba(255,255,255,.025),transparent),
+    #111722;
+    border:1px solid rgba(255,255,255,.075);
+    border-radius:22px;
+    padding:21px;
+    margin-bottom:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+
+.section-heading{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.section-icon{
+    width:43px;
+    height:43px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    background:rgba(241,204,123,.10);
+    border:1px solid rgba(241,204,123,.12);
+    font-size:19px;
+}
+
+.section-heading h3{
+    font-size:15px;
+    font-weight:900;
+}
+
+.section-heading p{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:5px;
+}
+
+/* QR PAYMENT */
+
+.qr-box{
+    text-align:center;
+    padding:20px 13px;
+    border-radius:19px;
+    border:1px solid rgba(241,204,123,.22);
+    background:
+    radial-gradient(circle at 50% 0,rgba(241,204,123,.10),transparent 65%),
+    #0b1018;
+}
+
+.qr-status{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:#8ee2ad;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1.4px;
+    margin-bottom:17px;
+}
+
+.qr-dot{
+    width:7px;
+    height:7px;
+    background:#5bdc91;
+    border-radius:50%;
+    box-shadow:0 0 10px #5bdc91;
+}
+
+.qr-frame{
+    width:245px;
+    max-width:100%;
+    margin:auto;
+    padding:10px;
+    border-radius:17px;
+    background:linear-gradient(145deg,#f5d997,#bd873a);
+    box-shadow:0 8px 35px rgba(0,0,0,.4);
+}
+
+.qr-image{
+    width:100%;
+    display:block;
+    border-radius:10px;
+    background:white;
+    padding:3px;
+    image-rendering:auto;
+}
+
+.qr-title{
+    font-size:17px;
+    font-weight:950;
+    margin-top:20px;
+}
+
+.qr-sub{
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.8;
+    margin-top:7px;
+}
+
+/* UPI */
+
+.upi-details{
+    margin-top:17px;
+    padding:16px;
+    background:#090e16;
+    border:1px solid #303b4b;
+    border-radius:16px;
+}
+
+.upi-label{
+    color:#8996a8;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1.6px;
+    margin-bottom:12px;
+}
+
+.upi-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.upi-id{
+    font-size:12px;
+    font-weight:850;
+    color:#f4d99e;
+    word-break:break-all;
+    line-height:1.6;
+}
+
+.copy-btn{
+    flex-shrink:0;
+    padding:11px 13px;
+    border:0;
+    border-radius:10px;
+    background:linear-gradient(135deg,#f4d994,#c18a3a);
+    color:#171109;
+    font-size:10px;
+    font-weight:950;
+}
+
+/* PAYMENT STEPS */
+
+.steps{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+}
+
+.step{
+    flex:1;
+    padding:12px 7px;
+    border-radius:12px;
+    background:#0b111a;
+    border:1px solid #263241;
+    text-align:center;
+}
+
+.step-icon{
+    font-size:19px;
+    margin-bottom:7px;
+}
+
+.step-text{
+    font-size:9px;
+    color:#aab5c4;
+    font-weight:800;
+}
+
+/* FORM */
+
+.field{
+    margin-bottom:19px;
+}
+
+.field label{
+    display:block;
+    color:#c5ceda;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.7px;
+    margin-bottom:10px;
+}
+
+.input{
+    width:100%;
+    height:53px;
+    padding:0 15px;
+    border-radius:13px;
+    outline:none;
+    background:#090e16;
+    border:1px solid #303b4b;
+    color:#fff;
+    font-size:14px;
+    transition:.2s;
+}
+
+.input:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px rgba(241,204,123,.07);
+}
+
+.input::placeholder{
+    color:#697789;
+}
+
+/* UPLOAD */
+
+.upload-box{
+    padding:22px 14px;
+    border:1px dashed rgba(241,204,123,.38);
+    border-radius:16px;
+    background:rgba(241,204,123,.035);
+    text-align:center;
+}
+
+.upload-icon{
+    font-size:33px;
+    margin-bottom:10px;
+}
+
+.upload-box strong{
+    display:block;
+    font-size:13px;
+}
+
+.upload-box p{
+    color:var(--muted);
+    font-size:10px;
+    margin-top:7px;
+}
+
+.upload-box input{
+    width:100%;
+    margin-top:16px;
+    color:#abb7c7;
+    font-size:11px;
+}
+
+.file-name{
+    color:var(--gold);
+    font-size:11px;
+    margin-top:12px;
+    word-break:break-all;
+}
+
+/* INSTRUCTIONS */
+
+.instructions{
+    padding:16px;
+    border-radius:15px;
+    background:rgba(241,204,123,.055);
+    border:1px solid rgba(241,204,123,.14);
+    margin-bottom:20px;
+}
+
+.instructions h4{
+    color:var(--gold);
+    font-size:11px;
+    font-weight:950;
+    letter-spacing:1px;
+    margin-bottom:10px;
+}
+
+.instructions p{
+    color:#aeb8c7;
+    font-size:10px;
+    line-height:2;
+}
+
+/* SUBMIT */
+
+.submit-btn{
+    width:100%;
+    height:57px;
+    border:0;
+    border-radius:15px;
+    background:linear-gradient(115deg,#ffe6a5,#d4a34f,#b77d30);
+    color:#171109;
+    font-size:12px;
+    font-weight:1000;
+    letter-spacing:1px;
+    box-shadow:0 8px 25px rgba(205,153,66,.19);
+    transition:.2s;
+}
+
+.submit-btn:active{
+    transform:scale(.98);
+}
+
+.submit-btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.security{
+    text-align:center;
+    color:#8592a3;
+    font-size:10px;
+    margin-top:17px;
+}
+
 .footer{
     text-align:center;
-    color:#697688;
-    font-size:10px;
-    margin-top:27px;
-    letter-spacing:.7px;
+    color:#687487;
+    font-size:9px;
+    letter-spacing:1.5px;
+    margin-top:29px;
+    line-height:2;
 }
 
 @media(max-width:360px){
-    .page-title h1{font-size:24px}
-    .package-price{font-size:33px}
-    .section{padding:17px}
+    .hero h1{font-size:25px}
+    .package-price{font-size:36px}
+    .section{padding:16px}
+    .qr-frame{width:220px}
 }
 </style>
 </head>
@@ -487,197 +579,265 @@ body{
 
 <div class="container">
 
-    <!-- HEADER -->
+<!-- HEADER -->
 
-    <header class="header">
+<header class="header">
 
-        <div class="brand">
-            <div class="logo">B</div>
+    <div class="brand">
 
-            <div>
-                <div class="brand-name">BRJ EMPIRE</div>
-                <div class="brand-sub">MEMBER PAYMENT</div>
-            </div>
-        </div>
+        <div class="logo">B</div>
 
-        <button class="back" onclick="history.back()">‹</button>
-
-    </header>
-
-
-    <!-- TITLE -->
-
-    <div class="page-title">
-        <div class="small">SECURE CHECKOUT</div>
-        <h1>Complete Your Payment</h1>
-        <p>Review your package and submit your payment details.</p>
-    </div>
-
-
-    <div id="statusMessage" class="status"></div>
-
-
-    <!-- PACKAGE SUMMARY -->
-
-    <div class="package-card">
-
-        <div class="package-top">
-            <div class="package-label">YOUR SELECTED PACKAGE</div>
-            <div class="package-badge">BRJ EMPIRE</div>
-        </div>
-
-        <div class="package-name" id="packageName">Loading...</div>
-
-        <div class="package-price" id="packageAmount">₹0</div>
-
-        <div class="package-bottom">
-            <span>Payment Type</span>
-            <strong>Package Payment</strong>
+        <div>
+            <div class="brand-name">BRJ <span>EMPIRE</span></div>
+            <div class="brand-sub">PREMIUM MEMBERSHIP</div>
         </div>
 
     </div>
 
+    <button class="back" onclick="history.back()">‹</button>
 
-    <!-- PAYMENT DETAILS -->
+</header>
 
-    <div class="section">
 
-        <div class="section-heading">
-            <div class="section-icon">💳</div>
-            <div>
-                <h3>Payment Details</h3>
-                <p>Official payment information</p>
-            </div>
+<!-- HERO -->
+
+<div class="hero">
+
+    <div class="hero-tag">
+        ✦ SECURE PAYMENT GATEWAY ✦
+    </div>
+
+    <h1>Complete Your <span>Payment</span></h1>
+
+    <p>
+        Complete your package payment and submit
+        your transaction details for verification.
+    </p>
+
+</div>
+
+
+<div id="statusMessage" class="status"></div>
+
+
+<!-- PACKAGE SUMMARY -->
+
+<div class="package-card">
+
+    <div class="package-top">
+
+        <div class="package-label">
+            SELECTED MEMBERSHIP
         </div>
 
-
-        <div class="qr-box">
-
-            <div class="qr-placeholder">
-                <div class="qr-symbol">▦</div>
-                <small>QR CODE</small>
-                <small>WILL BE ADDED LATER</small>
-            </div>
-
-            <div class="qr-title">Scan & Pay</div>
-            <div class="qr-sub">
-                Official QR code will be available here.
-            </div>
-
+        <div class="package-badge">
+            BRJ EMPIRE
         </div>
 
+    </div>
 
-        <div class="upi-details">
+    <div class="package-name" id="packageName">
+        Loading...
+    </div>
 
-            <div class="upi-label">OFFICIAL UPI ID</div>
+    <div class="package-price" id="packageAmount">
+        ₹0
+    </div>
 
-            <div class="upi-row">
+    <div class="package-bottom">
 
-                <div class="upi-id" id="upiID">
-                    UPI ID WILL BE ADDED LATER
-                </div>
+        <span>Payment Type</span>
 
-                <button class="copy-btn" onclick="copyUPI()">
-                    COPY
-                </button>
+        <strong>Membership Package</strong>
 
-            </div>
+    </div>
 
+</div>
+
+
+<!-- PAYMENT SECTION -->
+
+<div class="section">
+
+    <div class="section-heading">
+
+        <div class="section-icon">💳</div>
+
+        <div>
+            <h3>Official Payment</h3>
+            <p>Scan QR or use UPI ID to pay</p>
         </div>
 
     </div>
 
 
-    <!-- PAYMENT FORM -->
+    <div class="qr-box">
 
-    <div class="section">
-
-        <div class="section-heading">
-            <div class="section-icon">🧾</div>
-
-            <div>
-                <h3>Payment Confirmation</h3>
-                <p>Enter your transaction details</p>
-            </div>
+        <div class="qr-status">
+            <span class="qr-dot"></span>
+            PAYMENT QR
         </div>
 
+        <div class="qr-frame">
 
-        <div class="field">
+            <img src="payment-qr.png" alt="Payment QR Code"
+     style="width:220px;height:220px;object-fit:contain;border-radius:12px;">
+            
 
-            <label>UTR / TRANSACTION REFERENCE NUMBER</label>
+        </div>
+
+        <div class="qr-title">
+            Scan & Pay
+        </div>
+
+        <div class="qr-sub">
+            Open your UPI application and scan
+            the QR code to complete payment.
+            <br>
+            Enter the exact package amount shown above.
+        </div>
+
+    </div>
+
+
+    <div class="upi-details">
+
+        <div class="upi-label">
+            OFFICIAL UPI PAYMENT ID
+        </div>
+
+        <div class="upi-row">
+
+            <div class="upi-id" id="upiID">
+                9587467290-4.wallet@phonepe
+            </div>
+
+            <button class="copy-btn" onclick="copyUPI()">
+                COPY ID
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+            <div class="step-icon">📱</div>
+            <div class="step-text">SCAN QR</div>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">💸</div>
+            <div class="step-text">MAKE PAYMENT</div>
+        </div>
+
+        <div class="step">
+            <div class="step-icon">🧾</div>
+            <div class="step-text">SUBMIT UTR</div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CONFIRMATION FORM -->
+
+<div class="section">
+
+    <div class="section-heading">
+
+        <div class="section-icon">🧾</div>
+
+        <div>
+            <h3>Payment Verification</h3>
+            <p>Submit your payment confirmation</p>
+        </div>
+
+    </div>
+
+
+    <div class="field">
+
+        <label>UTR / TRANSACTION REFERENCE NUMBER</label>
+
+        <input
+            class="input"
+            type="text"
+            id="utrNumber"
+            placeholder="Enter your UTR number"
+            maxlength="30"
+            autocomplete="off"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label>PAYMENT SCREENSHOT</label>
+
+        <div class="upload-box">
+
+            <div class="upload-icon">📤</div>
+
+            <strong>Upload Payment Screenshot</strong>
+
+            <p>JPG, PNG or WEBP · Maximum 5 MB</p>
 
             <input
-                class="input"
-                type="text"
-                id="utrNumber"
-                placeholder="Enter your UTR number"
-                maxlength="30"
-                autocomplete="off"
+                type="file"
+                id="paymentScreenshot"
+                accept="image/jpeg,image/png,image/webp"
+                onchange="showFileName()"
             >
 
-        </div>
-
-
-        <div class="field">
-
-            <label>PAYMENT SCREENSHOT</label>
-
-            <div class="upload-box">
-
-                <div class="upload-icon">📤</div>
-
-                <strong>Upload Payment Screenshot</strong>
-
-                <p>JPG, PNG or WEBP · Maximum 5 MB</p>
-
-                <input
-                    type="file"
-                    id="paymentScreenshot"
-                    accept="image/jpeg,image/png,image/webp"
-                    onchange="showFileName()"
-                >
-
-                <div class="file-name" id="fileName">
-                    No file selected
-                </div>
-
+            <div class="file-name" id="fileName">
+                No file selected
             </div>
 
         </div>
 
-
-        <div class="instructions">
-
-            <h4>IMPORTANT INSTRUCTIONS</h4>
-
-            <p>
-                • Enter the correct transaction reference number.<br>
-                • Upload a clear payment screenshot.<br>
-                • Do not submit incorrect payment information.<br>
-                • Your request will remain pending until verified.
-            </p>
-
-        </div>
+    </div>
 
 
-        <button
-            class="submit-btn"
-            id="submitBtn"
-            onclick="submitPayment()"
-        >
-            SUBMIT PAYMENT REQUEST →
-        </button>
+    <div class="instructions">
 
-        <div class="security">
-            🔒 Secure submission through Supabase
-        </div>
+        <h4>✦ IMPORTANT INSTRUCTIONS</h4>
+
+        <p>
+            • Pay the exact selected package amount.<br>
+            • Enter the correct transaction reference number.<br>
+            • Upload a clear payment screenshot.<br>
+            • Do not submit incorrect payment information.<br>
+            • Your request remains pending until verified.
+        </p>
 
     </div>
 
 
-    <div class="footer">
-        © BRJ EMPIRE · ALL RIGHTS RESERVED
+    <button
+        class="submit-btn"
+        id="submitBtn"
+        onclick="submitPayment()"
+    >
+        SUBMIT PAYMENT REQUEST →
+    </button>
+
+    <div class="security">
+        🔒 SECURE SUBMISSION THROUGH SUPABASE
     </div>
+
+</div>
+
+
+<div class="footer">
+    BRJ EMPIRE · PREMIUM MEMBER SERVICES
+    <br>
+    © ALL RIGHTS RESERVED
+</div>
 
 </div>
 
@@ -685,7 +845,7 @@ body{
 <script>
 
 // ===================================
-// BRJ EMPIRE SUPABASE CONNECTION
+// SUPABASE CONNECTION
 // ===================================
 
 const db = window.brjSupabase || window.supabaseClient;
@@ -710,26 +870,44 @@ const statusBox = document.getElementById("statusMessage");
 const submitBtn = document.getElementById("submitBtn");
 
 
+// ===================================
+// PACKAGE VALIDATION
+// ===================================
+
 function validatePackage(){
 
     if(!packageName || !packages[packageName]){
-        showMessage("Invalid package. Please select a package again.","error");
+
+        showMessage(
+            "Invalid package. Please select a package again.",
+            "error"
+        );
+
         submitBtn.disabled = true;
+
         return false;
     }
 
     if(amount !== packages[packageName]){
-        showMessage("Package amount mismatch. Please select again.","error");
+
+        showMessage(
+            "Package amount mismatch. Please select again.",
+            "error"
+        );
+
         submitBtn.disabled = true;
+
         return false;
     }
 
-    document.getElementById("packageName").textContent = packageName;
+    document.getElementById("packageName").textContent =
+        packageName;
 
     document.getElementById("packageAmount").textContent =
         "₹" + amount.toLocaleString("en-IN");
 
     return true;
+
 }
 
 
@@ -740,6 +918,7 @@ function validatePackage(){
 function showMessage(message,type){
 
     statusBox.className = "status " + type;
+
     statusBox.textContent = message;
 
     window.scrollTo({
@@ -751,27 +930,28 @@ function showMessage(message,type){
 
 
 // ===================================
-// UPI COPY
+// COPY UPI
 // ===================================
 
 async function copyUPI(){
 
     const upi = document.getElementById("upiID").textContent.trim();
 
-    if(upi.includes("LATER")){
-        showMessage("UPI ID abhi configure nahi hui hai.","error");
-        return;
-    }
-
     try{
 
         await navigator.clipboard.writeText(upi);
 
-        showMessage("UPI ID copied successfully.","success");
+        showMessage(
+            "UPI ID copied successfully!",
+            "success"
+        );
 
     }catch(error){
 
-        showMessage("UPI ID copy nahi ho payi.","error");
+        showMessage(
+            "Copy failed. Please copy UPI ID manually.",
+            "error"
+        );
 
     }
 
@@ -784,7 +964,8 @@ async function copyUPI(){
 
 function showFileName(){
 
-    const file = document.getElementById("paymentScreenshot").files[0];
+    const file =
+        document.getElementById("paymentScreenshot").files[0];
 
     document.getElementById("fileName").textContent =
         file ? file.name : "No file selected";
@@ -801,11 +982,17 @@ async function submitPayment(){
     if(!validatePackage()) return;
 
     if(!db){
-        showMessage("Supabase connection not found. Refresh the page.","error");
+
+        showMessage(
+            "Supabase connection not found. Refresh the page.",
+            "error"
+        );
+
         return;
     }
 
     submitBtn.disabled = true;
+
     submitBtn.textContent = "PROCESSING...";
 
     let uploadedPath = null;
@@ -822,25 +1009,38 @@ async function submitPayment(){
         const user = sessionData.session?.user;
 
         if(!user){
+
             location.href = "index.html";
+
             return;
         }
 
 
-        // GET FORM DATA
+        // FORM DATA
 
-        const utr = document.getElementById("utrNumber").value.trim();
+        const utr =
+            document.getElementById("utrNumber").value.trim();
 
-        const file = document.getElementById("paymentScreenshot").files[0];
+        const file =
+            document.getElementById("paymentScreenshot").files[0];
 
 
         if(!utr || utr.length < 6){
-            throw new Error("Please enter a valid UTR number.");
+
+            throw new Error(
+                "Please enter a valid UTR number."
+            );
+
         }
 
         if(!file){
-            throw new Error("Please upload payment screenshot.");
+
+            throw new Error(
+                "Please upload payment screenshot."
+            );
+
         }
+
 
         const allowedTypes = [
             "image/jpeg",
@@ -849,20 +1049,30 @@ async function submitPayment(){
         ];
 
         if(!allowedTypes.includes(file.type)){
-            throw new Error("Only JPG, PNG and WEBP images are allowed.");
+
+            throw new Error(
+                "Only JPG, PNG and WEBP images are allowed."
+            );
+
         }
 
         if(file.size > 5 * 1024 * 1024){
-            throw new Error("Screenshot must be below 5 MB.");
+
+            throw new Error(
+                "Screenshot must be below 5 MB."
+            );
+
         }
 
 
         // UPLOAD SCREENSHOT
 
-        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+        const safeName =
+            file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
 
         uploadedPath =
             user.id + "/" + Date.now() + "-" + safeName;
+
 
         const {error:uploadError} = await db.storage
             .from("payment-proofs")
@@ -879,12 +1089,19 @@ async function submitPayment(){
         const {error:insertError} = await db
             .from("payment_requests")
             .insert({
+
                 user_id:user.id,
+
                 package_name:packageName,
+
                 amount:amount,
+
                 utr_number:utr,
+
                 screenshot_path:uploadedPath,
+
                 status:"PENDING"
+
             });
 
         if(insertError) throw insertError;
@@ -897,20 +1114,27 @@ async function submitPayment(){
             "success"
         );
 
+
         document.getElementById("utrNumber").value = "";
+
         document.getElementById("paymentScreenshot").value = "";
 
         document.getElementById("fileName").textContent =
             "No file selected";
 
-        submitBtn.textContent = "REQUEST SUBMITTED ✓";
+        submitBtn.textContent =
+            "REQUEST SUBMITTED ✓";
 
 
     }catch(error){
 
-        console.error("BRJ PAYMENT ERROR:",error);
+        console.error(
+            "BRJ PAYMENT ERROR:",
+            error
+        );
 
-        // REMOVE UPLOADED FILE IF DATABASE INSERT FAILED
+
+        // REMOVE FILE IF DATABASE INSERT FAILED
 
         if(uploadedPath){
 
@@ -920,10 +1144,12 @@ async function submitPayment(){
 
         }
 
+
         showMessage(
             error.message || "Something went wrong. Please try again.",
             "error"
         );
+
 
         submitBtn.disabled = false;
 
