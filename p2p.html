@@ -17,16 +17,16 @@
 :root{
     --bg:#080a10;
     --gold:#eac16a;
-    --gold-light:#f8dfa0;
+    --gold-light:#ffe6a5;
     --muted:#8995a6;
-    --border:#2c3848;
+    --border:#303b4c;
     --green:#56d59b;
     --red:#ef8994;
 }
 
 body{
     background:
-    radial-gradient(ellipse at 50% -20%,#282216 0%,transparent 45%),
+    radial-gradient(ellipse at 50% -15%,#352b18 0%,transparent 45%),
     var(--bg);
     color:#fff;
     min-height:100vh;
@@ -37,7 +37,10 @@ button{
     -webkit-tap-highlight-color:transparent;
 }
 
-/* HEADER */
+button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
 
 header{
     height:72px;
@@ -45,9 +48,9 @@ header{
     display:flex;
     align-items:center;
     gap:14px;
-    background:rgba(10,14,22,.94);
+    background:rgba(10,14,22,.95);
     backdrop-filter:blur(18px);
-    border-bottom:1px solid rgba(234,193,106,.18);
+    border-bottom:1px solid rgba(234,193,106,.2);
     position:sticky;
     top:0;
     z-index:50;
@@ -92,15 +95,11 @@ header{
     box-shadow:0 0 10px #55d58a;
 }
 
-/* MAIN */
-
 .wrapper{
     max-width:680px;
     margin:auto;
     padding:27px 16px 55px;
 }
-
-/* HEADING */
 
 .page-heading small{
     color:var(--gold);
@@ -110,7 +109,7 @@ header{
 }
 
 .page-heading h1{
-    font-size:32px;
+    font-size:34px;
     font-weight:950;
     margin-top:12px;
     letter-spacing:-1px;
@@ -127,8 +126,6 @@ header{
     margin-top:9px;
 }
 
-/* BALANCE */
-
 .balance-card{
     position:relative;
     overflow:hidden;
@@ -136,24 +133,11 @@ header{
     padding:25px 23px;
     border-radius:23px;
     border:1px solid rgba(234,193,106,.45);
-
     background:
     radial-gradient(circle at 95% 5%,rgba(255,219,135,.24),transparent 38%),
     radial-gradient(circle at 0% 100%,rgba(175,124,35,.12),transparent 45%),
     linear-gradient(135deg,#292419,#171b23 75%);
-
     box-shadow:0 15px 40px rgba(0,0,0,.25);
-}
-
-.balance-card:after{
-    content:"";
-    position:absolute;
-    width:180px;
-    height:180px;
-    border:1px solid rgba(255,221,150,.13);
-    border-radius:50%;
-    right:-75px;
-    bottom:-110px;
 }
 
 .balance-top{
@@ -205,7 +189,13 @@ header{
     font-size:10px;
 }
 
-/* SECTION TITLE */
+.refresh-btn{
+    background:transparent;
+    color:var(--gold);
+    border:0;
+    font-size:11px;
+    font-weight:800;
+}
 
 .section-title{
     margin:30px 0 14px;
@@ -223,8 +213,6 @@ header{
     font-size:9px;
     letter-spacing:.5px;
 }
-
-/* TRANSFER CARD */
 
 .card{
     margin-top:20px;
@@ -291,8 +279,6 @@ input::placeholder{
     color:#697587;
 }
 
-/* VERIFY */
-
 .verify-btn{
     width:100%;
     margin-top:11px;
@@ -304,11 +290,6 @@ input::placeholder{
     font-size:11px;
     font-weight:950;
     letter-spacing:.7px;
-    transition:.2s;
-}
-
-.verify-btn:active{
-    transform:scale(.98);
 }
 
 .receiver-info{
@@ -352,8 +333,6 @@ input::placeholder{
     margin-top:5px;
 }
 
-/* AMOUNT */
-
 .amount-box{
     position:relative;
 }
@@ -390,13 +369,6 @@ input::placeholder{
     font-weight:850;
 }
 
-.quick-amounts button:active{
-    background:#33301f;
-    border-color:var(--gold);
-}
-
-/* TRANSFER BUTTON */
-
 .transfer-btn{
     width:100%;
     padding:17px;
@@ -409,18 +381,7 @@ input::placeholder{
     font-weight:950;
     letter-spacing:1px;
     box-shadow:0 8px 25px rgba(219,177,86,.16);
-    transition:.2s;
 }
-
-.transfer-btn:active{
-    transform:scale(.98);
-}
-
-.transfer-btn:disabled{
-    opacity:.5;
-}
-
-/* SECURITY */
 
 .security-box{
     display:flex;
@@ -449,8 +410,6 @@ input::placeholder{
     line-height:1.8;
     margin-top:6px;
 }
-
-/* INFO */
 
 .info-grid{
     display:grid;
@@ -481,8 +440,6 @@ input::placeholder{
     line-height:1.6;
     margin-top:6px;
 }
-
-/* HISTORY */
 
 .history-card{
     padding:17px;
@@ -535,11 +492,16 @@ input::placeholder{
 }
 
 .history-item b{
-    color:var(--red);
     font-size:13px;
 }
 
-/* MODALS */
+.sent{
+    color:var(--red);
+}
+
+.received{
+    color:var(--green);
+}
 
 .modal{
     display:none;
@@ -636,8 +598,6 @@ input::placeholder{
     font-size:11px;
 }
 
-/* RECEIPT */
-
 .receipt{
     text-align:center;
     padding:10px 3px;
@@ -686,8 +646,6 @@ input::placeholder{
     text-align:right;
 }
 
-/* TOAST */
-
 .toast{
     position:fixed;
     bottom:27px;
@@ -714,8 +672,6 @@ input::placeholder{
     transform:translate(-50%,0);
 }
 
-/* FOOTER */
-
 .footer{
     text-align:center;
     color:#697587;
@@ -739,45 +695,27 @@ input::placeholder{
 <body>
 
 <header>
-
     <button class="back-btn" onclick="goDashboard()">‹</button>
-
     <div class="brand">BRJ <span>EMPIRE</span></div>
-
     <div class="header-status">
         <div class="status-dot"></div>
         SECURE CENTER
     </div>
-
 </header>
 
 <main class="wrapper">
 
     <div class="page-heading">
-
         <small>BRJ EMPIRE · MEMBER SERVICES</small>
-
         <h1>P2P <span>Transfer.</span></h1>
-
-        <p>
-            Send funds securely to another verified
-            BRJ EMPIRE member.
-        </p>
-
+        <p>Send funds securely to another verified BRJ EMPIRE member.</p>
     </div>
-
-    <!-- BALANCE -->
 
     <section class="balance-card">
 
         <div class="balance-top">
-
-            <div class="balance-label">
-                AVAILABLE WALLET BALANCE
-            </div>
-
+            <div class="balance-label">AVAILABLE WALLET BALANCE</div>
             <div class="wallet-icon">💰</div>
-
         </div>
 
         <div class="balance">
@@ -785,20 +723,15 @@ input::placeholder{
         </div>
 
         <div class="balance-note">
-            Your verified available wallet balance.
+            Your available wallet balance.
         </div>
 
         <div class="balance-bottom">
-
             <span>BRJ EMPIRE WALLET</span>
-
-            <span>MEMBER ACCOUNT</span>
-
+            <button class="refresh-btn" onclick="loadWallet()">↻ REFRESH</button>
         </div>
 
     </section>
-
-    <!-- TRANSFER -->
 
     <div class="section-title">
         TRANSFER MONEY
@@ -808,14 +741,9 @@ input::placeholder{
     <section class="card">
 
         <div class="card-heading">
-
             <h2>Send Money</h2>
-
             <span>⇄</span>
-
         </div>
-
-        <!-- RECEIVER -->
 
         <div class="form-group">
 
@@ -824,101 +752,70 @@ input::placeholder{
             <input
                 id="receiverId"
                 type="text"
+                inputmode="numeric"
+                maxlength="20"
                 placeholder="Enter receiver Member ID"
                 autocomplete="off">
 
-            <button
-                class="verify-btn"
-                id="verifyBtn"
-                onclick="verifyReceiver()">
-
+            <button class="verify-btn" id="verifyBtn" onclick="verifyReceiver()">
                 VERIFY RECEIVER →
-
             </button>
 
             <div class="receiver-info" id="receiverInfo">
-
                 <div class="receiver-top">
-
                     <div class="receiver-avatar">👤</div>
-
                     <div>
-
-                        <strong>✓ Receiver Verified</strong>
-
+                        <strong>✓ RECEIVER VERIFIED</strong>
                         <p id="receiverName">Member details</p>
-
                     </div>
-
                 </div>
-
             </div>
 
         </div>
-
-        <!-- AMOUNT -->
 
         <div class="form-group">
 
-            <label>TRANSFER AMOUNT</label>
+            <label>TRANSFER AMOUNT · MINIMUM ₹50</label>
 
             <div class="amount-box">
-
                 <span class="rupee">₹</span>
-
                 <input
                     id="transferAmount"
                     type="number"
-                    min="1"
-                    step="1"
+                    min="50"
+                    step="0.01"
                     placeholder="0.00">
-
             </div>
 
             <div class="quick-amounts">
-
                 <button onclick="setAmount(200)">₹200</button>
-
                 <button onclick="setAmount(500)">₹500</button>
-
                 <button onclick="setAmount(1000)">₹1,000</button>
-
             </div>
 
         </div>
 
-        <button
-            class="transfer-btn"
-            id="continueBtn"
-            onclick="continueTransfer()">
+        <div style="display:flex;justify-content:space-between;margin:0 0 17px;font-size:11px">
+            <span style="color:#8995a6">Transfer Fee</span>
+            <strong style="color:var(--green)">FREE · ₹0</strong>
+        </div>
 
+        <button class="transfer-btn" id="continueBtn" onclick="continueTransfer()">
             CONTINUE TRANSFER →
-
         </button>
 
     </section>
 
-    <!-- SECURITY -->
-
     <div class="security-box">
-
         <div class="security-icon">🛡️</div>
-
         <div class="security-text">
-
             <strong>SECURE MEMBER TRANSFER</strong>
-
             <p>
-                Always verify the receiver's Member ID before
-                sending funds. Never share your transaction
-                PIN or account password.
+                Always verify the receiver's Member ID.
+                Never share your transaction PIN or account password.
             </p>
-
         </div>
-
     </div>
-
-    <!-- INFORMATION -->
 
     <div class="section-title">
         TRANSFER INFORMATION
@@ -927,32 +824,30 @@ input::placeholder{
     <div class="info-grid">
 
         <div class="info-item">
-
             <span>🔐</span>
-
             <strong>Secure Verification</strong>
-
-            <p>
-                Receiver verification is required before transfer.
-            </p>
-
+            <p>Receiver verification is required before transfer.</p>
         </div>
 
         <div class="info-item">
-
             <span>⚡</span>
+            <strong>Instant Processing</strong>
+            <p>Server-side wallet processing.</p>
+        </div>
 
-            <strong>Transaction Security</strong>
+        <div class="info-item">
+            <span>💸</span>
+            <strong>Zero Transfer Fee</strong>
+            <p>Send money without transfer charges.</p>
+        </div>
 
-            <p>
-                Transfers require secure server-side processing.
-            </p>
-
+        <div class="info-item">
+            <span>📊</span>
+            <strong>Transaction Record</strong>
+            <p>Both members get transaction entries.</p>
         </div>
 
     </div>
-
-    <!-- HISTORY -->
 
     <div class="section-title">
         P2P TRANSACTION HISTORY
@@ -960,52 +855,34 @@ input::placeholder{
     </div>
 
     <div class="history-card" id="historyList">
-
         <div class="history-empty">
-
             <div>📂</div>
-
-            <h3>No transfers available</h3>
-
-            <p>
-                Your P2P transaction history will appear here
-                after database integration.
-            </p>
-
+            <h3>Loading transactions...</h3>
+            <p>Your recent P2P activity will appear here.</p>
         </div>
-
     </div>
 
     <div class="footer">
-
         BRJ EMPIRE · P2P MEMBER SERVICES
-
         <br>
-
         Secure Member Transfer Portal
-
     </div>
 
 </main>
 
 <!-- PIN MODAL -->
 
-<div class="modal" id="pinModal"
-     onclick="backdropClose(event,'pinModal')">
+<div class="modal" id="pinModal" onclick="backdropClose(event,'pinModal')">
 
     <div class="modal-box">
 
         <div class="modal-head">
-
             <h2>🔐 Transaction PIN</h2>
-
-            <button class="close-btn"
-                    onclick="closeModal('pinModal')">✕</button>
-
+            <button class="close-btn" onclick="closeModal('pinModal')">✕</button>
         </div>
 
         <p class="modal-text">
-            Enter your 4-digit transaction PIN to continue.
+            Enter your 4-digit transaction PIN to confirm this transfer.
         </p>
 
         <input
@@ -1017,40 +894,27 @@ input::placeholder{
             placeholder="••••"
             autocomplete="off">
 
-        <button
-            class="modal-btn"
-            onclick="submitTransfer()">
-
+        <button class="modal-btn" id="confirmBtn" onclick="submitTransfer()">
             CONFIRM TRANSFER →
-
         </button>
 
-        <button
-            class="secondary-btn"
-            onclick="forgotPin()">
-
+        <button class="secondary-btn" onclick="forgotPin()">
             Forgot Transaction PIN?
-
         </button>
 
     </div>
 
 </div>
 
-<!-- RECEIPT MODAL -->
+<!-- RECEIPT -->
 
-<div class="modal" id="receiptModal"
-     onclick="backdropClose(event,'receiptModal')">
+<div class="modal" id="receiptModal">
 
     <div class="modal-box">
 
         <div class="modal-head">
-
             <h2>Transfer Receipt</h2>
-
-            <button class="close-btn"
-                    onclick="closeModal('receiptModal')">✕</button>
-
+            <button class="close-btn" onclick="closeReceipt()">✕</button>
         </div>
 
         <div class="receipt">
@@ -1059,9 +923,7 @@ input::placeholder{
 
             <h2>Transfer Successful</h2>
 
-            <div class="receipt-amount" id="receiptAmount">
-                ₹0.00
-            </div>
+            <div class="receipt-amount" id="receiptAmount">₹0.00</div>
 
             <div class="receipt-row">
                 <span>Receiver ID</span>
@@ -1071,6 +933,11 @@ input::placeholder{
             <div class="receipt-row">
                 <span>Transaction ID</span>
                 <span id="receiptTransaction">---</span>
+            </div>
+
+            <div class="receipt-row">
+                <span>Transfer Fee</span>
+                <span style="color:var(--green)">₹0.00</span>
             </div>
 
             <div class="receipt-row">
@@ -1085,12 +952,8 @@ input::placeholder{
 
         </div>
 
-        <button
-            class="modal-btn"
-            onclick="closeModal('receiptModal')">
-
+        <button class="modal-btn" onclick="closeReceipt()">
             DONE
-
         </button>
 
     </div>
@@ -1104,28 +967,17 @@ input::placeholder{
     <div class="modal-box">
 
         <div class="modal-head">
-
             <h2>Forgot PIN</h2>
-
-            <button class="close-btn"
-                    onclick="closeModal('forgotModal')">✕</button>
-
+            <button class="close-btn" onclick="closeModal('forgotModal')">✕</button>
         </div>
 
         <p class="modal-text">
-
             PIN recovery requires verified email OTP authentication.
-            This feature will be enabled after the secure
-            server-side recovery service is connected.
-
+            Please contact support until the secure recovery service is available.
         </p>
 
-        <button
-            class="modal-btn"
-            onclick="closeModal('forgotModal')">
-
+        <button class="modal-btn" onclick="closeModal('forgotModal')">
             OK
-
         </button>
 
     </div>
@@ -1134,18 +986,20 @@ input::placeholder{
 
 <div class="toast" id="toast"></div>
 
-<!-- SUPABASE -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase.js"></script>
 
 <script>
 
+/* =====================================
+   BRJ EMPIRE - P2P SYSTEM
+===================================== */
+
 let currentUser=null;
-let receiverUser=null;
 let currentBalance=0;
+let receiverUser=null;
 let verifiedReceiverId="";
+let transferBusy=false;
 
 const db=window.brjSupabase||window.supabaseClient;
 
@@ -1156,48 +1010,71 @@ function showToast(message){
     const toast=document.getElementById("toast");
 
     toast.textContent=message;
-
     toast.classList.add("show");
 
     clearTimeout(window.toastTimer);
 
     window.toastTimer=setTimeout(()=>{
-
         toast.classList.remove("show");
+    },3000);
 
-    },2800);
+}
+
+/* ERROR HANDLING */
+
+function readableError(error){
+
+    const message=error?.message||"Something went wrong.";
+
+    if(message.includes("Incorrect transaction PIN"))
+        return "Incorrect transaction PIN.";
+
+    if(message.includes("Minimum transfer"))
+        return "Minimum transfer amount is ₹50.";
+
+    if(message.includes("Insufficient wallet balance"))
+        return "Insufficient wallet balance.";
+
+    if(message.includes("Receiver Member ID not found"))
+        return "Receiver Member ID not found.";
+
+    if(message.includes("transaction PIN first"))
+        return "Please create your transaction PIN first.";
+
+    if(message.includes("cannot transfer to yourself"))
+        return "You cannot transfer to yourself.";
+
+    if(message.includes("wallet not found"))
+        return "Wallet not available.";
+
+    if(message.includes("rate limit"))
+        return "Too many attempts. Please try later.";
+
+    return message;
 
 }
 
 /* NAVIGATION */
 
 function goDashboard(){
-
     location.href="dashboard.html";
-
 }
 
 /* MODALS */
 
 function closeModal(id){
-
     document.getElementById(id).classList.remove("show");
+}
 
+function openModal(id){
+    document.getElementById(id).classList.add("show");
 }
 
 function backdropClose(event,id){
 
     if(event.target.id===id){
-
         closeModal(id);
-
     }
-
-}
-
-function openModal(id){
-
-    document.getElementById(id).classList.add("show");
 
 }
 
@@ -1206,6 +1083,19 @@ function openModal(id){
 function setAmount(amount){
 
     document.getElementById("transferAmount").value=amount;
+
+    invalidateReceiverIfNeeded();
+
+}
+
+/* RESET VERIFIED RECEIVER */
+
+function invalidateReceiverIfNeeded(){
+
+    receiverUser=null;
+    verifiedReceiverId="";
+
+    document.getElementById("receiverInfo").classList.remove("show");
 
 }
 
@@ -1216,7 +1106,6 @@ async function loadP2P(){
     if(!db){
 
         showToast("Database connection unavailable.");
-
         return;
 
     }
@@ -1228,20 +1117,67 @@ async function loadP2P(){
         if(error||!data.session){
 
             location.href="index.html";
-
             return;
 
         }
 
         currentUser=data.session.user;
 
-        document.getElementById("walletBalance").textContent="0.00";
+        await loadWallet();
+        await loadHistory();
 
     }catch(error){
 
         console.error(error);
-
         showToast("Unable to load account.");
+
+    }
+
+}
+
+/* LOAD WALLET */
+
+async function loadWallet(){
+
+    if(!currentUser||!db) return;
+
+    const balanceElement=document.getElementById("walletBalance");
+
+    balanceElement.textContent="Loading...";
+
+    try{
+
+        const {data,error}=await db
+            .from("wallets")
+            .select("available_balance,currency")
+            .eq("user_id",currentUser.id)
+            .maybeSingle();
+
+        if(error) throw error;
+
+        if(!data){
+
+            balanceElement.textContent="0.00";
+            showToast("Wallet record not available.");
+            return;
+
+        }
+
+        currentBalance=Number(data.available_balance);
+
+        if(!Number.isFinite(currentBalance)){
+            throw new Error("Invalid wallet balance.");
+        }
+
+        balanceElement.textContent=currentBalance.toFixed(2);
+
+    }catch(error){
+
+        console.error("Wallet error:",error);
+
+        balanceElement.textContent="Unavailable";
+
+        showToast("Wallet could not be loaded. Check wallet permissions.");
 
     }
 
@@ -1254,60 +1190,95 @@ async function verifyReceiver(){
     if(!currentUser){
 
         showToast("Please login first.");
-
         return;
 
     }
 
-    const input=document.getElementById("receiverId");
+    const id=document.getElementById("receiverId").value.trim();
 
-    const id=input.value.trim().toUpperCase();
+    if(!/^[0-9]+$/.test(id)){
 
-    if(!id){
-
-        showToast("Enter receiver Member ID.");
-
+        invalidateReceiverIfNeeded();
+        showToast("Enter a valid numeric Member ID.");
         return;
 
     }
 
-    const myId=currentUser.id.substring(0,8).toUpperCase();
+    const memberId=Number(id);
 
-    if(id===myId){
+    if(!Number.isSafeInteger(memberId)||memberId<=0){
 
-        showToast("You cannot transfer to yourself.");
-
+        showToast("Invalid Member ID.");
         return;
 
     }
 
-    document.getElementById("receiverInfo")
-        .classList.remove("show");
+    const button=document.getElementById("verifyBtn");
 
-    receiverUser=null;
+    button.disabled=true;
+    button.textContent="VERIFYING...";
 
-    verifiedReceiverId="";
+    invalidateReceiverIfNeeded();
 
-    showToast("Receiver verification service needs database setup.");
+    try{
 
-    /*
-    Receiver lookup must be implemented through
-    a secure Supabase Edge Function.
+        const {data,error}=await db.rpc(
+            "brj_verify_receiver",
+            {
+                p_member_id:memberId
+            }
+        );
 
-    Auth user records must never be exposed
-    directly to browser clients.
-    */
+        if(error) throw error;
+
+        if(!data||!data.success){
+
+            throw new Error(data?.message||"Verification failed.");
+
+        }
+
+        receiverUser=data;
+        verifiedReceiverId=String(data.member_id);
+
+        document.getElementById("receiverName").textContent=
+            data.receiver_name+" · ID "+data.member_id;
+
+        document.getElementById("receiverInfo").classList.add("show");
+
+        showToast("Receiver verified successfully ✓");
+
+    }catch(error){
+
+        console.error("Receiver verification:",error);
+
+        invalidateReceiverIfNeeded();
+
+        showToast(readableError(error));
+
+    }finally{
+
+        button.disabled=false;
+        button.textContent="VERIFY RECEIVER →";
+
+    }
 
 }
 
-/* CONTINUE */
+/* CONTINUE TRANSFER */
 
 function continueTransfer(){
 
     if(!receiverUser||!verifiedReceiverId){
 
         showToast("Please verify receiver first.");
+        return;
 
+    }
+
+    if(document.getElementById("receiverId").value.trim()!==verifiedReceiverId){
+
+        invalidateReceiverIfNeeded();
+        showToast("Please verify receiver again.");
         return;
 
     }
@@ -1316,10 +1287,16 @@ function continueTransfer(){
         document.getElementById("transferAmount").value
     );
 
-    if(!Number.isFinite(amount)||amount<=0){
+    if(!Number.isFinite(amount)||amount<50){
 
-        showToast("Enter a valid amount.");
+        showToast("Minimum transfer amount is ₹50.");
+        return;
 
+    }
+
+    if(!Number.isSafeInteger(Math.round(amount*100))){
+
+        showToast("Invalid transfer amount.");
         return;
 
     }
@@ -1327,7 +1304,6 @@ function continueTransfer(){
     if(amount>currentBalance){
 
         showToast("Insufficient wallet balance.");
-
         return;
 
     }
@@ -1338,32 +1314,119 @@ function continueTransfer(){
 
 }
 
-/* TRANSFER */
+/* SUBMIT TRANSFER */
 
 async function submitTransfer(){
 
-    const pin=document.getElementById("transactionPin").value;
+    if(transferBusy) return;
 
-    if(!/^\d{4}$/.test(pin)){
+    if(!receiverUser||!verifiedReceiverId){
 
-        showToast("Enter a valid 4-digit PIN.");
-
+        closeModal("pinModal");
+        showToast("Please verify receiver again.");
         return;
 
     }
 
-    /*
-    REAL TRANSFER NOT ENABLED.
+    const pin=document.getElementById("transactionPin").value;
 
-    Server-side PIN verification, wallet debit,
-    wallet credit and transaction history must
-    be handled atomically through a secure
-    Supabase Edge Function.
+    if(!/^[0-9]{4}$/.test(pin)){
 
-    No fake successful transfer is generated.
-    */
+        showToast("Enter a valid 4-digit PIN.");
+        return;
 
-    showToast("Secure transfer service is not connected yet.");
+    }
+
+    const amount=Number(
+        document.getElementById("transferAmount").value
+    );
+
+    if(!Number.isFinite(amount)||amount<50){
+
+        showToast("Minimum transfer amount is ₹50.");
+        return;
+
+    }
+
+    const confirmBtn=document.getElementById("confirmBtn");
+
+    transferBusy=true;
+    confirmBtn.disabled=true;
+    confirmBtn.textContent="PROCESSING SECURELY...";
+
+    try{
+
+        /*
+        SECURE SERVER-SIDE DATABASE FUNCTION.
+        Wallet debit, credit, ledger and history
+        are handled inside one database transaction.
+        */
+
+        const {data,error}=await db.rpc(
+            "brj_p2p_transfer",
+            {
+                p_receiver_member_id:Number(verifiedReceiverId),
+                p_amount:amount,
+                p_pin:pin
+            }
+        );
+
+        if(error) throw error;
+
+        if(!data||!data.success){
+
+            throw new Error(data?.message||"Transfer failed.");
+
+        }
+
+        closeModal("pinModal");
+
+        document.getElementById("receiptAmount").textContent=
+            "₹"+Number(data.amount).toFixed(2);
+
+        document.getElementById("receiptReceiver").textContent=
+            data.receiver_member_id;
+
+        document.getElementById("receiptTransaction").textContent=
+            data.transfer_id;
+
+        document.getElementById("receiptDate").textContent=
+            new Date().toLocaleString("en-IN");
+
+        openModal("receiptModal");
+
+        document.getElementById("transactionPin").value="";
+        document.getElementById("transferAmount").value="";
+        document.getElementById("receiverId").value="";
+
+        invalidateReceiverIfNeeded();
+
+        await loadWallet();
+        await loadHistory();
+
+    }catch(error){
+
+        console.error("Transfer error:",error);
+
+        showToast(readableError(error));
+
+        document.getElementById("transactionPin").value="";
+
+    }finally{
+
+        transferBusy=false;
+        confirmBtn.disabled=false;
+        confirmBtn.textContent="CONFIRM TRANSFER →";
+
+    }
+
+}
+
+/* RECEIPT */
+
+function closeReceipt(){
+
+    closeModal("receiptModal");
 
 }
 
@@ -1372,10 +1435,127 @@ async function submitTransfer(){
 function forgotPin(){
 
     closeModal("pinModal");
-
     openModal("forgotModal");
 
 }
+
+/* LOAD TRANSACTION HISTORY */
+
+async function loadHistory(){
+
+    if(!currentUser||!db) return;
+
+    const list=document.getElementById("historyList");
+
+    try{
+
+        const {data,error}=await db
+            .from("transactions")
+            .select("id,transaction_type,amount,status,reference_number,description,created_at")
+            .eq("user_id",currentUser.id)
+            .in("transaction_type",["p2p_debit","p2p_credit"])
+            .order("created_at",{ascending:false})
+            .limit(20);
+
+        if(error) throw error;
+
+        if(!data||data.length===0){
+
+            list.innerHTML=`
+                <div class="history-empty">
+                    <div>📂</div>
+                    <h3>No transfers available</h3>
+                    <p>Your P2P transaction history will appear here.</p>
+                </div>
+            `;
+
+            return;
+
+        }
+
+        list.innerHTML="";
+
+        data.forEach(item=>{
+
+            const isSent=item.transaction_type==="p2p_debit";
+
+            const amount=Number(item.amount);
+
+            const date=new Date(item.created_at).toLocaleString("en-IN",{
+                day:"2-digit",
+                month:"short",
+                year:"numeric",
+                hour:"2-digit",
+                minute:"2-digit"
+            });
+
+            const row=document.createElement("div");
+
+            row.className="history-item";
+
+            const left=document.createElement("div");
+
+            const title=document.createElement("strong");
+
+            title.textContent=isSent?"↗ P2P Transfer Sent":"↙ P2P Transfer Received";
+
+            const details=document.createElement("small");
+
+            details.textContent=(item.description||"P2P Transfer")+" · "+date;
+
+            const status=document.createElement("small");
+
+            status.textContent="Status: "+(item.status||"Unknown");
+
+            left.append(title,details,status);
+
+            const right=document.createElement("b");
+
+            right.className=isSent?"sent":"received";
+
+            right.textContent=(isSent?"−":"+")+"₹"+amount.toFixed(2);
+
+            row.append(left,right);
+
+            list.appendChild(row);
+
+        });
+
+    }catch(error){
+
+        console.error("History error:",error);
+
+        list.innerHTML=`
+            <div class="history-empty">
+                <div>⚠️</div>
+                <h3>History unavailable</h3>
+                <p>Transaction history permissions need to be checked.</p>
+            </div>
+        `;
+
+    }
+
+}
+
+/* PREVENT STALE VERIFICATION */
+
+document.getElementById("receiverId").addEventListener("input",()=>{
+    invalidateReceiverIfNeeded();
+});
+
+document.getElementById("transferAmount").addEventListener("input",()=>{
+    if(receiverUser){
+        // Receiver verification remains valid when amount changes.
+    }
+});
+
+/* PREVENT PIN NON-DIGITS */
+
+document.getElementById("transactionPin").addEventListener("input",function(){
+
+    this.value=this.value.replace(/\D/g,"").slice(0,4);
+
+});
 
 /* START */
 
