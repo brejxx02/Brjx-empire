@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080a10">
+<title>BRJ EMPIRE | Fund Control</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:#080a10;color:#fff;min-height:100vh;
+}
+header{
+padding:22px 5%;border-bottom:1px solid #252525;
+display:flex;justify-content:space-between;align-items:center;
+background:#0d1019;position:sticky;top:0;z-index:5;
+}
+.logo{font-size:21px;font-weight:900;letter-spacing:2px}
+.logo span{color:#e7bd68}
+.badge{font-size:11px;color:#e7bd68;border:1px solid #68512c;padding:7px 12px;border-radius:20px}
+.container{max-width:1050px;margin:auto;padding:30px 18px}
+.heading{margin-bottom:25px}
+.heading h1{font-size:29px;margin-bottom:8px}
+.heading p{color:#89909e;font-size:13px}
+.card{
+background:linear-gradient(145deg,#151923,#0e1119);
+border:1px solid #292d37;border-radius:19px;
+padding:23px;margin-bottom:20px;
+box-shadow:0 15px 40px #0003;
+}
+.card h2{font-size:17px;margin-bottom:18px}
+label{display:block;color:#aeb5c3;font-size:12px;margin:16px 0 8px}
+input,select{
+width:100%;padding:15px;border-radius:11px;
+border:1px solid #303746;background:#090c13;
+color:white;outline:none;font-size:15px;
+}
+input:focus,select:focus{border-color:#d7ae5e}
+button{
+border:0;border-radius:11px;padding:14px 19px;
+font-weight:800;cursor:pointer;font-size:14px;
+}
+.gold{background:linear-gradient(110deg,#b98736,#f2d58b);color:#17120a}
+.search{width:100%;margin-top:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.balance{
+font-size:34px;font-weight:900;color:#edca7e;
+margin:12px 0 5px;
+}
+.muted{color:#8d96a7;font-size:12px}
+.member-info{display:none}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.add{background:#123d2c;color:#6af0ad}
+.deduct{background:#482022;color:#ff9999}
+button:disabled{opacity:.5;cursor:not-allowed}
+.notice{
+padding:13px;border-radius:10px;background:#111b20;
+color:#9bd5c1;font-size:12px;line-height:1.6;margin-top:17px;
+}
+#status{margin-top:15px;font-size:13px;line-height:1.6}
+@media(max-width:600px){
+.container{padding:22px 14px}
+.grid{grid-template-columns:1fr}
+.heading h1{font-size:24px}
+.card{padding:18px}
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<div class="logo">BRJ <span>EMPIRE</span></div>
+<div class="badge">ADMIN FINANCIAL CONTROL</div>
+</header>
+
+<main class="container">
+
+<div class="heading">
+<h1>Fund Management</h1>
+<p>Secure member wallet administration</p>
+</div>
+
+<section class="card">
+<h2>01 / Find Member</h2>
+
+<label>Official Member ID</label>
+<input id="memberId" type="number" min="100001"
+placeholder="Example: 100001">
+
+<button class="gold search" id="searchBtn" onclick="findMember()">
+SEARCH MEMBER
+</button>
+
+<div class="member-info" id="memberInfo">
+<div style="margin-top:25px;border-top:1px solid #303746;padding-top:20px">
+<div class="muted">OFFICIAL MEMBER ID</div>
+<div id="displayId" style="font-size:23px;font-weight:900;margin-top:7px">—</div>
+
+<div class="muted" style="margin-top:20px">AVAILABLE WALLET BALANCE</div>
+<div class="balance" id="balance">₹0.00</div>
+<div class="muted">INR Wallet</div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>02 / Wallet Adjustment</h2>
+
+<label>Transaction Type</label>
+<select id="action">
+
+<option value="ADD">Add Funds</option>
+<option value="DEDUCT">Deduct Funds</option>
+</select>
+
+<label>Amount &#40;INR&#41;</label>
+<input id="amount" type="number" min="0.01" step="0.01"
+placeholder="Enter amount">
+
+<label>Transaction Description</label>
+<input id="description" maxlength="200"
+placeholder="Reason for adjustment">
+
+<div class="actions">
+<button class="add" id="addBtn" onclick="adjustFunds('ADD')">
++ ADD FUNDS
+</button>
+<button class="deduct" id="deductBtn" onclick="adjustFunds('DEDUCT')">
+− DEDUCT FUNDS
+</button>
+</div>
+
+<div class="notice">
+Security notice: Every adjustment requires authorized admin access.
+All successful transactions are recorded in the wallet ledger.
+</div>
+
+<div id="status"></div>
+</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+"use strict";
+
+let sb = null;
+let currentMember = null;
+let busy = false;
+
+const $ = id => document.getElementById(id);
+
+function message(text,color="#edca7e"){
+$("status").style.color=color;
+$("status").textContent=text;
+}
+
+function lockButtons(value){
+busy=value;
+["searchBtn","addBtn","deductBtn"].forEach(id=>{
+$(id).disabled=value;
+});
+}
+
+async function initialize(){
+
+if(!window.brjSupabase){
+message("Supabase configuration not found. Check your existing project configuration.","#ff9999");
+return;
+}
+
+sb=window.brjSupabase;
+
+const {data:{session},error}=await sb.auth.getSession();
+
+if(error || !session){
+location.replace("admin-login.html");
+return;
+}
+
+const {data:role,error:roleError}=await sb
+.from("user_roles")
+.select("role")
+.eq("user_id",session.user.id)
+.in("role",["admin","main_admin"])
+.maybeSingle();
+
+if(roleError || !role){
+message("Admin authorization failed.","#ff9999");
+lockButtons(true);
+return;
+}
+
+message("Secure admin session verified.","#6af0ad");
+}
+
+async function findMember(){
+
+if(busy || !sb)return;
+
+const id=Number($("memberId").value);
+
+if(!Number.isSafeInteger(id)||id<100001){
+message("Enter a valid official Member ID.","#ff9999");
+return;
+}
+
+lockButtons(true);
+currentMember=null;
+$("memberInfo").style.display="none";
+
+try{
+
+const {data:member,error}=await sb
+.from("brj_member_ids")
+.select("member_id,user_id")
+.eq("member_id",id)
+.maybeSingle();
+
+if(error)throw error;
+if(!member)throw new Error("Member ID not found.");
+
+const {data:wallet,error:walletError}=await sb
+.from("wallets")
+.select("available_balance,currency")
+.eq("user_id",member.user_id)
+.maybeSingle();
+
+if(walletError)throw walletError;
+if(!wallet)throw new Error("Wallet not found for this member.");
+
+currentMember={
+member_id:member.member_id,
+balance:Number(wallet.available_balance),
+currency:wallet.currency
+};
+
+$("displayId").textContent=currentMember.member_id;
+$("balance").textContent=
+"₹"+currentMember.balance.toLocaleString("en-IN",{minimumFractionDigits:2});
+
+$("memberInfo").style.display="block";
+message("Member and wallet verified.","#6af0ad");
+
+}catch(e){
+message(e.message||"Member search failed.","#ff9999");
+}finally{
+lockButtons(false);
+}
+}
+
+async function adjustFunds(action){
+
+if(busy || !sb)return;
+
+if(!currentMember){
+message("Search and verify a member first.","#ff9999");
+return;
+}
+
+const amount=Number($("amount").value);
+const description=$("description").value.trim();
+
+if(!Number.isFinite(amount)||amount<=0||amount>10000000){
+message("Enter a valid amount.","#ff9999");
+return;
+}
+
+if(!description){
+message("Transaction description is required.","#ff9999");
+return;
+}
+
+if(action==="DEDUCT" && amount>currentMember.balance){
+message("Insufficient available balance.","#ff9999");
+return;
+}
+
+const confirmation=confirm(
+action+" ₹"+amount.toLocaleString("en-IN")+
+" for Member "+currentMember.member_id+"?"
+);
+
+if(!confirmation)return;
+
+lockButtons(true);
+message("Processing secure transaction...");
+
+try{
+
+const requestId=crypto.randomUUID();
+
+const {data,error}=await sb.rpc(
+"admin_adjust_member_funds",
+{
+p_member_id:currentMember.member_id,
+p_amount:amount,
+p_action:action,
+p_description:description,
+p_request_id:requestId
+}
+);
+
+if(error)throw error;
+if(!data || !data.success)throw new Error("Transaction not confirmed.");
+
+message(
+"Transaction successful. Member ID: "+data.member_id+
+" | New balance: ₹"+Number(data.new_balance).toLocaleString("en-IN"),
+"#6af0ad"
+);
+
+$("amount").value="";
+$("description").value="";
+
+await findMember();
+
+}catch(e){
+message(e.message||"Transaction failed.","#ff9999");
+}finally{
+lockButtons(false);
+}
+
+}
+
+initialize();
+</script>
+
+</body>
+</html>
