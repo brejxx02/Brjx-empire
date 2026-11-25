@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080a10">
 
-<title>BRJ EMPIRE | Deposit Management</title>
+<title>BRJ EMPIRE | Package Payment Management</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
@@ -292,7 +292,7 @@ color:var(--gold);
 table{
 width:100%;
 border-collapse:collapse;
-min-width:900px;
+min-width:1000px;
 }
 
 th{
@@ -351,6 +351,7 @@ color:var(--red);
 .actions{
 display:flex;
 gap:7px;
+flex-wrap:wrap;
 }
 
 .action-btn{
@@ -569,8 +570,8 @@ padding:0 15px;
 <header class="topbar">
 
 <div>
-<h3>Deposit Management</h3>
-<small>BRJ EMPIRE / DEPOSIT CONTROL</small>
+<h3>Package Payment Management</h3>
+<small>BRJ EMPIRE / PACKAGE PAYMENT CONTROL</small>
 </div>
 
 <div class="admin-badge">● ADMIN PANEL</div>
@@ -584,8 +585,8 @@ padding:0 15px;
 <div class="heading">
 
 <div>
-<h1>Deposit <span>Management</span></h1>
-<p>Monitor and review member payment requests.</p>
+<h1>Package <span>Payments</span></h1>
+<p>Monitor and review member package payment requests.</p>
 </div>
 
 <button class="refresh" id="refreshBtn">↻ REFRESH</button>
@@ -620,8 +621,8 @@ padding:0 15px;
 
 <div class="panel-head">
 <div>
-<h3>Deposit Requests</h3>
-<p>Live deposit records from Supabase</p>
+<h3>Package Payment Requests</h3>
+<p>Live package payment records from Supabase</p>
 </div>
 </div>
 
@@ -657,7 +658,7 @@ placeholder="Search Member ID / UTR / Request ID..."
 
 <thead>
 <tr>
-<th>REQUEST</th>
+<th>REQUEST / PACKAGE</th>
 <th>MEMBER ID</th>
 <th>AMOUNT</th>
 <th>UTR / TXN ID</th>
@@ -723,8 +724,12 @@ const $=id=>document.getElementById(id);
 
 let deposits=[];
 let filtered=[];
+let memberIDs={};
+let proofURLs={};
 let page=0;
+
 const PAGE_SIZE=15;
+const STORAGE_BUCKET="payment-proofs";
 
 function escapeHTML(value){
 
@@ -741,12 +746,14 @@ return String(value??"").replace(/[&<>"']/g,char=>({
 function showMessage(message,type="error"){
 
 $("notice").className="notice "+type;
+$("notice").style.display="block";
 $("notice").textContent=message;
 
 }
 
 function hideMessage(){
 
+$("notice").className="notice";
 $("notice").style.display="none";
 
 }
@@ -799,37 +806,19 @@ return true;
 
 function getAmount(item){
 
-return item.amount ??
-item.requested_amount ??
-0;
+return item.amount??0;
 
 }
 
 function getMember(item){
 
-return item.member_id ??
-item.user_id ??
-"—";
+return memberIDs[item.user_id]??"ID NOT ASSIGNED";
 
 }
 
 function getUTR(item){
 
-return item.utr_number ??
-item.utr ??
-item.transaction_id ??
-item.upi_transaction_id ??
-"—";
-
-}
-
-function getProof(item){
-
-return item.payment_screenshot ??
-item.screenshot_url ??
-item.payment_proof ??
-item.proof_url ??
-null;
+return item.utr_number??"—";
 
 }
 
@@ -839,21 +828,115 @@ return String(item.status||"pending").toLowerCase();
 
 }
 
+function getPackage(item){
+
+return item.package_name??"PACKAGE";
+
+}
+
+/* MEMBER ID LOOKUP */
+
+async function loadMemberIDs(){
+
+memberIDs={};
+
+const userIDs=[
+...new Set(
+deposits
+.map(item=>item.user_id)
+.filter(Boolean)
+)
+];
+
+if(!userIDs.length)return;
+
+const {data,error}=await DB
+.from("brj_member_ids")
+.select("user_id,member_id")
+.in("user_id",userIDs);
+
+if(error){
+
+console.error("Member ID lookup:",error);
+
+return;
+
+}
+
+(data||[]).forEach(row=>{
+
+if(row.user_id&&row.member_id!==null){
+
+memberIDs[row.user_id]=row.member_id;
+
+}
+
+});
+
+}
+
+/* PRIVATE PAYMENT PROOF URLS */
+
+async function loadProofURLs(){
+
+proofURLs={};
+
+for(const item of deposits){
+
+const path=item.screenshot_path;
+
+if(!path)continue;
+
+try{
+
+const {data,error}=await DB
+.storage
+.from(STORAGE_BUCKET)
+.createSignedUrl(path,3600);
+
+if(error){
+
+console.error("Payment proof URL error:",error);
+
+continue;
+
+}
+
+if(data?.signedUrl){
+
+proofURLs[item.id]=data.signedUrl;
+
+}
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+
+}
+
 /* LOAD DATA */
 
 async function loadDeposits(){
 
 $("depositTable").innerHTML=
-'<tr><td colspan="7" class="empty">Loading deposit requests...</td></tr>';
+'<tr><td colspan="7" class="empty">Loading package payment requests...</td></tr>';
 
 const {data,error}=await DB
-.from("deposit_requests")
+.from("payment_requests")
 .select("*")
 .order("created_at",{ascending:false});
 
 if(error)throw error;
 
 deposits=data||[];
+
+await loadMemberIDs();
+
+await loadProofURLs();
 
 $("totalCount").textContent=deposits.length;
 
@@ -883,7 +966,9 @@ filtered=deposits.filter(item=>{
 const text=[
 item.id,
 getMember(item),
-getUTR(item)
+getUTR(item),
+getPackage(item),
+getAmount(item)
 ].join(" ").toLowerCase();
 
 return text.includes(search)&&
@@ -908,7 +993,7 @@ const records=filtered.slice(start,start+PAGE_SIZE);
 if(!records.length){
 
 $("depositTable").innerHTML=
-'<tr><td colspan="7" class="empty">No deposit requests found.</td></tr>';
+'<tr><td colspan="7" class="empty">No package payment requests found.</td></tr>';
 
 }else{
 
@@ -919,26 +1004,41 @@ const status=getStatus(item);
 const badge=["pending","approved","rejected"].includes(status)
 ?status:"pending";
 
-const proof=getProof(item);
+const proof=proofURLs[item.id];
 
-const actions=status==="pending"
-?`
+const actions=`
+
 <div class="actions">
 
-<button class="action-btn approve" data-action="approve" data-id="${escapeHTML(item.id)}">
+<button
+class="action-btn view"
+data-view="${escapeHTML(item.id)}"
+>
+VIEW
+</button>
+
+${status==="pending"?`
+
+<button
+class="action-btn approve"
+data-action="approve"
+data-id="${escapeHTML(item.id)}"
+>
 APPROVE
 </button>
 
-<button class="action-btn reject" data-action="reject" data-id="${escapeHTML(item.id)}">
+<button
+class="action-btn reject"
+data-action="reject"
+data-id="${escapeHTML(item.id)}"
+>
 REJECT
 </button>
 
+`:""}
+
 </div>
-`
-:`
-<button class="action-btn view" data-proof="${proof?escapeHTML(proof):""}" data-utr="${escapeHTML(getUTR(item))}">
-VIEW
-</button>
+
 `;
 
 return `
@@ -946,10 +1046,12 @@ return `
 
 <td>
 <div class="member">${escapeHTML(String(item.id).slice(0,12))}</div>
-<div class="sub">DEPOSIT REQUEST</div>
+<div class="sub">${escapeHTML(getPackage(item))} PACKAGE</div>
 </td>
 
-<td>${escapeHTML(getMember(item))}</td>
+<td>
+<div class="member">${escapeHTML(getMember(item))}</div>
+</td>
 
 <td class="amount">₹${escapeHTML(getAmount(item))}</td>
 
@@ -972,6 +1074,42 @@ ${escapeHTML(status.toUpperCase())}
 
 }
 
+/* VIEW PAYMENT PROOF */
+
+$("depositTable").querySelectorAll("[data-view]").forEach(button=>{
+
+button.addEventListener("click",()=>{
+
+const id=button.dataset.view;
+
+const item=deposits.find(x=>String(x.id)===String(id));
+
+if(!item)return;
+
+const proof=proofURLs[id];
+
+if(!proof){
+
+showMessage(
+"Payment proof could not be opened. Check Storage bucket permissions and screenshot_path."
+);
+
+return;
+
+}
+
+$("paymentImage").src=proof;
+
+$("modalUTR").textContent=getUTR(item);
+
+$("imageModal").classList.add("show");
+
+});
+
+});
+
+/* APPROVE / REJECT */
+
 $("depositTable").querySelectorAll("[data-action]").forEach(button=>{
 
 button.addEventListener("click",()=>{
@@ -985,25 +1123,7 @@ button.dataset.action
 
 });
 
-$("depositTable").querySelectorAll("[data-proof]").forEach(button=>{
-
-button.addEventListener("click",()=>{
-
-const proof=button.dataset.proof;
-
-if(!proof){
-showMessage("No payment proof is available.");
-return;
-}
-
-$("paymentImage").src=proof;
-$("modalUTR").textContent=button.dataset.utr;
-
-$("imageModal").classList.add("show");
-
-});
-
-});
+/* PAGINATION */
 
 $("pageInfo").textContent=
 `Showing ${filtered.length?start+1:0}–${Math.min(start+PAGE_SIZE,filtered.length)} of ${filtered.length}`;
@@ -1016,11 +1136,18 @@ $("nextBtn").disabled=
 }
 
 /*
- IMPORTANT:
- Approval/rejection must be performed
- through a secure server-side RPC.
+SECURITY:
+Approval and rejection are intentionally
+not executed from the browser.
 
- No direct wallet update from browser.
+A secure server-side RPC must:
+1. Verify admin role.
+2. Lock the payment request.
+3. Check that status is still pending.
+4. Prevent duplicate wallet credit.
+5. Update payment status.
+6. Update wallet and ledger atomically.
+7. Record an admin audit log.
 */
 
 async function processRequest(id,action){
@@ -1032,25 +1159,21 @@ const item=deposits.find(x=>String(x.id)===String(id));
 if(!item)return;
 
 if(getStatus(item)!=="pending"){
+
 showMessage("This request is no longer pending.");
+
 return;
+
 }
 
-const message=action==="approve"
-?"Approve this deposit request? Wallet credit will require a secure server-side transaction."
-:"Reject this deposit request?";
-
-if(!confirm(message))return;
-
-/*
- Safe default:
- Do not modify payment status or wallet here.
- The exact RPC must be implemented using
- the actual database schema and server function.
-*/
+if(!confirm(
+action==="approve"
+?"Approve this package payment request?"
+:"Reject this package payment request?"
+))return;
 
 showMessage(
-"Action not executed. Secure deposit approval RPC is not configured yet. No wallet balance has been changed."
+"Action not executed. Secure package payment approval RPC is not configured yet. No wallet balance has been changed."
 );
 
 }
@@ -1094,8 +1217,11 @@ applyFilters();
 $("prevBtn").addEventListener("click",()=>{
 
 if(page>0){
+
 page--;
+
 renderTable();
+
 }
 
 });
@@ -1103,8 +1229,11 @@ renderTable();
 $("nextBtn").addEventListener("click",()=>{
 
 if((page+1)*PAGE_SIZE<filtered.length){
+
 page++;
+
 renderTable();
+
 }
 
 });
@@ -1118,9 +1247,12 @@ $("refreshBtn").textContent="LOADING...";
 try{
 
 hideMessage();
+
 await loadDeposits();
 
 }catch(error){
+
+console.error(error);
 
 showMessage(error.message);
 
@@ -1135,7 +1267,20 @@ $("refreshBtn").textContent="↻ REFRESH";
 $("closeModal").addEventListener("click",()=>{
 
 $("imageModal").classList.remove("show");
+
 $("paymentImage").src="";
+
+});
+
+$("imageModal").addEventListener("click",event=>{
+
+if(event.target===$("imageModal")){
+
+$("imageModal").classList.remove("show");
+
+$("paymentImage").src="";
+
+}
 
 });
 
@@ -1148,8 +1293,11 @@ if(!confirm("Logout from Admin Panel?"))return;
 const {error}=await DB.auth.signOut();
 
 if(error){
+
 showMessage(error.message);
+
 return;
+
 }
 
 location.replace("admin-login.html");
@@ -1175,7 +1323,7 @@ console.error(error);
 showMessage(error.message);
 
 $("depositTable").innerHTML=
-'<tr><td colspan="7" class="empty">Unable to load deposit records. Check database permissions and column names.</td></tr>';
+'<tr><td colspan="7" class="empty">Unable to load package payments. Check database permissions and table names.</td></tr>';
 
 }
 
