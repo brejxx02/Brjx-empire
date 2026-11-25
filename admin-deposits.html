@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080a10">
+
+<title>BRJ EMPIRE | Deposit Management</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+
+:root{
+--bg:#080a10;
+--card:#111823;
+--gold:#e6bb58;
+--light:#ffe29a;
+--text:#f5f6f8;
+--muted:#8994a6;
+--border:#263140;
+--green:#56d59b;
+--red:#ff707d;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+}
+
+.sidebar{
+position:fixed;
+top:0;
+left:0;
+bottom:0;
+width:250px;
+background:#0c121c;
+border-right:1px solid var(--border);
+padding:22px 14px;
+z-index:10;
+}
+
+.logo{
+padding:10px 12px 25px;
+border-bottom:1px solid var(--border);
+}
+
+.logo h2{
+font-size:21px;
+font-weight:950;
+}
+
+.logo span{color:var(--gold)}
+
+.logo small{
+display:block;
+color:var(--muted);
+font-size:9px;
+letter-spacing:2px;
+margin-top:7px;
+}
+
+.menu-title{
+font-size:9px;
+color:#647185;
+letter-spacing:2px;
+margin:28px 12px 12px;
+}
+
+.nav{
+display:block;
+padding:14px 13px;
+margin-bottom:6px;
+border-radius:10px;
+color:#a0aabb;
+font-size:12px;
+font-weight:650;
+text-decoration:none;
+}
+
+.nav.active{
+background:#e6bb5818;
+border:1px solid #e6bb5830;
+color:var(--light);
+}
+
+.sidebar-bottom{
+position:absolute;
+bottom:20px;
+left:20px;
+right:20px;
+}
+
+.sidebar-bottom button{
+width:100%;
+padding:12px;
+border-radius:10px;
+background:#ff707d12;
+border:1px solid #ff707d30;
+color:var(--red);
+font-weight:800;
+cursor:pointer;
+}
+
+.main{
+margin-left:250px;
+min-height:100vh;
+}
+
+.topbar{
+height:75px;
+padding:0 30px;
+background:#0c121c;
+border-bottom:1px solid var(--border);
+display:flex;
+align-items:center;
+justify-content:space-between;
+position:sticky;
+top:0;
+z-index:5;
+}
+
+.topbar h3{font-size:17px}
+
+.topbar small{
+display:block;
+font-size:10px;
+color:var(--muted);
+margin-top:5px;
+}
+
+.admin-badge{
+font-size:10px;
+padding:9px 13px;
+border:1px solid #56d59b40;
+background:#56d59b10;
+color:var(--green);
+border-radius:20px;
+}
+
+.content{
+padding:30px;
+max-width:1600px;
+margin:auto;
+}
+
+.heading{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+gap:15px;
+}
+
+.heading h1{
+font-size:25px;
+font-weight:900;
+}
+
+.heading h1 span{color:var(--gold)}
+
+.heading p{
+font-size:12px;
+color:var(--muted);
+margin-top:7px;
+}
+
+.refresh{
+padding:11px 17px;
+background:#e6bb5815;
+border:1px solid #e6bb5840;
+color:var(--gold);
+border-radius:9px;
+font-weight:800;
+cursor:pointer;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-bottom:25px;
+}
+
+.stat{
+padding:21px;
+background:linear-gradient(145deg,#151e2b,#101620);
+border:1px solid var(--border);
+border-radius:16px;
+}
+
+.stat small{
+color:var(--muted);
+font-size:10px;
+font-weight:800;
+}
+
+.stat h2{
+font-size:27px;
+margin-top:14px;
+}
+
+.gold{color:var(--gold)}
+.green{color:var(--green)}
+.red{color:var(--red)}
+
+.panel{
+background:linear-gradient(145deg,#131c29,#0e141e);
+border:1px solid var(--border);
+border-radius:17px;
+overflow:hidden;
+}
+
+.panel-head{
+padding:21px;
+border-bottom:1px solid var(--border);
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.panel-head h3{font-size:14px}
+
+.panel-head p{
+font-size:10px;
+color:var(--muted);
+margin-top:5px;
+}
+
+.filters{
+padding:20px;
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.search,.select{
+height:46px;
+padding:0 14px;
+border-radius:10px;
+background:#090f18;
+border:1px solid var(--border);
+color:white;
+outline:none;
+font-size:12px;
+}
+
+.search{
+flex:1;
+min-width:190px;
+}
+
+.search:focus,.select:focus{
+border-color:var(--gold);
+}
+
+.tabs{
+display:flex;
+gap:8px;
+padding:0 20px 18px;
+overflow-x:auto;
+}
+
+.tab{
+padding:10px 15px;
+border-radius:9px;
+background:#ffffff06;
+border:1px solid var(--border);
+color:var(--muted);
+font-size:10px;
+font-weight:800;
+cursor:pointer;
+white-space:nowrap;
+}
+
+.tab.active{
+background:#e6bb5815;
+border-color:#e6bb5850;
+color:var(--gold);
+}
+
+.table-wrap{overflow-x:auto}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:900px;
+}
+
+th{
+padding:16px;
+text-align:left;
+font-size:9px;
+letter-spacing:1px;
+color:var(--muted);
+border-bottom:1px solid var(--border);
+}
+
+td{
+padding:16px;
+font-size:11px;
+border-bottom:1px solid #ffffff08;
+}
+
+.member{
+font-weight:800;
+}
+
+.sub{
+color:var(--muted);
+font-size:10px;
+margin-top:5px;
+}
+
+.amount{
+color:var(--gold);
+font-weight:900;
+}
+
+.badge{
+padding:6px 9px;
+border-radius:7px;
+font-size:9px;
+font-weight:800;
+display:inline-block;
+}
+
+.pending{
+background:#e6bb5815;
+color:var(--gold);
+}
+
+.approved{
+background:#56d59b15;
+color:var(--green);
+}
+
+.rejected{
+background:#ff707d15;
+color:var(--red);
+}
+
+.actions{
+display:flex;
+gap:7px;
+}
+
+.action-btn{
+padding:8px 10px;
+border-radius:7px;
+font-size:9px;
+font-weight:850;
+cursor:pointer;
+border:1px solid;
+}
+
+.approve{
+background:#56d59b12;
+border-color:#56d59b40;
+color:var(--green);
+}
+
+.reject{
+background:#ff707d12;
+border-color:#ff707d40;
+color:var(--red);
+}
+
+.view{
+background:#e6bb5812;
+border-color:#e6bb5840;
+color:var(--gold);
+}
+
+.empty{
+text-align:center;
+padding:40px;
+color:var(--muted);
+}
+
+.notice{
+display:none;
+padding:14px;
+margin-bottom:18px;
+border-radius:10px;
+font-size:12px;
+line-height:1.6;
+}
+
+.notice.error{
+display:block;
+background:#ff707d12;
+border:1px solid #ff707d40;
+color:#ff9ba4;
+}
+
+.notice.success{
+display:block;
+background:#56d59b12;
+border:1px solid #56d59b40;
+color:var(--green);
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:#000d;
+z-index:100;
+align-items:center;
+justify-content:center;
+padding:15px;
+}
+
+.modal.show{display:flex}
+
+.modal-card{
+width:100%;
+max-width:450px;
+background:#111a27;
+border:1px solid #e6bb5850;
+border-radius:18px;
+padding:23px;
+}
+
+.modal-head{
+display:flex;
+justify-content:space-between;
+margin-bottom:20px;
+}
+
+.modal-head button{
+background:none;
+border:0;
+color:white;
+font-size:23px;
+cursor:pointer;
+}
+
+.modal-card img{
+width:100%;
+max-height:350px;
+object-fit:contain;
+background:#090f18;
+border-radius:10px;
+}
+
+.modal-card p{
+font-size:12px;
+color:var(--muted);
+margin-bottom:12px;
+}
+
+.modal-card strong{color:var(--gold)}
+
+.pagination{
+padding:17px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:var(--muted);
+font-size:11px;
+}
+
+.page-btn{
+padding:9px 13px;
+background:#e6bb5815;
+border:1px solid #e6bb5830;
+color:var(--gold);
+border-radius:8px;
+cursor:pointer;
+}
+
+.page-btn:disabled{
+opacity:.35;
+}
+
+@media(max-width:1000px){
+.stats{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:700px){
+
+.sidebar{
+position:relative;
+width:100%;
+height:auto;
+padding:13px;
+border-right:0;
+border-bottom:1px solid var(--border);
+}
+
+.logo{
+padding:8px 10px;
+border:0;
+}
+
+.sidebar .menu-title,
+.sidebar .nav:not(.active),
+.sidebar-bottom{
+display:none;
+}
+
+.sidebar .nav.active{
+display:inline-block;
+padding:10px;
+margin:5px 0;
+}
+
+.main{margin-left:0}
+
+.topbar{
+height:65px;
+padding:0 15px;
+}
+
+.content{padding:20px 13px}
+
+.heading h1{font-size:21px}
+
+.stats{gap:10px}
+
+.stat{padding:15px}
+
+.stat h2{font-size:23px}
+
+.panel-head{padding:16px}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+<div class="logo">
+<h2>BRJ <span>EMPIRE</span></h2>
+<small>ADMINISTRATION</small>
+</div>
+
+<div class="menu-title">MANAGEMENT</div>
+
+<a class="nav" href="admin-dashboard.html">◈ Overview</a>
+<a class="nav" href="admin-members.html">♙ Members</a>
+<a class="nav active" href="admin-deposits.html">↗ Deposits</a>
+<a class="nav" href="admin-withdrawals.html">↙ Withdrawals</a>
+<a class="nav" href="admin-packages.html">▣ Packages</a>
+<a class="nav" href="admin-referrals.html">♧ Referrals</a>
+<a class="nav" href="admin-transfers.html">⇄ P2P Transfers</a>
+
+<div class="sidebar-bottom">
+<button id="logoutBtn">LOGOUT ↗</button>
+</div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+
+<div>
+<h3>Deposit Management</h3>
+<small>BRJ EMPIRE / DEPOSIT CONTROL</small>
+</div>
+
+<div class="admin-badge">● ADMIN PANEL</div>
+
+</header>
+
+<div class="content">
+
+<div id="notice" class="notice"></div>
+
+<div class="heading">
+
+<div>
+<h1>Deposit <span>Management</span></h1>
+<p>Monitor and review member payment requests.</p>
+</div>
+
+<button class="refresh" id="refreshBtn">↻ REFRESH</button>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<small>TOTAL REQUESTS</small>
+<h2 class="gold" id="totalCount">—</h2>
+</div>
+
+<div class="stat">
+<small>PENDING REQUESTS</small>
+<h2 class="gold" id="pendingCount">—</h2>
+</div>
+
+<div class="stat">
+<small>APPROVED REQUESTS</small>
+<h2 class="green" id="approvedCount">—</h2>
+</div>
+
+<div class="stat">
+<small>REJECTED REQUESTS</small>
+<h2 class="red" id="rejectedCount">—</h2>
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-head">
+<div>
+<h3>Deposit Requests</h3>
+<p>Live deposit records from Supabase</p>
+</div>
+</div>
+
+<div class="filters">
+
+<input
+class="search"
+id="searchInput"
+placeholder="Search Member ID / UTR / Request ID..."
+>
+
+<select class="select" id="statusFilter">
+<option value="all">All Status</option>
+<option value="pending">Pending</option>
+<option value="approved">Approved</option>
+<option value="rejected">Rejected</option>
+</select>
+
+</div>
+
+<div class="tabs">
+
+<button class="tab active" data-status="all">ALL REQUESTS</button>
+<button class="tab" data-status="pending">PENDING</button>
+<button class="tab" data-status="approved">APPROVED</button>
+<button class="tab" data-status="rejected">REJECTED</button>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>REQUEST</th>
+<th>MEMBER ID</th>
+<th>AMOUNT</th>
+<th>UTR / TXN ID</th>
+<th>DATE</th>
+<th>STATUS</th>
+<th>ACTION</th>
+</tr>
+</thead>
+
+<tbody id="depositTable">
+<tr>
+<td colspan="7" class="empty">Verifying admin access...</td>
+</tr>
+</tbody>
+
+</table>
+
+</div>
+
+<div class="pagination">
+
+<span id="pageInfo">Loading...</span>
+
+<div>
+<button class="page-btn" id="prevBtn" disabled>← PREVIOUS</button>
+<button class="page-btn" id="nextBtn" disabled>NEXT →</button>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<!-- SCREENSHOT MODAL -->
+
+<div class="modal" id="imageModal">
+
+<div class="modal-card">
+
+<div class="modal-head">
+<h3>Payment Proof</h3>
+<button id="closeModal">×</button>
+</div>
+
+<p>Transaction reference: <strong id="modalUTR">—</strong></p>
+
+<img id="paymentImage" alt="Payment proof">
+
+</div>
+
+</div>
+
+<script>
+
+const DB=window.supabaseClient;
+
+const $=id=>document.getElementById(id);
+
+let deposits=[];
+let filtered=[];
+let page=0;
+const PAGE_SIZE=15;
+
+function escapeHTML(value){
+
+return String(value??"").replace(/[&<>"']/g,char=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[char]));
+
+}
+
+function showMessage(message,type="error"){
+
+$("notice").className="notice "+type;
+$("notice").textContent=message;
+
+}
+
+function hideMessage(){
+
+$("notice").style.display="none";
+
+}
+
+/* ADMIN AUTH */
+
+async function verifyAdmin(){
+
+if(!DB?.auth){
+throw new Error("Supabase client not found. Check supabase.js.");
+}
+
+const {data,error}=await DB.auth.getSession();
+
+if(error)throw error;
+
+if(!data.session){
+location.replace("admin-login.html");
+return false;
+}
+
+const user=data.session.user;
+
+const {data:roles,error:roleError}=await DB
+.from("user_roles")
+.select("role")
+.eq("user_id",user.id);
+
+if(roleError){
+throw new Error("Admin verification failed: "+roleError.message);
+}
+
+const valid=(roles||[]).some(row=>
+["admin","main_admin"].includes(
+String(row.role).toLowerCase()
+)
+);
+
+if(!valid){
+await DB.auth.signOut();
+location.replace("admin-login.html");
+return false;
+}
+
+return true;
+
+}
+
+/* FIELD HELPERS */
+
+function getAmount(item){
+
+return item.amount ??
+item.requested_amount ??
+0;
+
+}
+
+function getMember(item){
+
+return item.member_id ??
+item.user_id ??
+"—";
+
+}
+
+function getUTR(item){
+
+return item.utr_number ??
+item.utr ??
+item.transaction_id ??
+item.upi_transaction_id ??
+"—";
+
+}
+
+function getProof(item){
+
+return item.payment_screenshot ??
+item.screenshot_url ??
+item.payment_proof ??
+item.proof_url ??
+null;
+
+}
+
+function getStatus(item){
+
+return String(item.status||"pending").toLowerCase();
+
+}
+
+/* LOAD DATA */
+
+async function loadDeposits(){
+
+$("depositTable").innerHTML=
+'<tr><td colspan="7" class="empty">Loading deposit requests...</td></tr>';
+
+const {data,error}=await DB
+.from("deposit_requests")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error)throw error;
+
+deposits=data||[];
+
+$("totalCount").textContent=deposits.length;
+
+$("pendingCount").textContent=
+deposits.filter(x=>getStatus(x)==="pending").length;
+
+$("approvedCount").textContent=
+deposits.filter(x=>getStatus(x)==="approved").length;
+
+$("rejectedCount").textContent=
+deposits.filter(x=>getStatus(x)==="rejected").length;
+
+applyFilters();
+
+}
+
+/* FILTER */
+
+function applyFilters(){
+
+const search=$("searchInput").value.toLowerCase().trim();
+
+const status=$("statusFilter").value;
+
+filtered=deposits.filter(item=>{
+
+const text=[
+item.id,
+getMember(item),
+getUTR(item)
+].join(" ").toLowerCase();
+
+return text.includes(search)&&
+(status==="all"||getStatus(item)===status);
+
+});
+
+page=0;
+
+renderTable();
+
+}
+
+/* RENDER */
+
+function renderTable(){
+
+const start=page*PAGE_SIZE;
+
+const records=filtered.slice(start,start+PAGE_SIZE);
+
+if(!records.length){
+
+$("depositTable").innerHTML=
+'<tr><td colspan="7" class="empty">No deposit requests found.</td></tr>';
+
+}else{
+
+$("depositTable").innerHTML=records.map(item=>{
+
+const status=getStatus(item);
+
+const badge=["pending","approved","rejected"].includes(status)
+?status:"pending";
+
+const proof=getProof(item);
+
+const actions=status==="pending"
+?`
+<div class="actions">
+
+<button class="action-btn approve" data-action="approve" data-id="${escapeHTML(item.id)}">
+APPROVE
+</button>
+
+<button class="action-btn reject" data-action="reject" data-id="${escapeHTML(item.id)}">
+REJECT
+</button>
+
+</div>
+`
+:`
+<button class="action-btn view" data-proof="${proof?escapeHTML(proof):""}" data-utr="${escapeHTML(getUTR(item))}">
+VIEW
+</button>
+`;
+
+return `
+<tr>
+
+<td>
+<div class="member">${escapeHTML(String(item.id).slice(0,12))}</div>
+<div class="sub">DEPOSIT REQUEST</div>
+</td>
+
+<td>${escapeHTML(getMember(item))}</td>
+
+<td class="amount">₹${escapeHTML(getAmount(item))}</td>
+
+<td>${escapeHTML(getUTR(item))}</td>
+
+<td>${escapeHTML(item.created_at?new Date(item.created_at).toLocaleString("en-IN"):"—")}</td>
+
+<td>
+<span class="badge ${badge}">
+${escapeHTML(status.toUpperCase())}
+</span>
+</td>
+
+<td>${actions}</td>
+
+</tr>
+`;
+
+}).join("");
+
+}
+
+$("depositTable").querySelectorAll("[data-action]").forEach(button=>{
+
+button.addEventListener("click",()=>{
+
+processRequest(
+button.dataset.id,
+button.dataset.action
+);
+
+});
+
+});
+
+$("depositTable").querySelectorAll("[data-proof]").forEach(button=>{
+
+button.addEventListener("click",()=>{
+
+const proof=button.dataset.proof;
+
+if(!proof){
+showMessage("No payment proof is available.");
+return;
+}
+
+$("paymentImage").src=proof;
+$("modalUTR").textContent=button.dataset.utr;
+
+$("imageModal").classList.add("show");
+
+});
+
+});
+
+$("pageInfo").textContent=
+`Showing ${filtered.length?start+1:0}–${Math.min(start+PAGE_SIZE,filtered.length)} of ${filtered.length}`;
+
+$("prevBtn").disabled=page===0;
+
+$("nextBtn").disabled=
+(start+PAGE_SIZE)>=filtered.length;
+
+}
+
+/*
+ IMPORTANT:
+ Approval/rejection must be performed
+ through a secure server-side RPC.
+
+ No direct wallet update from browser.
+*/
+
+async function processRequest(id,action){
+
+if(action!=="approve"&&action!=="reject")return;
+
+const item=deposits.find(x=>String(x.id)===String(id));
+
+if(!item)return;
+
+if(getStatus(item)!=="pending"){
+showMessage("This request is no longer pending.");
+return;
+}
+
+const message=action==="approve"
+?"Approve this deposit request? Wallet credit will require a secure server-side transaction."
+:"Reject this deposit request?";
+
+if(!confirm(message))return;
+
+/*
+ Safe default:
+ Do not modify payment status or wallet here.
+ The exact RPC must be implemented using
+ the actual database schema and server function.
+*/
+
+showMessage(
+"Action not executed. Secure deposit approval RPC is not configured yet. No wallet balance has been changed."
+);
+
+}
+
+/* SEARCH */
+
+$("searchInput").addEventListener("input",applyFilters);
+
+$("statusFilter").addEventListener("change",()=>{
+
+document.querySelectorAll(".tab").forEach(x=>
+x.classList.toggle("active",x.dataset.status===$("statusFilter").value)
+);
+
+applyFilters();
+
+});
+
+/* TABS */
+
+document.querySelectorAll(".tab").forEach(button=>{
+
+button.addEventListener("click",()=>{
+
+$("statusFilter").value=button.dataset.status;
+
+document.querySelectorAll(".tab").forEach(x=>
+x.classList.remove("active")
+);
+
+button.classList.add("active");
+
+applyFilters();
+
+});
+
+});
+
+/* PAGINATION */
+
+$("prevBtn").addEventListener("click",()=>{
+
+if(page>0){
+page--;
+renderTable();
+}
+
+});
+
+$("nextBtn").addEventListener("click",()=>{
+
+if((page+1)*PAGE_SIZE<filtered.length){
+page++;
+renderTable();
+}
+
+});
+
+/* REFRESH */
+
+$("refreshBtn").addEventListener("click",async()=>{
+
+$("refreshBtn").textContent="LOADING...";
+
+try{
+
+hideMessage();
+await loadDeposits();
+
+}catch(error){
+
+showMessage(error.message);
+
+}
+
+$("refreshBtn").textContent="↻ REFRESH";
+
+});
+
+/* MODAL */
+
+$("closeModal").addEventListener("click",()=>{
+
+$("imageModal").classList.remove("show");
+$("paymentImage").src="";
+
+});
+
+/* LOGOUT */
+
+$("logoutBtn").addEventListener("click",async()=>{
+
+if(!confirm("Logout from Admin Panel?"))return;
+
+const {error}=await DB.auth.signOut();
+
+if(error){
+showMessage(error.message);
+return;
+}
+
+location.replace("admin-login.html");
+
+});
+
+/* START */
+
+(async()=>{
+
+try{
+
+const verified=await verifyAdmin();
+
+if(!verified)return;
+
+await loadDeposits();
+
+}catch(error){
+
+console.error(error);
+
+showMessage(error.message);
+
+$("depositTable").innerHTML=
+'<tr><td colspan="7" class="empty">Unable to load deposit records. Check database permissions and column names.</td></tr>';
+
+}
+
+})();
+
+</script>
+
+</body>
+</html>
