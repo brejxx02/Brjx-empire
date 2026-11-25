@@ -1135,46 +1135,75 @@ $("nextBtn").disabled=
 
 }
 
-/*
-SECURITY:
-Approval and rejection are intentionally
-not executed from the browser.
+/* SECURE PACKAGE PAYMENT PROCESSING */
 
-A secure server-side RPC must:
-1. Verify admin role.
-2. Lock the payment request.
-3. Check that status is still pending.
-4. Prevent duplicate wallet credit.
-5. Update payment status.
-6. Update wallet and ledger atomically.
-7. Record an admin audit log.
-*/
+async function processRequest(id, action) {
 
-async function processRequest(id,action){
+    if (!["approve", "reject"].includes(action)) return;
 
-if(action!=="approve"&&action!=="reject")return;
+    const item = deposits.find(
+        x => String(x.id) === String(id)
+    );
 
-const item=deposits.find(x=>String(x.id)===String(id));
+    if (!item) return;
 
-if(!item)return;
+    if (getStatus(item) !== "pending") {
+        showMessage("This request is no longer pending.");
+        return;
+    }
 
-if(getStatus(item)!=="pending"){
+    const confirmed = confirm(
+        action === "approve"
+        ? `Approve ₹${item.amount} package payment?`
+        : `Reject ₹${item.amount} package payment?`
+    );
 
-showMessage("This request is no longer pending.");
+    if (!confirmed) return;
 
-return;
+    const buttons = document.querySelectorAll(
+        `[data-id="${CSS.escape(String(id))}"]`
+    );
 
-}
+    buttons.forEach(button => button.disabled = true);
 
-if(!confirm(
-action==="approve"
-?"Approve this package payment request?"
-:"Reject this package payment request?"
-))return;
+    try {
 
-showMessage(
-"Action not executed. Secure package payment approval RPC is not configured yet. No wallet balance has been changed."
-);
+        hideMessage();
+
+        const { data, error } = await DB.rpc(
+            "admin_process_package_payment",
+            {
+                p_request_id: id,
+                p_action: action
+            }
+        );
+
+        if (error) throw error;
+
+        if (!data || data.success !== true) {
+            throw new Error("Payment action was not completed.");
+        }
+
+        showMessage(
+            action === "approve"
+            ? `Payment approved successfully. ₹${data.amount} credited to member wallet.`
+            : "Payment request rejected successfully.",
+            "success"
+        );
+
+        await loadDeposits();
+
+    } catch (error) {
+
+        console.error("PAYMENT PROCESS ERROR:", error);
+
+        showMessage(
+            error.message || "Unable to process payment."
+        );
+
+        buttons.forEach(button => button.disabled = false);
+
+    }
 
 }
 
