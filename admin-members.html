@@ -4,30 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080a10">
-
-<title>BRJ EMPIRE | Members Management</title>
+<title>BRJ EMPIRE | Member Command Center</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
 <style>
+:root{
+--bg:#080a10;
+--sidebar:#0c121c;
+--card:#111a27;
+--card2:#0d1520;
+--gold:#e6bb58;
+--light:#ffe29a;
+--text:#f5f6f8;
+--muted:#8793a6;
+--border:#263140;
+--green:#55d6a0;
+--red:#ff707d;
+--blue:#75aaff;
+--shadow:0 20px 60px #0007;
+}
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-}
-
-:root{
---bg:#080a10;
---card:#111823;
---gold:#e6bb58;
---light:#ffe29a;
---text:#f5f6f8;
---muted:#8994a6;
---border:#263140;
---green:#56d59b;
---red:#ff707d;
 }
 
 body{
@@ -36,16 +39,19 @@ color:var(--text);
 min-height:100vh;
 }
 
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
 .sidebar{
 position:fixed;
 top:0;
-left:0;
 bottom:0;
+left:0;
 width:250px;
-background:#0c121c;
+background:var(--sidebar);
 border-right:1px solid var(--border);
-padding:22px 14px;
-z-index:10;
+padding:24px 15px;
+z-index:20;
 }
 
 .logo{
@@ -54,66 +60,68 @@ border-bottom:1px solid var(--border);
 }
 
 .logo h2{
-font-size:21px;
+font-size:23px;
 font-weight:950;
+letter-spacing:-1px;
 }
 
-.logo span{
-color:var(--gold);
-}
+.logo h2 span{color:var(--gold)}
 
 .logo small{
 display:block;
 color:var(--muted);
 font-size:9px;
-letter-spacing:2px;
+letter-spacing:3px;
 margin-top:7px;
 }
 
 .menu-title{
 font-size:9px;
-color:#647185;
 letter-spacing:2px;
-margin:28px 12px 12px;
+color:#657186;
+margin:30px 12px 13px;
 }
 
 .nav{
-display:block;
-padding:14px 13px;
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px;
 margin-bottom:6px;
-border-radius:10px;
-color:#a0aabb;
-font-size:12px;
-font-weight:650;
+border-radius:11px;
 text-decoration:none;
-}
-
-.nav.active{
-background:#e6bb5818;
-border:1px solid #e6bb5830;
-color:var(--light);
+color:#9ca8b9;
+font-size:12px;
+font-weight:700;
+transition:.2s;
 }
 
 .nav:hover{
 background:#ffffff09;
+color:white;
+}
+
+.nav.active{
+background:linear-gradient(100deg,#e6bb5825,#e6bb5808);
+border:1px solid #e6bb5840;
+color:var(--light);
 }
 
 .sidebar-bottom{
 position:absolute;
-bottom:20px;
-left:20px;
-right:20px;
+bottom:22px;
+left:18px;
+right:18px;
 }
 
-.sidebar-bottom button{
+.logout{
 width:100%;
-padding:12px;
-border-radius:10px;
+padding:13px;
+border:1px solid #ff707d40;
 background:#ff707d12;
-border:1px solid #ff707d30;
 color:var(--red);
-font-weight:800;
-cursor:pointer;
+border-radius:10px;
+font-weight:850;
 }
 
 .main{
@@ -122,21 +130,19 @@ min-height:100vh;
 }
 
 .topbar{
-height:75px;
-padding:0 30px;
-background:#0c121c;
-border-bottom:1px solid var(--border);
+height:76px;
+padding:0 32px;
 display:flex;
 align-items:center;
 justify-content:space-between;
+background:#0c121c;
+border-bottom:1px solid var(--border);
 position:sticky;
 top:0;
-z-index:5;
+z-index:10;
 }
 
-.topbar h3{
-font-size:17px;
-}
+.topbar h3{font-size:16px}
 
 .topbar small{
 display:block;
@@ -146,149 +152,201 @@ margin-top:5px;
 }
 
 .admin-badge{
+padding:9px 14px;
+border-radius:30px;
 font-size:10px;
-padding:9px 13px;
-border:1px solid #56d59b40;
-background:#56d59b10;
+font-weight:850;
 color:var(--green);
-border-radius:20px;
+border:1px solid #55d6a040;
+background:#55d6a010;
 }
 
 .content{
+max-width:1550px;
 padding:30px;
-max-width:1500px;
 margin:auto;
 }
 
-.heading{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:25px;
-gap:15px;
+.hero{
+position:relative;
+overflow:hidden;
+padding:30px;
+border-radius:20px;
+border:1px solid #e6bb5835;
+background:
+radial-gradient(circle at 90% 20%,#e6bb5822,transparent 35%),
+linear-gradient(130deg,#182131,#0c121c);
+margin-bottom:24px;
 }
 
-.heading h1{
-font-size:25px;
+.hero:after{
+content:"";
+position:absolute;
+right:-45px;
+bottom:-100px;
+width:270px;
+height:270px;
+border:1px solid #e6bb5825;
+border-radius:50%;
+box-shadow:0 0 0 35px #e6bb5808,0 0 0 70px #e6bb5805;
+}
+
+.hero-label{
+font-size:9px;
+color:var(--gold);
+letter-spacing:3px;
 font-weight:900;
 }
 
-.heading h1 span{
-color:var(--gold);
+.hero h1{
+font-size:30px;
+font-weight:950;
+margin-top:12px;
+letter-spacing:-1px;
 }
 
-.heading p{
+.hero h1 span{color:var(--gold)}
+
+.hero p{
 font-size:12px;
 color:var(--muted);
-margin-top:7px;
+margin-top:9px;
+}
+
+.hero-bottom{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-top:25px;
+position:relative;
+z-index:1;
+}
+
+.live-indicator{
+font-size:10px;
+color:var(--green);
+font-weight:800;
 }
 
 .refresh{
-padding:11px 17px;
-background:#e6bb5815;
-border:1px solid #e6bb5840;
-color:var(--gold);
-border-radius:9px;
-font-weight:800;
-cursor:pointer;
+padding:12px 18px;
+background:linear-gradient(135deg,#ffe29a,#c89738);
+border:0;
+border-radius:10px;
+color:#17120a;
+font-size:10px;
+font-weight:950;
+box-shadow:0 8px 25px #e6bb5820;
 }
 
 .stats{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:16px;
-margin-bottom:25px;
+margin-bottom:24px;
 }
 
 .stat{
+position:relative;
+overflow:hidden;
 padding:22px;
-background:linear-gradient(145deg,#151e2b,#101620);
-border:1px solid var(--border);
 border-radius:16px;
+background:linear-gradient(145deg,#151f2d,#101722);
+border:1px solid var(--border);
 }
 
 .stat small{
+font-size:10px;
+letter-spacing:1px;
 color:var(--muted);
-font-size:11px;
-font-weight:700;
+font-weight:800;
 }
 
 .stat h2{
-font-size:29px;
-margin-top:14px;
+font-size:30px;
+margin-top:13px;
+font-weight:950;
+}
+
+.stat .sub{
+font-size:10px;
+color:var(--muted);
+margin-top:7px;
 }
 
 .gold{color:var(--gold)}
 .green{color:var(--green)}
+.red{color:var(--red)}
 
 .panel{
-background:linear-gradient(145deg,#131c29,#0e141e);
+background:linear-gradient(145deg,#121c29,#0d141e);
 border:1px solid var(--border);
 border-radius:17px;
 overflow:hidden;
+box-shadow:var(--shadow);
 }
 
 .panel-head{
-padding:21px;
-border-bottom:1px solid var(--border);
+padding:22px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+border-bottom:1px solid var(--border);
+gap:10px;
 }
 
-.panel-head h3{
-font-size:14px;
-}
+.panel-head h3{font-size:14px}
 
 .panel-head p{
 font-size:10px;
 color:var(--muted);
-margin-top:5px;
+margin-top:6px;
+}
+
+.directory-tag{
+padding:7px 11px;
+border-radius:7px;
+background:#e6bb5812;
+border:1px solid #e6bb5830;
+color:var(--gold);
+font-size:9px;
+font-weight:850;
 }
 
 .filters{
-padding:20px;
+padding:19px;
 display:flex;
 gap:12px;
 flex-wrap:wrap;
 }
 
+.search,.select{
+height:46px;
+border-radius:10px;
+background:#080e17;
+border:1px solid var(--border);
+color:white;
+padding:0 14px;
+outline:none;
+font-size:11px;
+}
+
 .search{
 flex:1;
 min-width:200px;
-height:46px;
-padding:0 15px;
-border-radius:10px;
-background:#090f18;
-border:1px solid var(--border);
-color:white;
-outline:none;
-font-size:12px;
 }
 
-.search:focus{
+.search:focus,.select:focus{
 border-color:var(--gold);
 }
 
-.select{
-height:46px;
-padding:0 13px;
-border-radius:10px;
-background:#090f18;
-border:1px solid var(--border);
-color:white;
-outline:none;
-font-size:12px;
-}
-
-.table-wrap{
-overflow-x:auto;
-}
+.table-wrap{overflow-x:auto}
 
 table{
 width:100%;
 border-collapse:collapse;
-min-width:750px;
+min-width:850px;
 }
 
 th{
@@ -301,58 +359,52 @@ border-bottom:1px solid var(--border);
 }
 
 td{
-padding:17px 16px;
+padding:16px;
 font-size:11px;
 border-bottom:1px solid #ffffff08;
 }
 
-.member-name{
-font-weight:800;
-}
-
-.member-email{
-color:var(--muted);
-margin-top:5px;
-font-size:10px;
-}
+.member-name{font-weight:850}
 
 .member-id{
+font-size:10px;
 color:var(--gold);
-font-weight:800;
+margin-top:5px;
 }
+
+.phone{color:#c3cbd6}
 
 .status{
-padding:6px 10px;
+display:inline-block;
+padding:7px 10px;
 border-radius:7px;
 font-size:9px;
-font-weight:800;
-display:inline-block;
+font-weight:900;
 }
 
-.active{
-background:#56d59b15;
+.status.active{
+background:#55d6a015;
 color:var(--green);
 }
 
-.inactive{
+.status.banned{
 background:#ff707d15;
 color:var(--red);
 }
 
-.view-btn{
-padding:8px 13px;
-background:#e6bb5815;
-border:1px solid #e6bb5830;
+.action-btn{
+padding:9px 12px;
 border-radius:8px;
+border:1px solid #e6bb5840;
+background:#e6bb5815;
 color:var(--gold);
-font-size:10px;
-font-weight:800;
-cursor:pointer;
+font-size:9px;
+font-weight:900;
 }
 
 .empty{
 text-align:center;
-padding:40px;
+padding:45px;
 color:var(--muted);
 }
 
@@ -361,141 +413,291 @@ padding:18px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+gap:10px;
+font-size:10px;
 color:var(--muted);
-font-size:11px;
 }
 
 .page-btn{
-padding:9px 14px;
-background:#e6bb5815;
-border:1px solid #e6bb5830;
-color:var(--gold);
+padding:9px 13px;
 border-radius:8px;
-cursor:pointer;
+border:1px solid var(--border);
+background:#111a27;
+color:var(--gold);
 }
 
-.page-btn:disabled{
-opacity:.35;
-cursor:not-allowed;
-}
+.page-btn:disabled{opacity:.3}
 
 .notice{
 display:none;
-padding:14px;
-margin-bottom:18px;
+padding:14px 17px;
 border-radius:10px;
-background:#ff707d12;
-border:1px solid #ff707d40;
-color:#ff9ba4;
-font-size:12px;
-line-height:1.5;
+margin-bottom:18px;
+font-size:11px;
+line-height:1.6;
 }
 
-/* PROFILE MODAL */
+.notice.success{
+display:block;
+color:var(--green);
+background:#55d6a010;
+border:1px solid #55d6a040;
+}
+
+.notice.error{
+display:block;
+color:#ff9ba4;
+background:#ff707d10;
+border:1px solid #ff707d40;
+}
+
+/* MODALS */
 
 .modal{
 display:none;
 position:fixed;
 inset:0;
-background:#000c;
 z-index:100;
+background:#000c;
 align-items:center;
 justify-content:center;
 padding:15px;
+backdrop-filter:blur(8px);
 }
 
-.modal.show{
-display:flex;
-}
+.modal.show{display:flex}
 
 .modal-card{
 width:100%;
-max-width:500px;
+max-width:560px;
 max-height:90vh;
 overflow-y:auto;
-background:#111a27;
-border:1px solid #e6bb5840;
+background:linear-gradient(145deg,#172232,#0d141e);
+border:1px solid #e6bb5845;
 border-radius:20px;
-padding:25px;
+padding:24px;
+box-shadow:0 30px 100px #000b;
 }
+
+.modal-card.wide{max-width:850px}
 
 .modal-header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:22px;
+margin-bottom:23px;
 }
 
-.modal-header h2{
-font-size:18px;
-}
+.modal-header h2{font-size:18px}
 
 .close{
-background:none;
-border:0;
+width:35px;
+height:35px;
+border:1px solid var(--border);
+background:#ffffff08;
 color:white;
-font-size:24px;
-cursor:pointer;
+border-radius:9px;
+font-size:21px;
 }
 
-.profile-avatar{
-width:65px;
-height:65px;
-border-radius:19px;
-background:linear-gradient(145deg,#ffe29a,#b98a32);
+.profile-top{
+display:flex;
+align-items:center;
+gap:16px;
+padding:17px;
+background:#080f19;
+border:1px solid var(--border);
+border-radius:14px;
+}
+
+.avatar{
+width:57px;
+height:57px;
+border-radius:17px;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:25px;
-font-weight:900;
+background:linear-gradient(135deg,#ffe29a,#b98730);
 color:#17120a;
-margin-bottom:15px;
+font-size:24px;
+font-weight:950;
 }
 
-.profile-name{
-font-size:20px;
-font-weight:900;
+.profile-name{font-size:17px;font-weight:950}
+
+.profile-id{
+color:var(--gold);
+font-size:10px;
+margin-top:5px;
 }
 
-.profile-email{
-font-size:11px;
+.balance-card{
+padding:20px;
+border-radius:15px;
+margin-top:15px;
+background:linear-gradient(120deg,#e6bb5820,#e6bb5805);
+border:1px solid #e6bb5840;
+}
+
+.balance-card small{
+font-size:9px;
 color:var(--muted);
-margin-top:6px;
+letter-spacing:1px;
+font-weight:800;
+}
+
+.balance-card h2{
+font-size:30px;
+color:var(--gold);
+margin-top:10px;
 }
 
 .detail-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:12px;
-margin-top:22px;
+gap:11px;
+margin-top:15px;
 }
 
 .detail{
 padding:14px;
-background:#090f18;
+background:#080f19;
 border:1px solid var(--border);
-border-radius:11px;
+border-radius:10px;
 overflow-wrap:anywhere;
 }
 
 .detail small{
-color:var(--muted);
-font-size:9px;
 display:block;
+font-size:9px;
+color:var(--muted);
 margin-bottom:8px;
 }
 
-.detail strong{
+.detail strong{font-size:11px}
+
+.action-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:18px;
+}
+
+.action-tile{
+padding:16px 12px;
+border:1px solid var(--border);
+border-radius:12px;
+background:#ffffff05;
+color:white;
+text-align:left;
+}
+
+.action-tile b{
+display:block;
+font-size:12px;
+margin-bottom:6px;
+}
+
+.action-tile small{
+font-size:9px;
+color:var(--muted);
+}
+
+.action-tile.credit{border-color:#55d6a040}
+.action-tile.credit b{color:var(--green)}
+.action-tile.debit{border-color:#ff707d40}
+.action-tile.debit b{color:var(--red)}
+
+.action-tile.history b{color:var(--gold)}
+.action-tile.ban b{color:var(--red)}
+
+.field{margin-bottom:16px}
+
+.field label{
+display:block;
+font-size:10px;
+color:var(--muted);
+font-weight:800;
+margin-bottom:9px;
+}
+
+.field input,.field textarea{
+width:100%;
+padding:14px;
+border-radius:10px;
+background:#080f19;
+border:1px solid var(--border);
+color:white;
+outline:none;
 font-size:12px;
 }
 
-@media(max-width:800px){
+.field input:focus,.field textarea:focus{
+border-color:var(--gold);
+}
+
+.field textarea{
+resize:vertical;
+min-height:85px;
+}
+
+.submit{
+width:100%;
+padding:14px;
+border:0;
+border-radius:10px;
+background:linear-gradient(135deg,#ffe29a,#bd8c32);
+color:#17120a;
+font-weight:950;
+font-size:11px;
+}
+
+.submit:disabled{
+opacity:.5;
+cursor:wait;
+}
+
+.secondary{
+width:100%;
+padding:13px;
+margin-top:10px;
+background:#ffffff08;
+border:1px solid var(--border);
+color:white;
+border-radius:10px;
+font-size:10px;
+font-weight:800;
+}
+
+.history-list{
+overflow-x:auto;
+}
+
+.history-list table{min-width:650px}
+
+.type-credit{color:var(--green);font-weight:900}
+.type-debit{color:var(--red);font-weight:900}
+
+.history-note{
+color:var(--muted);
+font-size:10px;
+margin-top:5px;
+}
+
+.loader{
+padding:40px;
+text-align:center;
+color:var(--muted);
+font-size:11px;
+}
+
+@media(max-width:850px){
 
 .sidebar{
+position:relative;
 width:100%;
 height:auto;
-position:relative;
-padding:13px;
+padding:12px;
 border-right:0;
 border-bottom:1px solid var(--border);
 }
@@ -507,52 +709,46 @@ border:0;
 
 .sidebar .menu-title,
 .sidebar .nav:not(.active),
-.sidebar-bottom{
-display:none;
-}
+.sidebar-bottom{display:none}
 
 .sidebar .nav.active{
-display:inline-block;
-padding:10px;
-margin:5px 0;
+display:inline-flex;
+padding:9px 12px;
+margin:7px 0 0;
 }
 
-.main{
-margin-left:0;
-}
+.main{margin-left:0}
 
 .topbar{
 height:65px;
 padding:0 15px;
 }
 
-.content{
-padding:20px 13px;
-}
+.content{padding:18px 12px}
 
-.heading h1{
-font-size:21px;
-}
+.hero{padding:22px}
+
+.hero h1{font-size:24px}
 
 .stats{
-gap:10px;
 grid-template-columns:repeat(2,1fr);
+gap:10px;
 }
 
-.stat{
-padding:15px;
-}
+.stat{padding:16px}
 
-.stat h2{
-font-size:24px;
-}
+.stat h2{font-size:25px}
 
-.detail-grid{
-grid-template-columns:1fr;
-}
+.detail-grid{grid-template-columns:1fr}
 
 }
 
+@media(max-width:450px){
+.admin-badge{font-size:8px;padding:8px}
+.stats .stat:last-child{grid-column:span 2}
+.hero-bottom{align-items:flex-start;flex-direction:column}
+.modal-card{padding:18px}
+}
 </style>
 </head>
 
@@ -576,7 +772,7 @@ grid-template-columns:1fr;
 <a class="nav" href="admin-transfers.html">⇄ P2P Transfers</a>
 
 <div class="sidebar-bottom">
-<button id="logoutBtn">LOGOUT ↗</button>
+<button class="logout" id="logoutBtn">LOGOUT ↗</button>
 </div>
 
 </aside>
@@ -584,59 +780,62 @@ grid-template-columns:1fr;
 <main class="main">
 
 <header class="topbar">
-
 <div>
-<h3>Members Management</h3>
-<small>BRJ EMPIRE / MEMBERS</small>
+<h3>Member Command Center</h3>
+<small>BRJ EMPIRE / MEMBER MANAGEMENT</small>
 </div>
-
-<div class="admin-badge">● ADMIN PANEL</div>
-
+<div class="admin-badge">● SECURE ADMIN</div>
 </header>
 
 <div class="content">
 
 <div id="notice" class="notice"></div>
 
-<div class="heading">
+<section class="hero">
 
-<div>
-<h1>Members <span>Management</span></h1>
-<p>Monitor and manage registered platform members.</p>
+<div class="hero-label">BRJ EMPIRE / CONTROL CENTER</div>
+
+<h1>Member <span>Management.</span></h1>
+
+<p>Manage member accounts, wallet balances and transaction history.</p>
+
+<div class="hero-bottom">
+<div class="live-indicator">● DATABASE CONNECTED</div>
+<button class="refresh" id="refreshBtn">↻ REFRESH DATA</button>
 </div>
 
-<button class="refresh" id="refreshBtn">↻ REFRESH</button>
-
-</div>
+</section>
 
 <div class="stats">
 
 <div class="stat">
 <small>TOTAL MEMBERS</small>
 <h2 class="gold" id="totalMembers">—</h2>
+<div class="sub">Registered platform accounts</div>
 </div>
 
 <div class="stat">
 <small>ACTIVE MEMBERS</small>
 <h2 class="green" id="activeMembers">—</h2>
+<div class="sub">Accounts currently active</div>
 </div>
 
 <div class="stat">
-<small>DISPLAYED MEMBERS</small>
-<h2 id="displayedMembers">—</h2>
+<small>BANNED MEMBERS</small>
+<h2 class="red" id="bannedMembers">—</h2>
+<div class="sub">Restricted accounts</div>
 </div>
 
 </div>
 
-<div class="panel">
+<section class="panel">
 
 <div class="panel-head">
-
 <div>
 <h3>All Registered Members</h3>
-<p>Member directory · Live database records</p>
+<p>Live member directory · Secure account management</p>
 </div>
-
+<span class="directory-tag">MEMBER DATABASE</span>
 </div>
 
 <div class="filters">
@@ -644,96 +843,228 @@ grid-template-columns:1fr;
 <input
 class="search"
 id="searchInput"
-placeholder="Search name, email or member ID..."
+placeholder="⌕ Search name, member ID, phone..."
 >
 
 <select class="select" id="statusFilter">
-<option value="all">All Status</option>
+<option value="all">All Members</option>
 <option value="active">Active</option>
-<option value="inactive">Inactive</option>
+<option value="banned">Banned</option>
 </select>
 
 </div>
 
 <div class="table-wrap">
-
 <table>
-
 <thead>
 <tr>
 <th>MEMBER</th>
 <th>MEMBER ID</th>
 <th>PHONE</th>
+<th>WALLET BALANCE</th>
 <th>REGISTERED</th>
 <th>STATUS</th>
-<th>ACTION</th>
+<th>MANAGE</th>
 </tr>
 </thead>
 
 <tbody id="membersTable">
-<tr>
-<td colspan="6" class="empty">Verifying admin access...</td>
-</tr>
+<tr><td colspan="7" class="empty">Verifying admin access...</td></tr>
 </tbody>
-
 </table>
-
 </div>
 
 <div class="pagination">
-
 <span id="pageInfo">Loading...</span>
-
 <div>
 <button class="page-btn" id="prevBtn" disabled>← PREVIOUS</button>
 <button class="page-btn" id="nextBtn" disabled>NEXT →</button>
 </div>
-
 </div>
 
+</section>
 </div>
-
-</div>
-
 </main>
 
-</div>
+<!-- MEMBER MANAGEMENT MODAL -->
 
-<!-- PROFILE MODAL -->
-
-<div class="modal" id="profileModal">
-
+<div class="modal" id="manageModal">
 <div class="modal-card">
 
 <div class="modal-header">
-<h2>Member Profile</h2>
-<button class="close" id="closeModal">×</button>
+<h2>Member Control Center</h2>
+<button class="close" data-close="manageModal">×</button>
 </div>
 
-<div class="profile-avatar" id="profileAvatar">M</div>
+<div class="profile-top">
+<div class="avatar" id="memberAvatar">M</div>
+<div>
+<div class="profile-name" id="memberName">Member</div>
+<div class="profile-id" id="memberCode">MEMBER ID</div>
+</div>
+</div>
 
-<div class="profile-name" id="profileName">Member</div>
-<div class="profile-email" id="profileEmail">—</div>
+<div class="balance-card">
+<small>AVAILABLE WALLET BALANCE</small>
+<h2 id="memberBalance">₹0.00</h2>
+</div>
 
-<div class="detail-grid" id="profileDetails"></div>
+<div class="detail-grid" id="memberDetails"></div>
+
+<div class="action-grid">
+
+<button class="action-tile credit" id="openCredit">
+<b>＋ ADD BALANCE</b>
+<small>Credit funds with a reason</small>
+</button>
+
+<button class="action-tile debit" id="openDebit">
+<b>－ DEDUCT BALANCE</b>
+<small>Debit funds with a reason</small>
+</button>
+
+<button class="action-tile history" id="openHistory">
+<b>▤ BALANCE HISTORY</b>
+<small>View all admin adjustments</small>
+</button>
+
+<button class="action-tile ban" id="toggleBan">
+<b id="banButtonText">BAN MEMBER</b>
+<small>Change account status</small>
+</button>
 
 </div>
 
+</div>
+</div>
+
+<!-- BALANCE ADJUSTMENT MODAL -->
+
+<div class="modal" id="adjustModal">
+<div class="modal-card">
+
+<div class="modal-header">
+<h2 id="adjustTitle">Add Balance</h2>
+<button class="close" data-close="adjustModal">×</button>
+</div>
+
+<div class="balance-card">
+<small>CURRENT AVAILABLE BALANCE</small>
+<h2 id="adjustCurrentBalance">₹0.00</h2>
+</div>
+
+<form id="adjustForm">
+
+<div class="field" style="margin-top:20px">
+<label>AMOUNT (INR)</label>
+<input
+id="adjustAmount"
+type="number"
+min="0.01"
+max="10000000"
+step="0.01"
+placeholder="Enter amount"
+required
+>
+</div>
+
+<div class="field">
+<label>REASON / DESCRIPTION</label>
+<textarea
+id="adjustReason"
+maxlength="250"
+placeholder="Example: Salary, Bonus, Correction..."
+required
+></textarea>
+</div>
+
+<div class="field">
+<label>TRANSACTION TYPE</label>
+<input id="adjustTypeDisplay" readonly>
+</div>
+
+<button class="submit" id="adjustSubmit" type="submit">
+CONFIRM ADJUSTMENT
+</button>
+
+</form>
+
+</div>
+</div>
+
+<!-- HISTORY MODAL -->
+
+<div class="modal" id="historyModal">
+<div class="modal-card wide">
+
+<div class="modal-header">
+<h2>Balance History</h2>
+<button class="close" data-close="historyModal">×</button>
+</div>
+
+<div class="history-list">
+<table>
+<thead>
+<tr>
+<th>TYPE</th>
+<th>AMOUNT</th>
+<th>BEFORE</th>
+<th>AFTER</th>
+<th>REASON</th>
+<th>DATE</th>
+</tr>
+</thead>
+<tbody id="historyTable">
+<tr><td colspan="6" class="empty">Loading history...</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</div>
+
+<!-- BAN CONFIRMATION MODAL -->
+
+<div class="modal" id="banModal">
+<div class="modal-card">
+
+<div class="modal-header">
+<h2 id="banTitle">Ban Member</h2>
+<button class="close" data-close="banModal">×</button>
+</div>
+
+<div class="field">
+<label>REASON FOR ACCOUNT STATUS CHANGE</label>
+<textarea
+id="banReason"
+maxlength="250"
+placeholder="Enter reason..."
+></textarea>
+</div>
+
+<button class="submit" id="banSubmit">CONFIRM</button>
+
+</div>
 </div>
 
 <script>
+"use strict";
 
 const DB=window.supabaseClient;
 
 const $=id=>document.getElementById(id);
 
+const PAGE_SIZE=15;
+
+let currentAdmin=null;
 let allMembers=[];
 let filteredMembers=[];
 let currentPage=0;
-const PAGE_SIZE=15;
+let selectedMember=null;
+let adjustmentType="credit";
+let pendingStatus="";
 
 function escapeHTML(value){
-
 return String(value??"").replace(/[&<>"']/g,char=>({
 "&":"&amp;",
 "<":"&lt;",
@@ -741,61 +1072,65 @@ return String(value??"").replace(/[&<>"']/g,char=>({
 '"':"&quot;",
 "'":"&#39;"
 }[char]));
-
 }
 
-function notify(message){
-
-$("notice").style.display="block";
-$("notice").textContent=message;
-
+function money(value){
+return "₹"+Number(value||0).toLocaleString("en-IN",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+});
 }
 
 function formatDate(value){
-
 if(!value)return "—";
-
-const date=new Date(value);
-
-if(Number.isNaN(date.getTime()))return "—";
-
-return date.toLocaleDateString("en-IN",{
+const d=new Date(value);
+if(Number.isNaN(d.getTime()))return "—";
+return d.toLocaleString("en-IN",{
 day:"2-digit",
 month:"short",
-year:"numeric"
+year:"numeric",
+hour:"2-digit",
+minute:"2-digit"
 });
-
 }
 
-function memberName(member){
-
-return member.full_name ||
-member.name ||
-member.username ||
-"Member";
-
+function memberName(m){
+return m.full_name||"Member";
 }
 
-function memberId(member){
-
-return member.member_id ||
-member.bri_member_id ||
-"—";
-
+function memberStatus(m){
+return String(m.account_status||"active").toLowerCase();
 }
 
-function memberStatus(member){
-
-return String(member.status||"active").toLowerCase();
-
+function showNotice(message,type="success"){
+const box=$("notice");
+box.className="notice "+type;
+box.textContent=message;
+window.scrollTo({top:0,behavior:"smooth"});
 }
 
-/* ADMIN AUTH */
+function hideNotice(){
+$("notice").className="notice";
+}
+
+function openModal(id){
+$(id).classList.add("show");
+}
+
+function closeModal(id){
+$(id).classList.remove("show");
+}
+
+function getMemberBalance(member){
+return Number(member.wallet?.available_balance||0);
+}
+
+/* ADMIN SECURITY */
 
 async function verifyAdmin(){
 
 if(!DB?.auth){
-throw new Error("Supabase configuration not found.");
+throw new Error("Supabase client not found. Check supabase.js.");
 }
 
 const {data,error}=await DB.auth.getSession();
@@ -807,31 +1142,26 @@ location.replace("admin-login.html");
 return false;
 }
 
-const user=data.session.user;
+currentAdmin=data.session.user;
 
 const {data:roles,error:roleError}=await DB
 .from("user_roles")
 .select("role")
-.eq("user_id",user.id);
+.eq("user_id",currentAdmin.id);
 
-if(roleError){
-throw new Error("Admin permission check failed: "+roleError.message);
-}
+if(roleError)throw roleError;
 
-const valid=(roles||[]).some(item=>
-["admin","main_admin"].includes(
-String(item.role).toLowerCase()
-)
+const allowed=(roles||[]).some(r=>
+["admin","main_admin"].includes(String(r.role).toLowerCase())
 );
 
-if(!valid){
+if(!allowed){
 await DB.auth.signOut();
 location.replace("admin-login.html");
 return false;
 }
 
 return true;
-
 }
 
 /* LOAD MEMBERS */
@@ -839,112 +1169,119 @@ return true;
 async function loadMembers(){
 
 $("membersTable").innerHTML=
-'<tr><td colspan="6" class="empty">Loading members...</td></tr>';
+'<tr><td colspan="7" class="empty">Loading member records...</td></tr>';
 
-const {data,error}=await DB
+const {data:profiles,error}=await DB
 .from("profiles")
 .select("*")
 .order("created_at",{ascending:false});
 
 if(error)throw error;
 
-allMembers=data||[];
+const ids=(profiles||[]).map(p=>p.id);
 
-const active=allMembers.filter(member=>
-memberStatus(member)==="active"
-).length;
+let walletMap={};
 
-$("totalMembers").textContent=
-allMembers.length.toLocaleString("en-IN");
+if(ids.length){
 
-$("activeMembers").textContent=
-active.toLocaleString("en-IN");
+const {data:wallets,error:walletError}=await DB
+.from("wallets")
+.select("id,user_id,available_balance,total_deposit,total_withdrawal,currency")
+.in("user_id",ids);
+
+if(walletError)throw walletError;
+
+(wallets||[]).forEach(w=>{
+walletMap[w.user_id]=w;
+});
+
+}
+
+allMembers=(profiles||[]).map(p=>({
+...p,
+wallet:walletMap[p.id]||null
+}));
+
+const active=allMembers.filter(m=>memberStatus(m)==="active").length;
+const banned=allMembers.filter(m=>memberStatus(m)==="banned").length;
+
+$("totalMembers").textContent=allMembers.length.toLocaleString("en-IN");
+$("activeMembers").textContent=active.toLocaleString("en-IN");
+$("bannedMembers").textContent=banned.toLocaleString("en-IN");
 
 applyFilters();
-
 }
 
 /* FILTER */
 
 function applyFilters(){
 
-const search=$("searchInput").value.trim().toLowerCase();
-
+const q=$("searchInput").value.trim().toLowerCase();
 const status=$("statusFilter").value;
 
-filteredMembers=allMembers.filter(member=>{
+filteredMembers=allMembers.filter(m=>{
 
-const searchable=[
-memberName(member),
-member.email,
-memberId(member),
-member.phone,
-member.mobile
+const text=[
+m.full_name,
+m.member_id,
+m.mobile,
+m.referral_code,
+m.id
 ].join(" ").toLowerCase();
 
-const matchSearch=searchable.includes(search);
-
-const matchStatus=status==="all" ||
-memberStatus(member)===status;
-
-return matchSearch&&matchStatus;
+return text.includes(q)&&
+(status==="all"||memberStatus(m)===status);
 
 });
 
 currentPage=0;
-
 renderMembers();
-
 }
 
-/* RENDER */
+/* TABLE */
 
 function renderMembers(){
 
 const start=currentPage*PAGE_SIZE;
-
 const end=start+PAGE_SIZE;
-
 const records=filteredMembers.slice(start,end);
 
-$("displayedMembers").textContent=
-filteredMembers.length.toLocaleString("en-IN");
-
-if(records.length===0){
+if(!records.length){
 
 $("membersTable").innerHTML=
-'<tr><td colspan="6" class="empty">No matching members found.</td></tr>';
+'<tr><td colspan="7" class="empty">No matching members found.</td></tr>';
 
 }else{
 
-$("membersTable").innerHTML=records.map((member,index)=>{
+$("membersTable").innerHTML=records.map(m=>{
 
-const status=memberStatus(member);
-
-const badge=status==="active"?"active":"inactive";
+const status=memberStatus(m);
+const balance=m.wallet?money(m.wallet.available_balance):"Wallet unavailable";
 
 return `
 <tr>
 <td>
-<div class="member-name">${escapeHTML(memberName(member))}</div>
-<div class="member-email">${escapeHTML(member.email||"—")}</div>
+<div class="member-name">${escapeHTML(memberName(m))}</div>
+<div class="member-id">${escapeHTML(m.id)}</div>
 </td>
 
-<td class="member-id">${escapeHTML(memberId(member))}</td>
+<td class="gold">${escapeHTML(m.member_id||"—")}</td>
 
-<td>${escapeHTML(member.phone||member.mobile||"—")}</td>
+<td class="phone">${escapeHTML(m.mobile||"—")}</td>
 
-<td>${escapeHTML(formatDate(member.created_at))}</td>
+<td>${escapeHTML(balance)}</td>
+
+<td>${escapeHTML(formatDate(m.created_at))}</td>
 
 <td>
-<span class="status ${badge}">
-${escapeHTML(status.toUpperCase())}
+<span class="status ${status==="banned"?"banned":"active"}">
+${status==="banned"?"BANNED":"ACTIVE"}
 </span>
 </td>
 
 <td>
-<button class="view-btn" data-index="${index}">
-VIEW PROFILE
+<button class="action-btn" data-manage="${escapeHTML(m.id)}">
+MANAGE →
 </button>
 </td>
 </tr>
@@ -952,58 +1289,317 @@ VIEW PROFILE
 
 }).join("");
 
-document.querySelectorAll(".view-btn").forEach(button=>{
-
-button.addEventListener("click",()=>{
-
-openProfile(records[Number(button.dataset.index)]);
-
-});
-
-});
-
 }
+
+document.querySelectorAll("[data-manage]").forEach(btn=>{
+btn.addEventListener("click",()=>{
+const member=allMembers.find(m=>m.id===btn.dataset.manage);
+if(member)openManage(member);
+});
+});
 
 const totalPages=Math.ceil(filteredMembers.length/PAGE_SIZE);
 
 $("pageInfo").textContent=
-`Showing ${filteredMembers.length===0?0:start+1}–${Math.min(end,filteredMembers.length)} of ${filteredMembers.length} members`;
+`Showing ${filteredMembers.length?start+1:0}–${Math.min(end,filteredMembers.length)} of ${filteredMembers.length} members`;
 
 $("prevBtn").disabled=currentPage===0;
 $("nextBtn").disabled=currentPage>=totalPages-1;
+}
+
+/* MEMBER PROFILE */
+
+function openManage(member){
+
+selectedMember=member;
+
+$("memberAvatar").textContent=memberName(member).charAt(0).toUpperCase();
+$("memberName").textContent=memberName(member);
+$("memberCode").textContent="MEMBER ID: "+(member.member_id||"Not assigned");
+
+$("memberBalance").textContent=
+member.wallet?money(member.wallet.available_balance):"Wallet unavailable";
+
+const details=[
+["PHONE",member.mobile||"—"],
+["ACCOUNT STATUS",memberStatus(member).toUpperCase()],
+["REFERRAL CODE",member.referral_code||"—"],
+["KYC STATUS",member.kyc_status||"—"],
+["REGISTERED",formatDate(member.created_at)],
+["USER ID",member.id]
+];
+
+$("memberDetails").innerHTML=details.map(d=>`
+<div class="detail">
+<small>${escapeHTML(d[0])}</small>
+<strong>${escapeHTML(d[1])}</strong>
+</div>
+`).join("");
+
+const banned=memberStatus(member)==="banned";
+
+$("banButtonText").textContent=banned?"UNBAN MEMBER":"BAN MEMBER";
+
+$("banButtonText").parentElement.querySelector("small").textContent=
+banned?"Restore member account":"Restrict member account";
+
+openModal("manageModal");
+}
+
+/* ADJUSTMENT FORM */
+
+function openAdjustment(type){
+
+if(!selectedMember)return;
+
+if(!selectedMember.wallet){
+showNotice("This member does not have a wallet record. Balance adjustment is unavailable.","error");
+return;
+}
+
+adjustmentType=type;
+
+$("adjustTitle").textContent=
+type==="credit"?"Add Balance":"Deduct Balance";
+
+$("adjustCurrentBalance").textContent=
+money(selectedMember.wallet.available_balance);
+
+$("adjustTypeDisplay").value=
+type==="credit"?"ADMIN CREDIT":"ADMIN DEBIT";
+
+$("adjustAmount").value="";
+$("adjustReason").value="";
+
+closeModal("manageModal");
+openModal("adjustModal");
+}
+
+async function submitAdjustment(event){
+
+event.preventDefault();
+
+if(!selectedMember||!selectedMember.wallet)return;
+
+const amount=Number($("adjustAmount").value);
+const reason=$("adjustReason").value.trim();
+
+if(!Number.isFinite(amount)||amount<=0||amount>10000000){
+showNotice("Please enter a valid amount.","error");
+return;
+}
+
+if(!reason||reason.length<2){
+showNotice("Please enter a valid reason.","error");
+return;
+}
+
+if(adjustmentType==="debit"&&amount>
+Number(selectedMember.wallet.available_balance)){
+showNotice("Insufficient wallet balance.","error");
+return;
+}
+
+const button=$("adjustSubmit");
+button.disabled=true;
+button.textContent="PROCESSING SECURELY...";
+
+try{
+
+const requestId=crypto.randomUUID();
+
+const {data,error}=await DB.rpc(
+"admin_adjust_member_balance",
+{
+p_user_id:selectedMember.id,
+p_adjustment_type:adjustmentType,
+p_amount:amount,
+p_reason:reason,
+p_request_id:requestId
+}
+);
+
+if(error)throw error;
+
+if(!data?.success)throw new Error("Adjustment was not confirmed.");
+
+closeModal("adjustModal");
+
+showNotice(
+(adjustmentType==="credit"?"Balance credited successfully. ":"Balance debited successfully. ")+
+"New balance: "+money(data.balance_after)
+);
+
+await loadMembers();
+
+selectedMember=allMembers.find(m=>m.id===selectedMember.id);
+
+if(selectedMember){
+openManage(selectedMember);
+}
+
+}catch(error){
+
+console.error(error);
+showNotice(error.message||"Balance adjustment failed.","error");
+
+}finally{
+
+button.disabled=false;
+button.textContent="CONFIRM ADJUSTMENT";
 
 }
 
-/* PROFILE */
+}
 
-function openProfile(member){
+/* HISTORY */
 
-$("profileAvatar").textContent=
-memberName(member).charAt(0).toUpperCase();
+async function loadHistory(){
 
-$("profileName").textContent=memberName(member);
+if(!selectedMember)return;
 
-$("profileEmail").textContent=member.email||"Email unavailable";
+$("historyTable").innerHTML=
+'<tr><td colspan="6" class="loader">Loading secure transaction history...</td></tr>';
 
-const details=[
-["MEMBER ID",memberId(member)],
-["PHONE",member.phone||member.mobile||"—"],
-["STATUS",memberStatus(member)],
-["REGISTERED",formatDate(member.created_at)],
-["USER ID",member.id||"—"],
-["REFERRAL CODE",member.referral_code||"—"]
-];
+closeModal("manageModal");
+openModal("historyModal");
 
-$("profileDetails").innerHTML=details.map(item=>`
+try{
 
-<div class="detail">
-<small>${escapeHTML(item[0])}</small>
-<strong>${escapeHTML(item[1])}</strong>
-</div>
+const {data,error}=await DB.rpc(
+"admin_get_member_balance_history",
+{
+p_user_id:selectedMember.id
+}
+);
 
-`).join("");
+if(error)throw error;
 
-$("profileModal").classList.add("show");
+if(!data||!data.length){
+
+$("historyTable").innerHTML=
+'<tr><td colspan="6" class="empty">No admin balance adjustments found.</td></tr>';
+
+return;
+
+}
+
+$("historyTable").innerHTML=data.map(item=>{
+
+const credit=item.adjustment_type==="credit";
+
+return `
+<tr>
+<td>
+<span class="${credit?"type-credit":"type-debit"}">
+${credit?"ADMIN CREDIT":"ADMIN DEBIT"}
+</span>
+</td>
+
+<td>${money(item.amount)}</td>
+
+<td>${money(item.balance_before)}</td>
+
+<td>${money(item.balance_after)}</td>
+
+<td>${escapeHTML(item.reason||"—")}
+<div class="history-note">Admin: ${escapeHTML(item.admin_user_id)}</div>
+</td>
+
+<td>${escapeHTML(formatDate(item.created_at))}</td>
+</tr>
+`;
+
+}).join("");
+
+}catch(error){
+
+console.error(error);
+
+$("historyTable").innerHTML=
+`<tr><td colspan="6" class="empty">${escapeHTML(error.message)}</td></tr>`;
+
+}
+
+}
+
+/* BAN / UNBAN */
+
+function openBanDialog(){
+
+if(!selectedMember)return;
+
+pendingStatus=
+memberStatus(selectedMember)==="banned"?"active":"banned";
+
+$("banTitle").textContent=
+pendingStatus==="banned"?"Ban Member":"Unban Member";
+
+$("banSubmit").textContent=
+pendingStatus==="banned"?"CONFIRM BAN":"CONFIRM UNBAN";
+
+$("banReason").value="";
+
+closeModal("manageModal");
+openModal("banModal");
+
+}
+
+async function submitBan(){
+
+if(!selectedMember)return;
+
+const reason=$("banReason").value.trim();
+
+if(reason.length<2){
+showNotice("Enter a reason for this status change.","error");
+return;
+}
+
+const button=$("banSubmit");
+button.disabled=true;
+button.textContent="PROCESSING...";
+
+try{
+
+const {data,error}=await DB.rpc(
+"admin_set_member_status",
+{
+p_user_id:selectedMember.id,
+p_status:pendingStatus,
+p_reason:reason
+}
+);
+
+if(error)throw error;
+
+if(!data?.success)throw new Error("Account status update was not confirmed.");
+
+closeModal("banModal");
+
+showNotice(
+pendingStatus==="banned"
+?"Member account marked as banned."
+:"Member account marked as active."
+);
+
+await loadMembers();
+
+selectedMember=allMembers.find(m=>m.id===selectedMember.id);
+
+if(selectedMember)openManage(selectedMember);
+
+}catch(error){
+
+console.error(error);
+showNotice(error.message||"Status update failed.","error");
+
+}finally{
+
+button.disabled=false;
+button.textContent="CONFIRM";
+
+}
 
 }
 
@@ -1027,38 +1623,57 @@ renderMembers();
 }
 });
 
-$("closeModal").addEventListener("click",()=>{
-$("profileModal").classList.remove("show");
-});
-
-$("profileModal").addEventListener("click",event=>{
-if(event.target===$("profileModal")){
-$("profileModal").classList.remove("show");
-}
-});
-
 $("refreshBtn").addEventListener("click",async()=>{
 
-$("refreshBtn").textContent="LOADING...";
+const btn=$("refreshBtn");
+btn.disabled=true;
+btn.textContent="REFRESHING...";
 
 try{
+hideNotice();
 await loadMembers();
+showNotice("Member records refreshed successfully.");
 }catch(error){
-notify(error.message);
+showNotice(error.message,"error");
 }
 
-$("refreshBtn").textContent="↻ REFRESH";
+btn.disabled=false;
+btn.textContent="↻ REFRESH DATA";
 
+});
+
+$("openCredit").addEventListener("click",()=>openAdjustment("credit"));
+
+$("openDebit").addEventListener("click",()=>openAdjustment("debit"));
+
+$("openHistory").addEventListener("click",loadHistory);
+
+$("toggleBan").addEventListener("click",openBanDialog);
+
+$("adjustForm").addEventListener("submit",submitAdjustment);
+
+$("banSubmit").addEventListener("click",submitBan);
+
+document.querySelectorAll("[data-close]").forEach(btn=>{
+btn.addEventListener("click",()=>{
+closeModal(btn.dataset.close);
+});
+});
+
+document.querySelectorAll(".modal").forEach(modal=>{
+modal.addEventListener("click",event=>{
+if(event.target===modal)closeModal(modal.id);
+});
 });
 
 $("logoutBtn").addEventListener("click",async()=>{
 
-if(!confirm("Logout from Admin Panel?"))return;
+if(!confirm("Logout from BRJ EMPIRE Admin Panel?"))return;
 
 const {error}=await DB.auth.signOut();
 
 if(error){
-notify(error.message);
+showNotice(error.message,"error");
 return;
 }
 
@@ -1066,7 +1681,7 @@ location.replace("admin-login.html");
 
 });
 
-/* START */
+/* INITIALIZE */
 
 (async()=>{
 
@@ -1082,10 +1697,10 @@ await loadMembers();
 
 console.error(error);
 
-notify(error.message);
+showNotice(error.message||"Unable to initialize member panel.","error");
 
 $("membersTable").innerHTML=
-'<tr><td colspan="6" class="empty">Unable to load member records.</td></tr>';
+'<tr><td colspan="7" class="empty">Unable to load member records. Check Supabase permissions.</td></tr>';
 
 }
 
