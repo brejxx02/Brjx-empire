@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,7 +8,6 @@
 <title>BRJ EMPIRE | Package Payment Management</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase.js"></script>
 
 <style>
@@ -365,11 +363,6 @@ cursor:pointer;
 border:1px solid;
 }
 
-.action-btn:disabled{
-opacity:.4;
-cursor:not-allowed;
-}
-
 .approve{
 background:#56d59b12;
 border-color:#56d59b40;
@@ -545,7 +538,6 @@ padding:0 15px;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -637,11 +629,10 @@ padding:0 15px;
 <div class="filters">
 
 <input
-class=“search”
-id=“searchInput”
-placeholder=“Search Member ID / UTR / Request ID…”
-
-
+class="search"
+id="searchInput"
+placeholder="Search Member ID / UTR / Request ID..."
+>
 
 <select class="select" id="statusFilter">
 <option value="all">All Status</option>
@@ -689,7 +680,7 @@ placeholder=“Search Member ID / UTR / Request ID…”
 
 <div class="pagination">
 
-<span id="pageInfo">Loading…</span>
+<span id="pageInfo">Loading...</span>
 
 <div>
 <button class="page-btn" id="prevBtn" disabled>← PREVIOUS</button>
@@ -1013,6 +1004,8 @@ const status=getStatus(item);
 const badge=["pending","approved","rejected"].includes(status)
 ?status:"pending";
 
+const proof=proofURLs[item.id];
+
 const actions=`
 
 <div class="actions">
@@ -1142,15 +1135,26 @@ $("nextBtn").disabled=
 
 }
 
-/* SECURE PACKAGE PAYMENT PROCESSING */
+/*
+SECURITY:
+Approval and rejection are intentionally
+not executed from the browser.
+
+A secure server-side RPC must:
+1. Verify admin role.
+2. Lock the payment request.
+3. Check that status is still pending.
+4. Prevent duplicate wallet credit.
+5. Update payment status.
+6. Update wallet and ledger atomically.
+7. Record an admin audit log.
+*/
 
 async function processRequest(id,action){
 
-if(!["approve","reject"].includes(action))return;
+if(action!=="approve"&&action!=="reject")return;
 
-const item=deposits.find(
-x=>String(x.id)===String(id)
-);
+const item=deposits.find(x=>String(x.id)===String(id));
 
 if(!item)return;
 
@@ -1162,60 +1166,15 @@ return;
 
 }
 
-const confirmed=confirm(
+if(!confirm(
 action==="approve"
-?`Approve ₹${item.amount} package payment?`
-:`Reject ₹${item.amount} package payment?`
-);
-
-if(!confirmed)return;
-
-const buttons=[
-...document.querySelectorAll("[data-id]")
-].filter(button=>String(button.dataset.id)===String(id));
-
-buttons.forEach(button=>button.disabled=true);
-
-try{
-
-hideMessage();
-
-const {data,error}=await DB.rpc(
-"admin_process_package_payment",
-{
-p_request_id:id,
-p_action:action
-}
-);
-
-if(error)throw error;
-
-if(!data||data.success!==true){
-
-throw new Error("Payment action was not completed.");
-
-}
-
-await loadDeposits();
+?"Approve this package payment request?"
+:"Reject this package payment request?"
+))return;
 
 showMessage(
-action==="approve"
-?`Payment approved successfully. ₹${data.amount} credited to member wallet.`
-:"Payment request rejected successfully.",
-"success"
+"Action not executed. Secure package payment approval RPC is not configured yet. No wallet balance has been changed."
 );
-
-}catch(error){
-
-console.error("PAYMENT PROCESS ERROR:",error);
-
-showMessage(
-error.message||"Unable to process payment."
-);
-
-buttons.forEach(button=>button.disabled=false);
-
-}
 
 }
 
