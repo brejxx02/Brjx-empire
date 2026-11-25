@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#080a10">
+
+<title>BRJ EMPIRE | Admin Control Center</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+
+:root{
+--bg:#080a10;
+--sidebar:#0c111a;
+--card:#111823;
+--gold:#e6bb58;
+--light:#ffe29a;
+--text:#f5f6f8;
+--muted:#8994a6;
+--border:#222d3b;
+--green:#4cda9a;
+--red:#ff6d78;
+--blue:#66aaff;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
+}
+
+button{
+font-family:inherit;
+}
+
+.app{
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:260px;
+background:linear-gradient(180deg,#101722,#090d14);
+border-right:1px solid var(--border);
+position:fixed;
+top:0;
+bottom:0;
+left:0;
+z-index:100;
+display:flex;
+flex-direction:column;
+transition:.3s;
+}
+
+.logo-area{
+height:90px;
+display:flex;
+align-items:center;
+gap:13px;
+padding:20px;
+border-bottom:1px solid var(--border);
+}
+
+.logo{
+width:48px;
+height:48px;
+border-radius:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(145deg,#ffe7a9,#b9872c);
+color:#17120a;
+font-size:17px;
+font-weight:1000;
+letter-spacing:-2px;
+box-shadow:0 5px 25px #e6bb5830;
+}
+
+.logo-text{
+font-size:18px;
+font-weight:950;
+letter-spacing:1px;
+}
+
+.logo-text span{
+color:var(--gold);
+}
+
+.logo-sub{
+font-size:9px;
+color:var(--muted);
+letter-spacing:2px;
+margin-top:5px;
+}
+
+.nav-label{
+padding:25px 20px 12px;
+font-size:9px;
+font-weight:800;
+letter-spacing:2px;
+color:#667286;
+}
+
+.nav{
+padding:0 12px;
+overflow-y:auto;
+flex:1;
+}
+
+.nav-item{
+height:46px;
+display:flex;
+align-items:center;
+gap:13px;
+padding:0 14px;
+border-radius:10px;
+margin-bottom:5px;
+color:#98a4b6;
+font-size:13px;
+font-weight:600;
+text-decoration:none;
+cursor:pointer;
+transition:.2s;
+border:1px solid transparent;
+}
+
+.nav-item:hover{
+background:#ffffff08;
+color:white;
+}
+
+.nav-item.active{
+background:linear-gradient(100deg,#e6bb5820,#e6bb5806);
+color:var(--light);
+border-color:#e6bb5830;
+}
+
+.nav-icon{
+width:21px;
+text-align:center;
+font-size:16px;
+}
+
+.nav-bottom{
+padding:15px 12px;
+border-top:1px solid var(--border);
+}
+
+.admin-mini{
+display:flex;
+align-items:center;
+gap:11px;
+padding:12px;
+}
+
+.avatar{
+width:38px;
+height:38px;
+border-radius:12px;
+background:linear-gradient(145deg,#ffe29a,#b98a32);
+display:flex;
+align-items:center;
+justify-content:center;
+color:#17120a;
+font-weight:900;
+}
+
+.admin-name{
+font-size:12px;
+font-weight:800;
+}
+
+.admin-role{
+font-size:10px;
+color:var(--gold);
+margin-top:4px;
+}
+
+/* MAIN */
+
+.main{
+margin-left:260px;
+width:calc(100% - 260px);
+min-height:100vh;
+}
+
+.topbar{
+height:76px;
+border-bottom:1px solid var(--border);
+background:#0b1019;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 30px;
+position:sticky;
+top:0;
+z-index:50;
+}
+
+.top-left{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.page-title{
+font-size:19px;
+font-weight:850;
+}
+
+.page-sub{
+font-size:11px;
+color:var(--muted);
+margin-top:4px;
+}
+
+.top-right{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.live-status{
+display:flex;
+align-items:center;
+gap:8px;
+padding:9px 13px;
+border:1px solid #56d59b30;
+background:#56d59b0c;
+border-radius:20px;
+font-size:10px;
+color:var(--green);
+font-weight:800;
+}
+
+.live-dot{
+width:7px;
+height:7px;
+border-radius:50%;
+background:var(--green);
+box-shadow:0 0 9px var(--green);
+}
+
+.logout{
+padding:10px 15px;
+border-radius:9px;
+background:#ff6d7810;
+border:1px solid #ff6d7830;
+color:var(--red);
+font-size:11px;
+font-weight:800;
+cursor:pointer;
+}
+
+.menu-btn{
+display:none;
+background:none;
+border:0;
+color:white;
+font-size:23px;
+cursor:pointer;
+}
+
+/* CONTENT */
+
+.content{
+padding:30px;
+max-width:1600px;
+margin:auto;
+}
+
+.welcome{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:27px;
+}
+
+.welcome h1{
+font-size:25px;
+font-weight:900;
+letter-spacing:-.7px;
+}
+
+.welcome h1 span{
+color:var(--gold);
+}
+
+.welcome p{
+color:var(--muted);
+font-size:12px;
+margin-top:8px;
+}
+
+.refresh-btn{
+background:#e6bb5810;
+border:1px solid #e6bb5830;
+color:var(--gold);
+padding:11px 16px;
+border-radius:10px;
+font-size:11px;
+font-weight:800;
+cursor:pointer;
+}
+
+/* STATS */
+
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:17px;
+margin-bottom:25px;
+}
+
+.stat-card{
+background:linear-gradient(145deg,#141d2a,#0e141e);
+border:1px solid var(--border);
+border-radius:17px;
+padding:21px;
+position:relative;
+overflow:hidden;
+transition:.25s;
+}
+
+.stat-card:hover{
+transform:translateY(-4px);
+border-color:#e6bb5850;
+}
+
+.stat-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.stat-label{
+font-size:11px;
+color:var(--muted);
+font-weight:700;
+}
+
+.stat-icon{
+width:39px;
+height:39px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:17px;
+background:#e6bb5815;
+}
+
+.stat-number{
+font-size:29px;
+font-weight:900;
+margin-top:20px;
+letter-spacing:-1px;
+}
+
+.stat-bottom{
+font-size:10px;
+color:var(--muted);
+margin-top:8px;
+}
+
+.gold{color:var(--gold)}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.blue{color:var(--blue)}
+
+/* PANELS */
+
+.grid-two{
+display:grid;
+grid-template-columns:1.5fr 1fr;
+gap:18px;
+margin-bottom:20px;
+}
+
+.panel{
+background:linear-gradient(145deg,#121a26,#0d131d);
+border:1px solid var(--border);
+border-radius:17px;
+overflow:hidden;
+}
+
+.panel-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+border-bottom:1px solid var(--border);
+}
+
+.panel-title{
+font-size:14px;
+font-weight:850;
+}
+
+.panel-subtitle{
+font-size:10px;
+color:var(--muted);
+margin-top:5px;
+}
+
+.panel-body{
+padding:20px;
+}
+
+.chart-box{
+height:260px;
+position:relative;
+}
+
+/* QUICK ACTIONS */
+
+.quick-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.quick-action{
+padding:16px;
+border:1px solid var(--border);
+border-radius:12px;
+background:#ffffff04;
+cursor:pointer;
+transition:.2s;
+text-decoration:none;
+color:white;
+}
+
+.quick-action:hover{
+border-color:var(--gold);
+background:#e6bb5809;
+}
+
+.quick-icon{
+font-size:22px;
+margin-bottom:11px;
+}
+
+.quick-title{
+font-size:12px;
+font-weight:800;
+}
+
+.quick-desc{
+font-size:10px;
+color:var(--muted);
+margin-top:5px;
+}
+
+/* TABLE */
+
+.table-wrap{
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:560px;
+}
+
+th{
+text-align:left;
+font-size:10px;
+letter-spacing:.8px;
+color:var(--muted);
+padding:14px 18px;
+border-bottom:1px solid var(--border);
+}
+
+td{
+padding:15px 18px;
+font-size:11px;
+border-bottom:1px solid #ffffff08;
+}
+
+tr:last-child td{
+border-bottom:0;
+}
+
+.member-cell{
+font-weight:800;
+}
+
+.muted{
+color:var(--muted);
+}
+
+.badge{
+padding:6px 9px;
+border-radius:7px;
+font-size:9px;
+font-weight:800;
+display:inline-block;
+}
+
+.pending{
+background:#e6bb5815;
+color:var(--gold);
+}
+
+.approved{
+background:#56d59b15;
+color:var(--green);
+}
+
+.rejected{
+background:#ff6d7815;
+color:var(--red);
+}
+
+.empty{
+text-align:center;
+padding:30px;
+color:var(--muted);
+font-size:12px;
+}
+
+/* FOOTER */
+
+.footer{
+text-align:center;
+padding:30px;
+font-size:10px;
+color:#566174;
+}
+
+/* MESSAGE */
+
+#notice{
+display:none;
+padding:13px 16px;
+border-radius:10px;
+margin-bottom:18px;
+font-size:12px;
+line-height:1.5;
+}
+
+#notice.error{
+display:block;
+background:#ff6d7812;
+border:1px solid #ff6d7840;
+color:#ff929a;
+}
+
+#notice.success{
+display:block;
+background:#56d59b12;
+border:1px solid #56d59b40;
+color:var(--green);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+.stats-grid{
+grid-template-columns:repeat(2,1fr);
+}
+.grid-two{
+grid-template-columns:1fr;
+}
+}
+
+@media(max-width:700px){
+
+.sidebar{
+transform:translateX(-100%);
+}
+
+.sidebar.open{
+transform:translateX(0);
+box-shadow:20px 0 70px #000;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+.topbar{
+height:67px;
+padding:0 15px;
+}
+
+.menu-btn{
+display:block;
+}
+
+.page-title{
+font-size:15px;
+}
+
+.page-sub{
+font-size:9px;
+}
+
+.live-status{
+display:none;
+}
+
+.content{
+padding:20px 14px;
+}
+
+.welcome h1{
+font-size:21px;
+}
+
+.welcome p{
+font-size:10px;
+}
+
+.stats-grid{
+gap:10px;
+}
+
+.stat-card{
+padding:15px;
+border-radius:14px;
+}
+
+.stat-number{
+font-size:24px;
+}
+
+.stat-label{
+font-size:10px;
+}
+
+.stat-icon{
+width:32px;
+height:32px;
+font-size:14px;
+}
+
+.panel-header{
+padding:16px;
+}
+
+.panel-body{
+padding:15px;
+}
+
+.quick-grid{
+gap:9px;
+}
+
+.quick-action{
+padding:13px;
+}
+
+.logout{
+padding:9px 10px;
+font-size:9px;
+}
+
+}
+
+@media(max-width:350px){
+.stats-grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+<div class="logo-area">
+
+<div class="logo">BRJ</div>
+
+<div>
+<div class="logo-text">BRJ <span>EMPIRE</span></div>
+<div class="logo-sub">ADMIN CONTROL CENTER</div>
+</div>
+
+</div>
+
+<div class="nav">
+
+<div class="nav-label">MAIN MENU</div>
+
+<a class="nav-item active" data-page="dashboard">
+<span class="nav-icon">◈</span> Overview
+</a>
+
+<a class="nav-item" data-page="members">
+<span class="nav-icon">♙</span> Members
+</a>
+
+<a class="nav-item" data-page="deposits">
+<span class="nav-icon">↗</span> Deposits
+</a>
+
+<a class="nav-item" data-page="withdrawals">
+<span class="nav-icon">↙</span> Withdrawals
+</a>
+
+<a class="nav-item" data-page="packages">
+<span class="nav-icon">▣</span> Packages
+</a>
+
+<a class="nav-item" data-page="referrals">
+<span class="nav-icon">♧</span> Referrals
+</a>
+
+<a class="nav-item" data-page="roi">
+<span class="nav-icon">◉</span> ROI Management
+</a>
+
+<a class="nav-item" data-page="transfers">
+<span class="nav-icon">⇄</span> P2P Transfers
+</a>
+
+<div class="nav-label">ADMINISTRATION</div>
+
+<a class="nav-item" data-page="subadmins">
+<span class="nav-icon">♙</span> Sub Admins
+</a>
+
+<a class="nav-item" data-page="notifications">
+<span class="nav-icon">♢</span> Notifications
+</a>
+
+<a class="nav-item" data-page="reports">
+<span class="nav-icon">▤</span> Reports
+</a>
+
+<a class="nav-item" data-page="settings">
+<span class="nav-icon">⚙</span> Website Settings
+</a>
+
+<a class="nav-item" data-page="security">
+<span class="nav-icon">⬡</span> Security & Logs
+</a>
+
+</div>
+
+<div class="nav-bottom">
+
+<div class="admin-mini">
+<div class="avatar">A</div>
+<div>
+<div class="admin-name" id="adminName">Administrator</div>
+<div class="admin-role">MAIN ADMIN</div>
+</div>
+</div>
+
+</div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="topbar">
+
+<div class="top-left">
+
+<button class="menu-btn" id="menuBtn">☰</button>
+
+<div>
+<div class="page-title">Admin Dashboard</div>
+<div class="page-sub">BRJ EMPIRE / CONTROL CENTER</div>
+</div>
+
+</div>
+
+<div class="top-right">
+
+<div class="live-status">
+<span class="live-dot"></span>
+SYSTEM CONNECTED
+</div>
+
+<button class="logout" id="logoutBtn">LOGOUT ↗</button>
+
+</div>
+
+</header>
+
+<div class="content">
+
+<div id="notice"></div>
+
+<div class="welcome">
+
+<div>
+<h1>Welcome to <span>BRJ EMPIRE</span></h1>
+<p>Here is your platform overview and management center.</p>
+</div>
+
+<button class="refresh-btn" id="refreshBtn">↻ REFRESH</button>
+
+</div>
+
+<!-- STATISTICS -->
+
+<div class="stats-grid">
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">TOTAL MEMBERS</div>
+<div class="stat-icon gold">♙</div>
+</div>
+<div class="stat-number" id="totalMembers">—</div>
+<div class="stat-bottom">Registered platform members</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">TOTAL DEPOSITS</div>
+<div class="stat-icon green">↗</div>
+</div>
+<div class="stat-number green" id="totalDeposits">—</div>
+<div class="stat-bottom">Deposit records</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">PENDING DEPOSITS</div>
+<div class="stat-icon gold">◷</div>
+</div>
+<div class="stat-number gold" id="pendingDeposits">—</div>
+<div class="stat-bottom">Awaiting admin review</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">PENDING WITHDRAWALS</div>
+<div class="stat-icon red">↙</div>
+</div>
+<div class="stat-number red" id="pendingWithdrawals">—</div>
+<div class="stat-bottom">Awaiting admin review</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">TOTAL WITHDRAWALS</div>
+<div class="stat-icon blue">↙</div>
+</div>
+<div class="stat-number blue" id="totalWithdrawals">—</div>
+<div class="stat-bottom">Withdrawal records</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">TOTAL PACKAGES</div>
+<div class="stat-icon gold">▣</div>
+</div>
+<div class="stat-number" id="totalPackages">—</div>
+<div class="stat-bottom">Available package records</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">P2P TRANSFERS</div>
+<div class="stat-icon green">⇄</div>
+</div>
+<div class="stat-number green" id="totalTransfers">—</div>
+<div class="stat-bottom">Transfer records</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">SYSTEM STATUS</div>
+<div class="stat-icon green">⬡</div>
+</div>
+<div class="stat-number green" style="font-size:19px" id="systemStatus">CHECKING</div>
+<div class="stat-bottom">Database connection status</div>
+</div>
+
+</div>
+
+<!-- CHART AND ACTIONS -->
+
+<div class="grid-two">
+
+<div class="panel">
+
+<div class="panel-header">
+<div>
+<div class="panel-title">Platform Analytics</div>
+<div class="panel-subtitle">Verified registration activity</div>
+</div>
+</div>
+
+<div class="panel-body">
+<div class="chart-box">
+<canvas id="analyticsChart"></canvas>
+</div>
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-header">
+<div>
+<div class="panel-title">Quick Management</div>
+<div class="panel-subtitle">Navigate to management modules</div>
+</div>
+</div>
+
+<div class="panel-body">
+
+<div class="quick-grid">
+
+<a class="quick-action" data-page="members">
+<div class="quick-icon">♙</div>
+<div class="quick-title">Members</div>
+<div class="quick-desc">Manage accounts</div>
+</a>
+
+<a class="quick-action" data-page="deposits">
+<div class="quick-icon">↗</div>
+<div class="quick-title">Deposits</div>
+<div class="quick-desc">Review requests</div>
+</a>
+
+<a class="quick-action" data-page="withdrawals">
+<div class="quick-icon">↙</div>
+<div class="quick-title">Withdrawals</div>
+<div class="quick-desc">Review payouts</div>
+</a>
+
+<a class="quick-action" data-page="subadmins">
+<div class="quick-icon">♧</div>
+<div class="quick-title">Sub Admins</div>
+<div class="quick-desc">Manage permissions</div>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RECENT MEMBERS -->
+
+<div class="panel" style="margin-bottom:20px">
+
+<div class="panel-header">
+
+<div>
+<div class="panel-title">Recent Members</div>
+<div class="panel-subtitle">Latest registered accounts</div>
+</div>
+
+<a data-page="members" style="color:var(--gold);font-size:11px;cursor:pointer">
+VIEW ALL →
+</a>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>MEMBER</th>
+<th>EMAIL</th>
+<th>MEMBER ID</th>
+<th>STATUS</th>
+</tr>
+</thead>
+
+<tbody id="recentMembers">
+<tr>
+<td colspan="4" class="empty">Loading member records...</td>
+</tr>
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- RECENT DEPOSITS -->
+
+<div class="panel">
+
+<div class="panel-header">
+
+<div>
+<div class="panel-title">Recent Deposits</div>
+<div class="panel-subtitle">Latest deposit requests</div>
+</div>
+
+<a data-page="deposits" style="color:var(--gold);font-size:11px;cursor:pointer">
+VIEW ALL →
+</a>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>REQUEST ID</th>
+<th>MEMBER</th>
+<th>AMOUNT</th>
+<th>STATUS</th>
+</tr>
+</thead>
+
+<tbody id="recentDeposits">
+<tr>
+<td colspan="4" class="empty">Loading deposit records...</td>
+</tr>
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<div class="footer">
+BRJ EMPIRE © 2026 · ADMIN CONTROL CENTER
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<script>
+
+/* =================================
+   BRJ EMPIRE ADMIN DASHBOARD
+================================= */
+
+const DB = window.supabaseClient;
+
+const $ = id => document.getElementById(id);
+
+let analyticsChart = null;
+
+function showNotice(message,type="error"){
+const box=$("notice");
+box.textContent=message;
+box.className=type;
+}
+
+function clearNotice(){
+$("notice").style.display="none";
+}
+
+function formatNumber(value){
+return Number(value||0).toLocaleString("en-IN");
+}
+
+function setStat(id,value){
+$(id).textContent=value;
+}
+
+function setLoading(){
+[
+"totalMembers",
+"totalDeposits",
+"pendingDeposits",
+"pendingWithdrawals",
+"totalWithdrawals",
+"totalPackages",
+"totalTransfers"
+].forEach(id=>setStat(id,"—"));
+}
+
+/* AUTHENTICATION */
+
+async function verifyAdmin(){
+
+if(!DB || !DB.auth){
+throw new Error("Supabase client not found. Check supabase.js configuration.");
+}
+
+const {data,error}=await DB.auth.getSession();
+
+if(error) throw error;
+
+const session=data.session;
+
+if(!session){
+location.replace("admin-login.html");
+return false;
+}
+
+const user=session.user;
+
+/* Verify role from database */
+
+const {data:roles,error:roleError}=await DB
+.from("user_roles")
+.select("role")
+.eq("user_id",user.id);
+
+if(roleError){
+throw new Error("Admin role verification failed: "+roleError.message);
+}
+
+const roleList=(roles||[]).map(r=>
+String(r.role||"").toLowerCase()
+);
+
+const isAdmin=roleList.includes("admin") ||
+roleList.includes("main_admin");
+
+if(!isAdmin){
+await DB.auth.signOut();
+location.replace("admin-login.html");
+return false;
+}
+
+$("adminName").textContent=
+user.user_metadata?.full_name ||
+user.email?.split("@")[0] ||
+"Administrator";
+
+return true;
+
+}
+
+/* SAFE COUNT QUERY */
+
+async function getCount(table,filters){
+
+let query=DB.from(table).select("*",{count:"exact",head:true});
+
+if(filters){
+filters.forEach(filter=>{
+query=query.eq(filter.column,filter.value);
+});
+}
+
+const {count,error}=await query;
+
+if(error) throw error;
+
+return count||0;
+
+}
+
+/* RECENT MEMBERS */
+
+async function loadMembers(){
+
+const {data,error}=await DB
+.from("profiles")
+.select("*")
+.order("created_at",{ascending:false})
+.limit(5);
+
+if(error) throw error;
+
+const tbody=$("recentMembers");
+
+if(!data || data.length===0){
+tbody.innerHTML=
+'<tr><td colspan="4" class="empty">No member records found.</td></tr>';
+return;
+}
+
+tbody.innerHTML=data.map(member=>{
+
+const name=member.full_name ||
+member.name ||
+"Member";
+
+const email=member.email || "—";
+
+const memberId=member.member_id ||
+member.bri_member_id ||
+"—";
+
+return `
+<tr>
+<td class="member-cell">${escapeHTML(name)}</td>
+<td class="muted">${escapeHTML(email)}</td>
+<td>${escapeHTML(memberId)}</td>
+<td><span class="badge approved">REGISTERED</span></td>
+</tr>
+`;
+
+}).join("");
+
+}
+
+/* RECENT DEPOSITS */
+
+async function loadDeposits(){
+
+const {data,error}=await DB
+.from("deposit_requests")
+.select("*")
+.order("created_at",{ascending:false})
+.limit(5);
+
+if(error) throw error;
+
+const tbody=$("recentDeposits");
+
+if(!data || data.length===0){
+tbody.innerHTML=
+'<tr><td colspan="4" class="empty">No deposit requests found.</td></tr>';
+return;
+}
+
+tbody.innerHTML=data.map(item=>{
+
+const id=item.id || "—";
+
+const amount=item.amount ?? item.requested_amount ?? "—";
+
+const status=String(item.status || "pending").toLowerCase();
+
+let badge="pending";
+
+if(["approved","completed","success"].includes(status)){
+badge="approved";
+}
+
+if(["rejected","failed"].includes(status)){
+badge="rejected";
+}
+
+return `
+<tr>
+<td>${escapeHTML(String(id).slice(0,12))}</td>
+<td class="muted">${escapeHTML(item.member_id || "—")}</td>
+<td class="gold">₹${escapeHTML(String(amount))}</td>
+<td><span class="badge ${badge}">${escapeHTML(status.toUpperCase())}</span></td>
+</tr>
+`;
+
+}).join("");
+
+}
+
+/* ANALYTICS */
+
+async function loadAnalytics(){
+
+const {data,error}=await DB
+.from("profiles")
+.select("created_at")
+.order("created_at",{ascending:false})
+.limit(1000);
+
+if(error) throw error;
+
+const labels=[];
+const values=[];
+
+for(let i=6;i>=0;i--){
+
+const date=new Date();
+
+date.setDate(date.getDate()-i);
+
+const key=date.toISOString().slice(0,10);
+
+labels.push(date.toLocaleDateString("en-IN",{
+day:"numeric",
+month:"short"
+}));
+
+const count=(data||[]).filter(member=>
+member.created_at &&
+String(member.created_at).slice(0,10)===key
+).length;
+
+values.push(count);
+
+}
+
+if(analyticsChart){
+analyticsChart.destroy();
+}
+
+analyticsChart=new Chart($("analyticsChart"),{
+
+type:"line",
+
+data:{
+labels:labels,
+datasets:[{
+label:"Registrations",
+data:values,
+borderColor:"#e6bb58",
+backgroundColor:"rgba(230,187,88,.10)",
+fill:true,
+tension:.4,
+borderWidth:2,
+pointRadius:4,
+pointBackgroundColor:"#ffe29a"
+}]
+},
+
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{
+display:false
+}
+},
+scales:{
+x:{
+grid:{display:false},
+ticks:{color:"#8994a6"}
+},
+y:{
+beginAtZero:true,
+grid:{color:"rgba(255,255,255,.05)"},
+ticks:{
+color:"#8994a6",
+precision:0
+}
+}
+}
+}
+
+});
+
+}
+
+/* LOAD DASHBOARD */
+
+async function loadDashboard(){
+
+clearNotice();
+setLoading();
+
+try{
+
+const [
+members,
+deposits,
+pendingDeposits,
+pendingWithdrawals,
+withdrawals,
+packages,
+transfers
+]=await Promise.all([
+
+getCount("profiles"),
+
+getCount("deposit_requests"),
+
+getCount("deposit_requests",[
+{column:"status",value:"pending"}
+]),
+
+getCount("withdrawal_requests",[
+{column:"status",value:"pending"}
+]),
+
+getCount("withdrawal_requests"),
+
+getCount("packages"),
+
+getCount("p2p_transfers")
+
+]);
+
+setStat("totalMembers",formatNumber(members));
+setStat("totalDeposits",formatNumber(deposits));
+setStat("pendingDeposits",formatNumber(pendingDeposits));
+setStat("pendingWithdrawals",formatNumber(pendingWithdrawals));
+setStat("totalWithdrawals",formatNumber(withdrawals));
+setStat("totalPackages",formatNumber(packages));
+setStat("totalTransfers",formatNumber(transfers));
+
+$("systemStatus").textContent="ONLINE";
+
+await Promise.all([
+loadMembers(),
+loadDeposits(),
+loadAnalytics()
+]);
+
+}catch(error){
+
+console.error("Dashboard error:",error);
+
+$("systemStatus").textContent="ERROR";
+
+showNotice(
+"Dashboard data could not be fully loaded. Check database table names, column names and Supabase permissions. "+error.message
+);
+
+}
+
+}
+
+/* HTML ESCAPE */
+
+function escapeHTML(value){
+
+return String(value).replace(/[&<>"']/g,char=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[char]));
+
+}
+
+/* LOGOUT */
+
+$("logoutBtn").addEventListener("click",async()=>{
+
+if(!confirm("Are you sure you want to logout?")) return;
+
+const {error}=await DB.auth.signOut();
+
+if(error){
+showNotice(error.message);
+return;
+}
+
+location.replace("admin-login.html");
+
+});
+
+/* REFRESH */
+
+$("refreshBtn").addEventListener("click",async()=>{
+$("refreshBtn").textContent="↻ LOADING...";
+await loadDashboard();
+$("refreshBtn").textContent="↻ REFRESH";
+});
+
+/* MOBILE MENU */
+
+$("menuBtn").addEventListener("click",()=>{
+$("sidebar").classList.toggle("open");
+});
+
+/* NAVIGATION PLACEHOLDERS */
+
+document.querySelectorAll("[data-page]").forEach(item=>{
+
+item.addEventListener("click",()=>{
+
+const page=item.dataset.page;
+
+document.querySelectorAll(".nav-item").forEach(nav=>{
+nav.classList.toggle("active",nav.dataset.page===page);
+});
+
+$("sidebar").classList.remove("open");
+
+if(page!=="dashboard"){
+showNotice(
+"Module not connected yet: "+page.toUpperCase()+". This section will be implemented in its own admin module."
+);
+}else{
+clearNotice();
+}
+
+});
+
+});
+
+/* START */
+
+(async()=>{
+
+try{
+
+const verified=await verifyAdmin();
+
+if(!verified) return;
+
+await loadDashboard();
+
+}catch(error){
+
+console.error(error);
+
+showNotice(error.message);
+
+}
+
+})();
+
+</script>
+
+</body>
+</html>
