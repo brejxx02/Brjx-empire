@@ -1073,6 +1073,7 @@ function showNotice(message,type="error"){
 const box=$("notice");
 box.textContent=message;
 box.className=type;
+box.style.display="block";
 }
 
 function clearNotice(){
@@ -1471,26 +1472,44 @@ $("menuBtn").addEventListener("click",()=>{
 $("sidebar").classList.toggle("open");
 });
 
-/* NAVIGATION PLACEHOLDERS */
+/* =================================
+   ADMIN MODULE NAVIGATION
+================================= */
+
+const ADMIN_PAGES = {
+
+dashboard: "admin-dashboard.html",
+
+members: "admin-members.html",
+
+deposits: "admin-deposits.html",
+
+withdrawals: "admin-withdrawals.html"
+
+};
 
 document.querySelectorAll("[data-page]").forEach(item=>{
 
-item.addEventListener("click",()=>{
+item.addEventListener("click",function(event){
 
-const page=item.dataset.page;
+event.preventDefault();
 
-document.querySelectorAll(".nav-item").forEach(nav=>{
-nav.classList.toggle("active",nav.dataset.page===page);
-});
+const page=this.dataset.page;
+
+const target=ADMIN_PAGES[page];
 
 $("sidebar").classList.remove("open");
 
-if(page!=="dashboard"){
-showNotice(
-"Module not connected yet: "+page.toUpperCase()+". This section will be implemented in its own admin module."
-);
+if(target){
+
+window.location.href=target;
+
 }else{
-clearNotice();
+
+showNotice(
+"Module is not available yet: "+page.toUpperCase()
+);
+
 }
 
 });
