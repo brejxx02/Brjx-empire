@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRJ EMPIRE | ROI Management</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<style>
+:root{
+  --bg:#080a10;
+  --card:#111722;
+  --gold:#e6bb58;
+  --light:#ffe29a;
+  --text:#f5f5f5;
+  --muted:#8993a4;
+  --border:#252d3a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header{
+  padding:20px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;
+}
+.logo{color:var(--gold);font-weight:900;letter-spacing:1px}
+header small{color:var(--muted)}
+.container{max-width:1250px;margin:auto;padding:22px}
+.top{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin-bottom:22px
+}
+h1{font-size:25px;margin:0 0 7px}
+.sub{color:var(--muted);font-size:13px}
+button{
+  background:var(--gold);color:#17120a;border:0;
+  padding:11px 16px;border-radius:8px;font-weight:800;
+  cursor:pointer
+}
+.cards{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:15px;margin-bottom:22px
+}
+.card,.panel{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:13px;padding:19px
+}
+.label{color:var(--muted);font-size:13px}
+.value{font-size:27px;font-weight:800;margin-top:12px;color:var(--light)}
+.section-title{font-size:17px;margin:0 0 16px}
+.panel{margin-bottom:20px;overflow:hidden}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th,td{
+  text-align:left;padding:13px 11px;
+  border-bottom:1px solid var(--border);font-size:13px
+}
+th{color:var(--gold);font-weight:700}
+td{color:#e6eaf0}
+.badge{
+  padding:5px 9px;border-radius:20px;font-size:11px;
+  background:#263328;color:#9de6a9
+}
+.inactive{background:#392b20;color:#ffc77d}
+.empty{color:var(--muted);padding:20px;text-align:center}
+.notice{
+  border:1px solid #665126;background:#211b10;
+  color:#f1d99b;padding:14px;border-radius:10px;
+  font-size:13px;line-height:1.6;margin-bottom:20px
+}
+.error{color:#ff9d9d}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+@media(max-width:600px){
+  .container{padding:14px}
+  h1{font-size:21px}
+  .value{font-size:24px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <div class="logo">BRJ EMPIRE</div>
+    <small>ADMIN CONTROL CENTER</small>
+  </div>
+  <button onclick="goDashboard()">← Dashboard</button>
+</header>
+
+<main class="container">
+
+  <div class="top">
+    <div>
+      <h1>ROI Management</h1>
+      <div class="sub">Membership & package monitoring</div>
+    </div>
+    <button onclick="loadData()">↻ Refresh Data</button>
+  </div>
+
+  <div class="notice">
+    <b>Monitoring Mode:</b> This page displays membership and ROI
+    configuration data only. It does not calculate or distribute
+    returns, approve claims, or modify member wallets.
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="label">Active Memberships</div>
+      <div class="value" id="activeCount">—</div>
+    </div>
+    <div class="card">
+      <div class="label">Active Membership Amount</div>
+      <div class="value" id="activeAmount">—</div>
+    </div>
+    <div class="card">
+      <div class="label">Today's Activations</div>
+      <div class="value" id="todayCount">—</div>
+    </div>
+    <div class="card">
+      <div class="label">Expiring in Next 3 Days</div>
+      <div class="value" id="expiringCount">—</div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2 class="section-title">Package Overview</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Package</th>
+            <th>Price</th>
+            <th>Duration</th>
+            <th>Active Members</th>
+            <th>Active Amount</th>
+          </tr>
+        </thead>
+        <tbody id="packageRows">
+          <tr><td colspan="5" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2 class="section-title">ROI Settings Status</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Package</th>
+            <th>Daily Rate</th>
+            <th>Duration</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="roiRows">
+          <tr><td colspan="4" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2 class="section-title">Membership Monitoring</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Member ID</th>
+            <th>Package</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Activated</th>
+            <th>Expires</th>
+          </tr>
+        </thead>
+        <tbody id="memberRows">
+          <tr><td colspan="6" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div id="message" class="sub"></div>
+
+</main>
+
+<footer>BRJ EMPIRE · Secure Admin Monitoring</footer>
+
+<script>
+const supabaseClient =
+  window.supabaseClient || window.brjSupabase;
+
+const $ = id => document.getElementById(id);
+
+function money(value){
+  return "₹" + Number(value || 0).toLocaleString("en-IN",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
+}
+
+function date(value){
+  if(!value) return "—";
+  return new Date(value).toLocaleDateString("en-IN",{
+    day:"2-digit",month:"short",year:"numeric"
+  });
+}
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function goDashboard(){
+  window.location.href="admin-dashboard.html";
+}
+
+async function checkAdmin(){
+  if(!supabaseClient){
+    throw new Error("Supabase client not found. Check supabase.js");
+  }
+
+  const {data:{session},error} =
+    await supabaseClient.auth.getSession();
+
+  if(error || !session){
+    window.location.href="admin.login.html";
+    return false;
+  }
+
+  const {data:roles,error:roleError} =
+    await supabaseClient
+      .from("user_roles")
+      .select("role")
+      .eq("user_id",session.user.id);
+
+  if(roleError) throw roleError;
+
+  const allowed = (roles || []).some(item =>
+    ["admin","main_admin"].includes(
+      String(item.role).toLowerCase()
+    )
+  );
+
+  if(!allowed){
+    document.body.innerHTML =
+      "<h2 style='color:white;padding:30px'>Access denied.</h2>";
+    return false;
+  }
+
+  return true;
+}
+
+async function loadData(){
+  $("message").textContent="Loading latest database data...";
+
+  try{
+    const {data:packages,error:pError} =
+      await supabaseClient
+        .from("brj_packages")
+        .select("id,package_name,package_price,duration_days,is_active")
+        .order("package_price");
+
+    if(pError) throw pError;
+
+    const {data:settings,error:sError} =
+      await supabaseClient
+        .from("brj_roi_settings")
+        .select("package_id,daily_rate,duration_days,is_active");
+
+    if(sError) throw sError;
+
+    const {data:purchases,error:mError} =
+      await supabaseClient
+        .from("member_package_purchases")
+        .select("member_id,package_name,purchase_amount,purchase_status,activated_at,expires_at,completed_at")
+        .order("created_at",{ascending:false});
+
+    if(mError) throw mError;
+
+    const members = purchases || [];
+    const active = members.filter(m =>
+      String(m.purchase_status).toUpperCase()==="ACTIVE"
+    );
+
+    const now = new Date();
+    const today = now.toLocaleDateString("en-CA");
+
+    const todayMembers = members.filter(m =>
+      m.activated_at &&
+      new Date(m.activated_at).toLocaleDateString("en-CA")===today
+    );
+
+    const threeDays = new Date();
+    threeDays.setDate(threeDays.getDate()+3);
+
+    const expiring = active.filter(m=>{
+      if(!m.expires_at) return false;
+      const expiry = new Date(m.expires_at);
+      return expiry >= now && expiry <= threeDays;
+    });
+
+    $("activeCount").textContent=active.length;
+    $("activeAmount").textContent=money(
+      active.reduce((sum,m)=>sum+Number(m.purchase_amount||0),0)
+    );
+    $("todayCount").textContent=todayMembers.length;
+    $("expiringCount").textContent=expiring.length;
+
+    $("packageRows").innerHTML=(packages || []).map(p=>{
+      const list=active.filter(m=>m.package_name===p.package_name);
+      const amount=list.reduce(
+        (sum,m)=>sum+Number(m.purchase_amount||0),0
+      );
+
+      return `
+        <tr>
+          <td>${escapeHTML(p.package_name)}</td>
+          <td>${money(p.package_price)}</td>
+          <td>${p.duration_days} days</td>
+          <td>${list.length}</td>
+          <td>${money(amount)}</td>
+        </tr>`;
+    }).join("") || '<tr><td colspan="5" class="empty">No packages found</td></tr>';
+
+    $("roiRows").innerHTML=(packages || []).map(p=>{
+      const setting=(settings || []).find(
+        s=>s.package_id===p.id
+      );
+
+      return `
+        <tr>
+          <td>${escapeHTML(p.package_name)}</td>
+          <td>${setting ? Number(setting.daily_rate).toFixed(4) : "—"}</td>
+          <td>${setting ? setting.duration_days+" days" : "—"}</td>
+          <td>
+            <span class="badge ${setting?.is_active ? "" : "inactive"}">
+              ${setting?.is_active ? "ACTIVE" : "DISABLED"}
+            </span>
+          </td>
+        </tr>`;
+    }).join("") || '<tr><td colspan="4" class="empty">No settings found</td></tr>';
+
+    $("memberRows").innerHTML=members.map(m=>`
+      <tr>
+        <td>${escapeHTML(m.member_id)}</td>
+        <td>${escapeHTML(m.package_name)}</td>
+        <td>${money(m.purchase_amount)}</td>
+        <td>
+          <span class="badge ${
+            String(m.purchase_status).toUpperCase()==="ACTIVE"
+            ? "" : "inactive"
+          }">${escapeHTML(m.purchase_status)}</span>
+        </td>
+        <td>${date(m.activated_at)}</td>
+        <td>${date(m.expires_at)}</td>
+      </tr>
+    `).join("") || '<tr><td colspan="6" class="empty">No memberships found</td></tr>';
+
+    $("message").textContent=
+      "Last updated: "+new Date().toLocaleString("en-IN");
+
+  }catch(error){
+    console.error(error);
+    $("message").innerHTML=
+      '<span class="error">Error: '+
+      escapeHTML(error.message)+
+      '</span>';
+  }
+}
+
+(async()=>{
+  try{
+    const allowed=await checkAdmin();
+    if(allowed) await loadData();
+  }catch(error){
+    console.error(error);
+    $("message").textContent="Error: "+error.message;
+  }
+})();
+</script>
+
+</body>
+</html>
