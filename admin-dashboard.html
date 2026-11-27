@@ -708,8 +708,6 @@ grid-template-columns:1fr;
 
 <div class="app">
 
-<!-- SIDEBAR -->
-
 <aside class="sidebar" id="sidebar">
 
 <div class="logo-area">
@@ -796,8 +794,6 @@ grid-template-columns:1fr;
 </div>
 
 </aside>
-
-<!-- MAIN -->
 
 <main class="main">
 
@@ -973,6 +969,12 @@ SYSTEM CONNECTED
 <div class="quick-desc">View purchases</div>
 </a>
 
+<a class="quick-action" data-page="roi">
+<div class="quick-icon">◉</div>
+<div class="quick-title">ROI Management</div>
+<div class="quick-desc">View ROI overview</div>
+</a>
+
 </div>
 
 </div>
@@ -1067,8 +1069,6 @@ VIEW ALL →
 <div class="membership-tag">DATABASE CONNECTED</div>
 </div>
 
-<!-- MEMBERSHIP STATISTICS -->
-
 <div class="membership-stats">
 
 <div class="stat-card">
@@ -1108,8 +1108,6 @@ VIEW ALL →
 </div>
 
 </div>
-
-<!-- RECENT MEMBERSHIP PURCHASES -->
 
 <div class="panel">
 
@@ -1309,8 +1307,6 @@ tbody.innerHTML=
 return;
 }
 
-/* Get official numeric IDs */
-
 const userIds=data.map(member=>member.id).filter(Boolean);
 
 let officialIds={};
@@ -1493,9 +1489,7 @@ precision:0
 
 }
 
-/* =================================
-   MEMBERSHIP DASHBOARD INTEGRATION
-================================= */
+/* MEMBERSHIP DASHBOARD */
 
 async function loadMembershipDashboard(){
 
@@ -1532,8 +1526,6 @@ const investment=records.reduce((total,item)=>{
 return total+Number(item.purchase_amount||0);
 },0);
 
-/* UPDATE MEMBERSHIP STATISTICS */
-
 setStat("totalMemberships",formatNumber(records.length));
 
 setStat("activeMemberships",formatNumber(active.length));
@@ -1548,8 +1540,6 @@ maximumFractionDigits:2
 })
 );
 
-/* EMPTY STATE */
-
 if(records.length===0){
 
 tbody.innerHTML=
@@ -1557,8 +1547,6 @@ tbody.innerHTML=
 
 return;
 }
-
-/* RECENT 10 PURCHASES */
 
 tbody.innerHTML=records.slice(0,10).map(item=>{
 
@@ -1694,8 +1682,6 @@ showNotice(
 
 }
 
-/* Load individual sections independently */
-
 const results=await Promise.allSettled([
 
 loadMembers(),
@@ -1760,7 +1746,11 @@ dashboard:"admin-dashboard.html",
 members:"admin-members.html",
 deposits:"admin-deposits.html",
 withdrawals:"admin-withdrawals.html",
-membership:"admin-memberships.html"
+packages:"admin-packages.html",
+referrals:"admin-referrals.html",
+roi:"admin-roi.html",
+membership:"admin-memberships.html",
+transfers:"admin-transfers.html"
 
 };
 
@@ -1781,13 +1771,18 @@ window.location.href="admin-memberships.html";
 return;
 }
 
+/* ROI MANAGEMENT PAGE */
+
+if(page==="roi"){
+window.location.href="admin-roi.html";
+return;
+}
+
 /* DASHBOARD HOME */
 
 if(page==="dashboard"){
-
 window.location.href="admin-dashboard.html";
 return;
-
 }
 
 /* EXISTING MODULES */
