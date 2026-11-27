@@ -1,69 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#080a10">
+<title>BRJ EMPIRE | ROI Center</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+:root{--bg:#080a10;--card:#111722;--gold:#e6bb58;--gold2:#ffe29a;--text:#f4f5f7;--muted:#8792a4;--border:#242e3c;--green:#56d59b;--red:#ef8994}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+header{position:sticky;top:0;z-index:50;background:rgba(8,10,16,.96);border-bottom:1px solid #242b37;backdrop-filter:blur(18px)}
+.header-inner{max-width:800px;height:68px;margin:auto;padding:0 17px;display:flex;align-items:center;gap:15px}
+.back-btn{width:40px;height:40px;border-radius:12px;background:#151b26;border:1px solid #303746;color:var(--gold);font-size:22px}
+.brand{font-size:19px;font-weight:900;letter-spacing:2px}
+.brand span{color:var(--gold)}
+.wrapper{max-width:800px;margin:auto;padding:22px 16px 55px}
+.heading{margin:10px 0 23px}
+.heading small{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:2px}
+.heading h1{font-size:26px;margin-top:10px}
+.heading p{color:var(--muted);font-size:12px;margin-top:8px}
+.summary-card{padding:23px;border-radius:21px;border:1px solid #5a492b;background:radial-gradient(circle at 100% 0%,rgba(230,187,88,.17),transparent 45%),linear-gradient(135deg,#242116,#171d27)}
+.summary-label{color:#b4b2a7;font-size:12px}
+.summary-amount{font-size:36px;color:var(--gold2);font-weight:900;margin-top:16px}
+.summary-note{color:#8994a6;font-size:10px;margin-top:10px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:16px}
+.stat{padding:17px;border:1px solid var(--border);background:linear-gradient(145deg,#151c28,#10151e);border-radius:16px}
+.stat small{color:var(--muted);font-size:10px}
+.stat strong{display:block;color:var(--gold2);font-size:22px;margin-top:10px;overflow-wrap:anywhere}
+.section{margin-top:28px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
+.section-head h2{font-size:16px}
+.section-head span{color:var(--muted);font-size:10px}
+.package-card{padding:19px;border:1px solid #5a492b;border-radius:17px;background:linear-gradient(145deg,#242116,#141a24)}
+.package-top{display:flex;justify-content:space-between;align-items:center}
+.package-top strong{font-size:14px;color:var(--gold)}
+.status{padding:7px 10px;border-radius:30px;font-size:9px;background:#172b21;border:1px solid #28513c;color:var(--green)}
+.package-price{color:var(--gold2);font-size:28px;font-weight:900;margin-top:17px}
+.package-info{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px}
+.package-info small{color:var(--muted);font-size:10px}
+.package-info strong{display:block;margin-top:6px;font-size:13px}
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:15px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:300px}
+th{padding:15px 12px;background:#1a2230;color:var(--gold);font-size:10px;text-align:left}
+td{padding:15px 12px;border-top:1px solid #273140;font-size:11px}
+.empty{padding:28px 15px;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:15px}
+.empty-icon{font-size:30px}
+.empty h3{font-size:13px;margin-top:12px}
+.empty p{color:var(--muted);font-size:11px;line-height:1.7;margin-top:8px}
+.calendar-card{padding:17px;border:1px solid var(--border);border-radius:16px;background:var(--card)}
+.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}
+.calendar-head h3{font-size:13px}
+.calendar-head button{width:32px;height:32px;border-radius:9px;background:#202938;color:var(--gold);border:1px solid #354155;font-size:17px}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.calendar-day{text-align:center;font-size:10px;color:var(--muted);padding:8px 0}
+.calendar-date{text-align:center;font-size:11px;padding:10px 2px;border-radius:9px;background:#192230;color:#c4ccd7;border:1px solid #273140}
+.calendar-date.empty-date{background:transparent;border-color:transparent}
+.calendar-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:17px;font-size:9px;color:var(--muted)}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.credited{background:#1c5238}.pending{background:#594521}.upcoming{background:#192230}
+.notice{margin-top:23px;padding:16px;background:#171e2a;border:1px solid #303b4c;border-radius:13px}
+.notice strong{color:var(--gold);font-size:11px}
+.notice p{color:#929daf;font-size:10px;line-height:1.8;margin-top:8px}
+.footer{text-align:center;color:#697587;font-size:10px;margin-top:30px;line-height:1.8}
+.toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,20px);opacity:0;transition:.25s;z-index:500;background:#202b3a;border:1px solid #39495f;padding:13px 17px;border-radius:12px;color:white;font-size:12px;width:max-content;max-width:90%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.loading{color:var(--gold);font-size:11px;margin-top:12px}
+@media(max-width:360px){.summary-amount{font-size:30px}.stat strong{font-size:19px}}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<div class="header-inner">
+<button class="back-btn" onclick="location.href='dashboard.html'">←</button>
+<div class="brand">BRJ <span>EMPIRE</span></div>
+</div>
+</header>
+
+<main class="wrapper">
+
+<div class="heading">
+<small>BRJ EMPIRE · MEMBER SERVICES</small>
+<h1>ROI Overview</h1>
+<p>Investment and verified earnings summary.</p>
+<div class="loading" id="pageStatus">Connecting account...</div>
+</div>
+
+<section class="summary-card">
+<div class="summary-label">Total Verified ROI Received</div>
+<div class="summary-amount">₹ <span id="totalROI">0.00</span></div>
+<div class="summary-note">Only confirmed ledger transactions are included.</div>
+</section>
+
+<section class="stats">
+<div class="stat"><small>Total Investment</small><strong id="totalInvestment">₹0.00</strong></div>
+<div class="stat"><small>Active Investment</small><strong id="activeInvestment">₹0.00</strong></div>
+<div class="stat"><small>Completed Investment</small><strong id="completedInvestment">₹0.00</strong></div>
+<div class="stat"><small>Pending Earnings</small><strong id="pendingROI">₹0.00</strong></div>
+</section>
+
+<section class="section">
+<div class="section-head"><h2>Active Package</h2><span>INVESTMENT DETAILS</span></div>
+
+<div class="empty" id="noPackage">
+<div class="empty-icon">💼</div>
+<h3>No Active Package</h3>
+<p>Your verified package details will appear here when available.</p>
+</div>
+
+<div class="package-card" id="packageCard" style="display:none">
+<div class="package-top">
+<strong id="packageName">Membership</strong>
+<span class="status" id="packageStatus">ACTIVE</span>
+</div>
+<div class="package-price" id="packageAmount">₹0</div>
+<div class="package-info">
+<div><small>Start Date</small><strong id="packageStart">--</strong></div>
+<div><small>End Date</small><strong id="packageEnd">--</strong></div>
+<div><small>Credited Earnings</small><strong id="packageEarned">₹0</strong></div>
+<div><small>Duration</small><strong id="packageDuration">--</strong></div>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-head"><h2>Daily ROI History</h2><span>DAILY RECORDS</span></div>
+<div class="empty" id="dailyEmpty">
+<div class="empty-icon">📅</div>
+<h3>No Daily Records</h3>
+<p>Verified daily earnings entries will appear here.</p>
+</div>
+<div class="table-card" id="dailyTable" style="display:none">
+<table><thead><tr><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody id="dailyRecords"></tbody></table>
+</div>
+</section>
+
+<section class="section">
+<div class="section-head"><h2>ROI Calendar</h2><span>PAYMENT TRACKER</span></div>
+<div class="calendar-card">
+<div class="calendar-head">
+<button onclick="changeMonth(-1)">‹</button>
+<h3 id="calendarMonth">Loading...</h3>
+<button onclick="changeMonth(1)">›</button>
+</div>
+<div class="calendar-grid" id="calendarGrid"></div>
+<div class="calendar-legend">
+<span><i class="legend-dot credited"></i>Credited</span>
+<span><i class="legend-dot pending"></i>Pending</span>
+<span><i class="legend-dot upcoming"></i>Upcoming</span>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-head"><h2>Investment History</h2><span>ALL PACKAGES</span></div>
+<div class="empty" id="investmentEmpty">
+<div class="empty-icon">📂</div>
+<h3>No Investment Records</h3>
+<p>Your verified investment records will appear here.</p>
+</div>
+<div class="table-card" id="investmentTable" style="display:none">
+<table><thead><tr><th>Package</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="investmentRecords"></tbody></table>
+</div>
+</section>
+
+<section class="section">
+<div class="section-head"><h2>ROI Transaction History</h2><span>LEDGER RECORDS</span></div>
+<div class="empty" id="transactionEmpty">
+<div class="empty-icon">📜</div>
+<h3>No Transactions Available</h3>
+<p>Confirmed ROI transaction records will appear here.</p>
+</div>
+<div class="table-card" id="transactionTable" style="display:none">
+<table><thead><tr><th>Transaction ID</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody id="transactionRecords"></tbody></table>
+</div>
+</section>
+
+<div class="notice">
+<strong>IMPORTANT INFORMATION</strong>
+<p>ROI is not guaranteed. Displayed earnings must be based on genuine, verified business revenue and actual completed transactions. Investment amounts, pending amounts and earnings must be separately recorded. All applicable financial and legal requirements must be followed.</p>
+</div>
+
+<div class="footer">BRJ EMPIRE · ROI CENTER<br>Official Member Services</div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
 <script>
+"use strict";
+
 let currentUser = null;
 let calendarDate = new Date();
 let calendarRecords = {};
+let memberPackages = [];
 
-const db = window.brjSupabase || window.supabaseClient;
-
-function showToast(message) {
-    const toast = document.getElementById("toast");
-    toast.textContent = message;
-    toast.classList.add("show");
-
-    clearTimeout(window.toastTimer);
-
-    window.toastTimer = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2600);
+function el(id){
+    return document.getElementById(id);
 }
 
-function money(value) {
+function showToast(message){
+    const toast = el("toast");
+    if(!toast) return;
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(window.toastTimer);
+    window.toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+}
+
+function setStatus(message){
+    el("pageStatus").textContent = message;
+}
+
+function money(value){
     return Number(value || 0).toLocaleString("en-IN", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
 }
 
-function formatDate(value) {
-    if (!value) return "--";
-
-    return new Date(value).toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
+function formatDate(value){
+    if(!value) return "--";
+    const date = new Date(value);
+    if(Number.isNaN(date.getTime())) return "--";
+    return date.toLocaleDateString("en-IN", {
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
     });
 }
 
-function renderCalendar() {
+function showEmpty(emptyId, tableId, hasData){
+    el(emptyId).style.display = hasData ? "none" : "block";
+    el(tableId).style.display = hasData ? "block" : "none";
+}
+
+function renderCalendar(){
     const year = calendarDate.getFullYear();
     const month = calendarDate.getMonth();
 
-    document.getElementById("calendarMonth").textContent =
-        calendarDate.toLocaleDateString("en-IN", {
-            month: "long",
-            year: "numeric"
-        });
+    el("calendarMonth").textContent = calendarDate.toLocaleDateString("en-IN", {
+        month:"long",
+        year:"numeric"
+    });
 
-    const grid = document.getElementById("calendarGrid");
+    const grid = el("calendarGrid");
     grid.innerHTML = "";
 
-    ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(day => {
-        const element = document.createElement("div");
-        element.className = "calendar-day";
-        element.textContent = day;
-        grid.appendChild(element);
+    ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(day => {
+        const item = document.createElement("div");
+        item.className = "calendar-day";
+        item.textContent = day;
+        grid.appendChild(item);
     });
 
     const firstDay = new Date(year, month, 1).getDay();
     const totalDays = new Date(year, month + 1, 0).getDate();
 
-    for (let i = 0; i < firstDay; i++) {
+    for(let i = 0; i < firstDay; i++){
         const empty = document.createElement("div");
         empty.className = "calendar-date empty-date";
         grid.appendChild(empty);
     }
 
-    for (let day = 1; day <= totalDays; day++) {
+    for(let day = 1; day <= totalDays; day++){
         const cell = document.createElement("div");
         cell.className = "calendar-date";
         cell.textContent = day;
@@ -72,13 +280,13 @@ function renderCalendar() {
             String(month + 1).padStart(2, "0") + "-" +
             String(day).padStart(2, "0");
 
-        if (calendarRecords[key] === "credited") {
+        if(calendarRecords[key] === "credited"){
             cell.style.background = "#17452f";
             cell.style.borderColor = "#28513c";
             cell.style.color = "#72e4a9";
         }
 
-        if (calendarRecords[key] === "pending") {
+        if(calendarRecords[key] === "pending"){
             cell.style.background = "#49391c";
             cell.style.borderColor = "#76602f";
             cell.style.color = "#ffe29a";
@@ -88,156 +296,96 @@ function renderCalendar() {
     }
 }
 
-function changeMonth(value) {
+function changeMonth(value){
     calendarDate.setMonth(calendarDate.getMonth() + value);
     renderCalendar();
 }
 
-function showEmpty(id, tableId, show) {
-    document.getElementById(id).style.display = show ? "none" : "block";
-    document.getElementById(tableId).style.display = show ? "block" : "none";
+function addCell(row, value){
+    const td = document.createElement("td");
+    td.textContent = value == null ? "--" : String(value);
+    row.appendChild(td);
 }
 
-function setText(id, value) {
-    document.getElementById(id).textContent = value;
-}
+/* MEMBERSHIP DATA */
 
-async function loadROI() {
-    if (!db) {
-        showToast("Database connection unavailable.");
-        return;
-    }
-
-    try {
-        const { data: sessionData, error: sessionError } =
-            await db.auth.getSession();
-
-        if (sessionError || !sessionData.session) {
-            location.href = "index.html";
-            return;
-        }
-
-        currentUser = sessionData.session.user;
-
-        await loadMemberships();
-        await loadROISettings();
-
-        renderCalendar();
-
-    } catch (error) {
-        console.error("ROI loading error:", error);
-        showToast("Unable to load ROI account.");
-    }
-}
-
-/* MEMBER INVESTMENT DATA */
-
-let memberPackages = [];
-
-async function loadMemberships() {
-    const { data, error } = await db
+async function loadMemberships(){
+    const {data, error} = await db
         .from("member_package_purchases")
-        .select(`
-            id,
-            member_id,
-            package_name,
-            purchase_amount,
-            purchase_status,
-            activated_at,
-            expires_at,
-            completed_at
-        `)
+        .select("id,member_id,package_name,purchase_amount,purchase_status,activated_at,expires_at,completed_at")
         .eq("user_id", currentUser.id)
-        .order("activated_at", { ascending: false });
+        .order("activated_at", {ascending:false});
 
-    if (error) {
-        console.error("Membership error:", error);
-        throw error;
-    }
+    if(error) throw error;
 
     memberPackages = data || [];
 
     const now = new Date();
-
-    let totalInvestment = 0;
-    let activeInvestment = 0;
-    let completedInvestment = 0;
-
-    const activePackages = [];
+    let total = 0;
+    let active = 0;
+    let completed = 0;
+    const activeItems = [];
 
     memberPackages.forEach(item => {
         const amount = Number(item.purchase_amount || 0);
+        total += amount;
 
-        totalInvestment += amount;
+        const expired = item.expires_at && new Date(item.expires_at) < now;
+        const isActive = item.purchase_status === "ACTIVE" && !expired;
 
-        const expired = item.expires_at &&
-            new Date(item.expires_at) < now;
-
-        const isActive =
-            item.purchase_status === "ACTIVE" && !expired;
-
-        if (isActive) {
-            activeInvestment += amount;
-            activePackages.push(item);
-        } else {
-            completedInvestment += amount;
+        if(isActive){
+            active += amount;
+            activeItems.push(item);
+        }else{
+            completed += amount;
         }
     });
 
-    setText("totalInvestment", "₹" + money(totalInvestment));
-    setText("activeInvestment", "₹" + money(activeInvestment));
-    setText("completedInvestment", "₹" + money(completedInvestment));
+    el("totalInvestment").textContent = "₹" + money(total);
+    el("activeInvestment").textContent = "₹" + money(active);
+    el("completedInvestment").textContent = "₹" + money(completed);
 
-    // Actual verified ROI ledger is not connected yet.
-    setText("totalROI", money(0));
-    setText("pendingROI", "₹" + money(0));
+    // Earnings remain zero until verified earning records exist.
+    el("totalROI").textContent = money(0);
+    el("pendingROI").textContent = "₹" + money(0);
 
     renderInvestmentHistory();
 
-    if (activePackages.length > 0) {
-        renderActivePackage(activePackages[0]);
-    } else {
-        document.getElementById("packageCard").style.display = "none";
-        document.getElementById("noPackage").style.display = "block";
+    if(activeItems.length){
+        renderActivePackage(activeItems[0]);
+    }else{
+        el("packageCard").style.display = "none";
+        el("noPackage").style.display = "block";
     }
 }
 
-/* ACTIVE PACKAGE */
+function renderActivePackage(item){
+    el("noPackage").style.display = "none";
+    el("packageCard").style.display = "block";
 
-function renderActivePackage(item) {
-    document.getElementById("noPackage").style.display = "none";
-    document.getElementById("packageCard").style.display = "block";
-
-    setText("packageName", item.package_name || "Membership");
-    setText("packageStatus", item.purchase_status || "ACTIVE");
-    setText("packageAmount", "₹" + money(item.purchase_amount));
-    setText("packageStart", formatDate(item.activated_at));
-    setText("packageEnd", formatDate(item.expires_at));
-
-    setText("packageEarned", "₹" + money(0));
+    el("packageName").textContent = item.package_name || "Membership";
+    el("packageStatus").textContent = item.purchase_status || "ACTIVE";
+    el("packageAmount").textContent = "₹" + money(item.purchase_amount);
+    el("packageStart").textContent = formatDate(item.activated_at);
+    el("packageEnd").textContent = formatDate(item.expires_at);
+    el("packageEarned").textContent = "₹" + money(0);
 
     let duration = "--";
 
-    if (item.activated_at && item.expires_at) {
+    if(item.activated_at && item.expires_at){
         const start = new Date(item.activated_at);
         const end = new Date(item.expires_at);
-
-        duration = Math.max(
-            0,
-            Math.round((end - start) / (1000 * 60 * 60 * 24))
-        ) + " Days";
+        duration = Math.max(0, Math.round((end - start) / 86400000)) + " Days";
     }
 
-    setText("packageDuration", duration);
+    el("packageDuration").textContent = duration;
 }
 
-/* INVESTMENT HISTORY */
-
-function renderInvestmentHistory() {
-    const tbody = document.getElementById("investmentRecords");
+function renderInvestmentHistory(){
+    const tbody = el("investmentRecords");
     tbody.innerHTML = "";
 
-    if (!memberPackages.length) {
+    if(!memberPackages.length){
         showEmpty("investmentEmpty", "investmentTable", false);
         return;
     }
@@ -245,67 +393,90 @@ function renderInvestmentHistory() {
     showEmpty("investmentEmpty", "investmentTable", true);
 
     memberPackages.forEach(item => {
-        const tr = document.createElement("tr");
+        const row = document.createElement("tr");
 
-        [
-            item.package_name || "--",
-            "₹" + money(item.purchase_amount),
-            formatDate(item.activated_at),
-            item.purchase_status || "--"
-        ].forEach(value => {
-            const td = document.createElement("td");
-            td.textContent = value;
-            tr.appendChild(td);
-        });
+        addCell(row, item.package_name);
+        addCell(row, "₹" + money(item.purchase_amount));
+        addCell(row, formatDate(item.activated_at));
+        addCell(row, item.purchase_status);
 
-        tbody.appendChild(tr);
+        tbody.appendChild(row);
     });
 }
 
 /* ROI SETTINGS */
 
-async function loadROISettings() {
-    const { data, error } = await db
+async function loadROISettings(){
+    const {data, error} = await db
         .from("brj_roi_settings")
-        .select(`
-            daily_rate,
-            duration_days,
-            is_active,
-            brj_packages!brj_roi_settings_package_id_fkey (
-                package_name,
-                package_price,
-                duration_days
-            )
-        `);
+        .select("id,package_id,daily_rate,duration_days,is_active");
 
-    if (error) {
-        console.error("ROI settings error:", error);
-        throw error;
+    if(error) throw error;
+
+    console.log("BRJ ROI settings:", data || []);
+}
+
+/* EMPTY VERIFIED HISTORIES */
+
+function initializeEmptyHistories(){
+    showEmpty("dailyEmpty", "dailyTable", false);
+    showEmpty("transactionEmpty", "transactionTable", false);
+    el("dailyRecords").innerHTML = "";
+    el("transactionRecords").innerHTML = "";
+}
+
+/* MAIN CONNECTION */
+
+async function loadROI(){
+    renderCalendar();
+    initializeEmptyHistories();
+
+    const db = window.brjSupabase || window.supabaseClient;
+
+    if(!db || !db.auth){
+        setStatus("Supabase client not found. Check supabase.js.");
+        showToast("Database connection unavailable.");
+        console.error("Supabase client missing. Expected window.brjSupabase or window.supabaseClient.");
+        return;
     }
 
-    console.log("ROI settings loaded:", data || []);
+    try{
+        setStatus("Checking login...");
 
-    // Rates are displayed in console for verification.
-    // No earnings are calculated or fabricated from settings.
+        const {data, error} = await db.auth.getSession();
+
+        if(error) throw error;
+
+        if(!data || !data.session){
+            location.href = "index.html";
+            return;
+        }
+
+        currentUser = data.session.user;
+
+        setStatus("Loading membership...");
+
+        await loadMemberships();
+
+        setStatus("Loading ROI settings...");
+
+        await loadROISettings();
+
+        setStatus("Account data loaded successfully.");
+
+    }catch(error){
+        console.error("BRJ ROI ERROR:", error);
+        setStatus("Unable to load account data: " + (error.message || "Unknown error"));
+        showToast(error.message || "Unable to load ROI account.");
+    }
 }
 
-/* DAILY HISTORY */
+/* START AFTER PAGE LOAD */
 
-function showNoDailyRecords() {
-    showEmpty("dailyEmpty", "dailyTable", false);
-    document.getElementById("dailyRecords").innerHTML = "";
-}
-
-/* ROI TRANSACTIONS */
-
-function showNoTransactions() {
-    showEmpty("transactionEmpty", "transactionTable", false);
-    document.getElementById("transactionRecords").innerHTML = "";
-}
-
-/* START */
-
-showNoDailyRecords();
-showNoTransactions();
-loadROI();
+window.addEventListener("load", function(){
+    loadROI();
+});
 </script>
+
+</body>
+</html>
