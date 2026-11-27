@@ -2,391 +2,837 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080a10">
 <title>BRJ EMPIRE | ROI Management</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+
 :root{
-  --bg:#080a10;
-  --card:#111722;
-  --gold:#e6bb58;
-  --light:#ffe29a;
-  --text:#f5f5f5;
-  --muted:#8993a4;
-  --border:#252d3a;
+--bg:#080a10;
+--card:#111823;
+--gold:#e6bb58;
+--light:#ffe29a;
+--text:#f5f6f8;
+--muted:#8994a6;
+--border:#222d3b;
+--green:#4cda9a;
+--red:#ff6d78;
+--blue:#66aaff;
 }
-*{box-sizing:border-box}
+
 body{
-  margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+min-height:100vh;
 }
-header{
-  padding:20px;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;flex-wrap:wrap;
+
+button{font-family:inherit;cursor:pointer}
+
+.topbar{
+min-height:75px;
+background:#0c111a;
+border-bottom:1px solid var(--border);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:15px 25px;
+gap:15px;
 }
-.logo{color:var(--gold);font-weight:900;letter-spacing:1px}
-header small{color:var(--muted)}
-.container{max-width:1250px;margin:auto;padding:22px}
-.top{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:12px;flex-wrap:wrap;margin-bottom:22px
+
+.brand{
+font-size:18px;
+font-weight:950;
+letter-spacing:1px;
 }
-h1{font-size:25px;margin:0 0 7px}
-.sub{color:var(--muted);font-size:13px}
-button{
-  background:var(--gold);color:#17120a;border:0;
-  padding:11px 16px;border-radius:8px;font-weight:800;
-  cursor:pointer
+
+.brand span{color:var(--gold)}
+
+.subtitle{
+font-size:10px;
+color:var(--muted);
+margin-top:5px;
+letter-spacing:1px;
 }
-.cards{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:15px;margin-bottom:22px
+
+.back-btn,.refresh-btn{
+padding:10px 14px;
+border:1px solid #e6bb5830;
+border-radius:9px;
+background:#e6bb5810;
+color:var(--gold);
+font-size:11px;
+font-weight:800;
+text-decoration:none;
 }
-.card,.panel{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:13px;padding:19px
+
+.container{
+max-width:1450px;
+margin:auto;
+padding:25px;
 }
-.label{color:var(--muted);font-size:13px}
-.value{font-size:27px;font-weight:800;margin-top:12px;color:var(--light)}
-.section-title{font-size:17px;margin:0 0 16px}
-.panel{margin-bottom:20px;overflow:hidden}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:720px}
-th,td{
-  text-align:left;padding:13px 11px;
-  border-bottom:1px solid var(--border);font-size:13px
+
+.heading{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:20px;
 }
-th{color:var(--gold);font-weight:700}
-td{color:#e6eaf0}
-.badge{
-  padding:5px 9px;border-radius:20px;font-size:11px;
-  background:#263328;color:#9de6a9
+
+.heading h1{
+font-size:25px;
+font-weight:900;
 }
-.inactive{background:#392b20;color:#ffc77d}
-.empty{color:var(--muted);padding:20px;text-align:center}
+
+.heading h1 span{color:var(--gold)}
+
+.heading p{
+font-size:11px;
+color:var(--muted);
+margin-top:7px;
+}
+
+.mode{
+padding:10px 13px;
+border:1px solid #e6bb5840;
+background:#e6bb5810;
+color:var(--gold);
+border-radius:9px;
+font-size:10px;
+font-weight:900;
+white-space:nowrap;
+}
+
 .notice{
-  border:1px solid #665126;background:#211b10;
-  color:#f1d99b;padding:14px;border-radius:10px;
-  font-size:13px;line-height:1.6;margin-bottom:20px
+padding:15px;
+border-radius:11px;
+background:#e6bb580d;
+border:1px solid #e6bb5830;
+color:#e9cc85;
+font-size:11px;
+line-height:1.7;
+margin-bottom:22px;
 }
-.error{color:#ff9d9d}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+
+.notice strong{color:var(--light)}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-bottom:22px;
+}
+
+.card{
+background:linear-gradient(145deg,#141d2a,#0e141e);
+border:1px solid var(--border);
+border-radius:15px;
+padding:19px;
+}
+
+.stat-label{
+font-size:10px;
+font-weight:800;
+color:var(--muted);
+}
+
+.stat-value{
+font-size:27px;
+font-weight:900;
+margin-top:15px;
+overflow-wrap:anywhere;
+}
+
+.stat-note{
+font-size:10px;
+color:var(--muted);
+margin-top:7px;
+}
+
+.gold{color:var(--gold)}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.blue{color:var(--blue)}
+
+.section{
+margin-top:25px;
+}
+
+.section-heading{
+margin-bottom:14px;
+}
+
+.section-heading h2{
+font-size:17px;
+font-weight:900;
+}
+
+.section-heading p{
+font-size:10px;
+color:var(--muted);
+margin-top:5px;
+}
+
+.panel{
+background:linear-gradient(145deg,#121a26,#0d131d);
+border:1px solid var(--border);
+border-radius:15px;
+overflow:hidden;
+}
+
+.panel-title{
+padding:18px 20px;
+border-bottom:1px solid var(--border);
+font-size:13px;
+font-weight:850;
+}
+
+.table-wrap{overflow-x:auto}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:650px;
+}
+
+th{
+padding:14px;
+text-align:left;
+font-size:9px;
+color:var(--muted);
+letter-spacing:.8px;
+border-bottom:1px solid var(--border);
+white-space:nowrap;
+}
+
+td{
+padding:14px;
+font-size:11px;
+border-bottom:1px solid #ffffff08;
+white-space:nowrap;
+}
+
+tr:last-child td{border-bottom:0}
+
+.badge{
+display:inline-block;
+padding:6px 9px;
+border-radius:7px;
+font-size:9px;
+font-weight:850;
+}
+
+.active{
+color:var(--green);
+background:#4cda9a15;
+}
+
+.inactive{
+color:var(--red);
+background:#ff6d7815;
+}
+
+.pending{
+color:var(--gold);
+background:#e6bb5815;
+}
+
+.package{
+color:var(--light);
+font-weight:850;
+}
+
+.member-id{
+color:var(--gold);
+font-weight:900;
+}
+
+.empty{
+padding:25px;
+text-align:center;
+color:var(--muted);
+font-size:11px;
+}
+
+.claim-box{
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.claim-box h3{
+font-size:14px;
+}
+
+.claim-box p{
+font-size:10px;
+color:var(--muted);
+margin-top:7px;
+}
+
+.disabled-btn{
+padding:11px 15px;
+background:#ffffff08;
+border:1px solid var(--border);
+border-radius:9px;
+color:#778294;
+font-size:10px;
+font-weight:850;
+cursor:not-allowed;
+}
+
+#message{
+display:none;
+padding:13px;
+margin-bottom:18px;
+border-radius:9px;
+font-size:11px;
+line-height:1.5;
+}
+
+#message.error{
+display:block;
+background:#ff6d7812;
+border:1px solid #ff6d7840;
+color:#ff929a;
+}
+
+#message.success{
+display:block;
+background:#4cda9a12;
+border:1px solid #4cda9a40;
+color:var(--green);
+}
+
+.footer{
+text-align:center;
+padding:30px;
+color:#566174;
+font-size:10px;
+}
+
+@media(max-width:950px){
+.stats{grid-template-columns:repeat(2,1fr)}
+}
+
 @media(max-width:600px){
-  .container{padding:14px}
-  h1{font-size:21px}
-  .value{font-size:24px}
+.container{padding:17px 13px}
+.topbar{padding:14px}
+.heading{align-items:flex-start;flex-direction:column}
+.heading h1{font-size:21px}
+.stats{gap:10px}
+.card{padding:14px}
+.stat-value{font-size:23px}
+.mode{white-space:normal}
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <div>
-    <div class="logo">BRJ EMPIRE</div>
-    <small>ADMIN CONTROL CENTER</small>
-  </div>
-  <button onclick="goDashboard()">← Dashboard</button>
+<header class="topbar">
+<div>
+<div class="brand">BRJ <span>EMPIRE</span></div>
+<div class="subtitle">ADMIN CONTROL CENTER / ROI MANAGEMENT</div>
+</div>
+
+<a href="admin-dashboard.html" class="back-btn">← DASHBOARD</a>
 </header>
 
 <main class="container">
 
-  <div class="top">
-    <div>
-      <h1>ROI Management</h1>
-      <div class="sub">Membership & package monitoring</div>
-    </div>
-    <button onclick="loadData()">↻ Refresh Data</button>
-  </div>
+<div id="message"></div>
 
-  <div class="notice">
-    <b>Monitoring Mode:</b> This page displays membership and ROI
-    configuration data only. It does not calculate or distribute
-    returns, approve claims, or modify member wallets.
-  </div>
+<div class="heading">
+<div>
+<h1>ROI <span>Management</span></h1>
+<p>Membership and ROI configuration monitoring center.</p>
+</div>
 
-  <div class="cards">
-    <div class="card">
-      <div class="label">Active Memberships</div>
-      <div class="value" id="activeCount">—</div>
-    </div>
-    <div class="card">
-      <div class="label">Active Membership Amount</div>
-      <div class="value" id="activeAmount">—</div>
-    </div>
-    <div class="card">
-      <div class="label">Today's Activations</div>
-      <div class="value" id="todayCount">—</div>
-    </div>
-    <div class="card">
-      <div class="label">Expiring in Next 3 Days</div>
-      <div class="value" id="expiringCount">—</div>
-    </div>
-  </div>
+<div class="mode">● MONITORING MODE</div>
+</div>
 
-  <section class="panel">
-    <h2 class="section-title">Package Overview</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Package</th>
-            <th>Price</th>
-            <th>Duration</th>
-            <th>Active Members</th>
-            <th>Active Amount</th>
-          </tr>
-        </thead>
-        <tbody id="packageRows">
-          <tr><td colspan="5" class="empty">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+<div class="notice">
+<strong>MONITORING MODE ACTIVE</strong><br>
+This page displays membership and ROI configuration data only.
+It does not calculate or distribute returns, approve claims,
+or modify member wallets.
+</div>
 
-  <section class="panel">
-    <h2 class="section-title">ROI Settings Status</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Package</th>
-            <th>Daily Rate</th>
-            <th>Duration</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="roiRows">
-          <tr><td colspan="4" class="empty">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+<!-- OVERVIEW -->
 
-  <section class="panel">
-    <h2 class="section-title">Membership Monitoring</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Member ID</th>
-            <th>Package</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Activated</th>
-            <th>Expires</th>
-          </tr>
-        </thead>
-        <tbody id="memberRows">
-          <tr><td colspan="6" class="empty">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+<div class="stats">
 
-  <div id="message" class="sub"></div>
+<div class="card">
+<div class="stat-label">TOTAL MEMBERSHIPS</div>
+<div class="stat-value gold" id="totalMemberships">—</div>
+<div class="stat-note">All purchase records</div>
+</div>
+
+<div class="card">
+<div class="stat-label">ACTIVE MEMBERSHIPS</div>
+<div class="stat-value green" id="activeMemberships">—</div>
+<div class="stat-note">Currently active records</div>
+</div>
+
+<div class="card">
+<div class="stat-label">TOTAL PURCHASE AMOUNT</div>
+<div class="stat-value gold" id="totalAmount">—</div>
+<div class="stat-note">Recorded purchase amounts</div>
+</div>
+
+<div class="card">
+<div class="stat-label">EXPIRING IN 3 DAYS</div>
+<div class="stat-value blue" id="expiringSoon">—</div>
+<div class="stat-note">Active memberships only</div>
+</div>
+
+</div>
+
+<!-- PACKAGE CONFIGURATION -->
+
+<section class="section">
+
+<div class="section-heading">
+<h2>▣ Package ROI Configuration</h2>
+<p>Configuration currently saved in Supabase.</p>
+</div>
+
+<div class="panel">
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>PACKAGE</th>
+<th>PRICE</th>
+<th>DURATION</th>
+<th>DAILY RATE</th>
+<th>ROI STATUS</th>
+<th>PACKAGE STATUS</th>
+</tr>
+</thead>
+
+<tbody id="packageRows">
+<tr><td colspan="6" class="empty">Loading package configuration...</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- MEMBERSHIP MONITORING -->
+
+<section class="section">
+
+<div class="section-heading">
+<h2>♙ Active Membership Monitoring</h2>
+<p>Membership records from the database.</p>
+</div>
+
+<div class="panel">
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>MEMBER ID</th>
+<th>PACKAGE</th>
+<th>AMOUNT</th>
+<th>STATUS</th>
+<th>ACTIVATED</th>
+<th>EXPIRES</th>
+</tr>
+</thead>
+
+<tbody id="membershipRows">
+<tr><td colspan="6" class="empty">Loading membership records...</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- CLAIM MONITORING -->
+
+<section class="section">
+
+<div class="section-heading">
+<h2>◉ ROI Claim Monitoring</h2>
+<p>Claim database integration has not been enabled.</p>
+</div>
+
+<div class="panel">
+
+<div class="claim-box">
+<div>
+<h3>Claim Monitoring</h3>
+<p>Claim history and approval status will appear here after the claim database schema is verified.</p>
+</div>
+
+<button class="disabled-btn" disabled>
+NOT CONFIGURED
+</button>
+</div>
+
+</div>
+</section>
+
+<!-- RECENT PURCHASES -->
+
+<section class="section">
+
+<div class="section-heading">
+<h2>◷ Recent Membership Records</h2>
+<p>Latest 10 membership purchase records.</p>
+</div>
+
+<div class="panel">
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>MEMBER ID</th>
+<th>PACKAGE</th>
+<th>AMOUNT</th>
+<th>STATUS</th>
+<th>CREATED</th>
+</tr>
+</thead>
+
+<tbody id="recentRows">
+<tr><td colspan="5" class="empty">Loading records...</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<div class="footer">
+BRJ EMPIRE © 2026 · ROI MONITORING CENTER
+</div>
 
 </main>
 
-<footer>BRJ EMPIRE · Secure Admin Monitoring</footer>
-
 <script>
-const supabaseClient =
-  window.supabaseClient || window.brjSupabase;
 
-const $ = id => document.getElementById(id);
-
-function money(value){
-  return "₹" + Number(value || 0).toLocaleString("en-IN",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
-}
-
-function date(value){
-  if(!value) return "—";
-  return new Date(value).toLocaleDateString("en-IN",{
-    day:"2-digit",month:"short",year:"numeric"
-  });
-}
+const DB=window.supabaseClient||window.brjSupabase;
+const $=id=>document.getElementById(id);
 
 function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#39;"
-  })[c]);
+return String(value??"").replace(/[&<>"']/g,char=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[char]));
 }
 
-function goDashboard(){
-  window.location.href="admin-dashboard.html";
+function money(value){
+return "₹"+Number(value||0).toLocaleString("en-IN",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+});
 }
 
-async function checkAdmin(){
-  if(!supabaseClient){
-    throw new Error("Supabase client not found. Check supabase.js");
-  }
+function dateFormat(value){
+if(!value)return "—";
 
-  const {data:{session},error} =
-    await supabaseClient.auth.getSession();
+const date=new Date(value);
 
-  if(error || !session){
-    window.location.href="admin.login.html";
-    return false;
-  }
+if(isNaN(date.getTime()))return "—";
 
-  const {data:roles,error:roleError} =
-    await supabaseClient
-      .from("user_roles")
-      .select("role")
-      .eq("user_id",session.user.id);
-
-  if(roleError) throw roleError;
-
-  const allowed = (roles || []).some(item =>
-    ["admin","main_admin"].includes(
-      String(item.role).toLowerCase()
-    )
-  );
-
-  if(!allowed){
-    document.body.innerHTML =
-      "<h2 style='color:white;padding:30px'>Access denied.</h2>";
-    return false;
-  }
-
-  return true;
+return date.toLocaleDateString("en-IN",{
+day:"2-digit",
+month:"short",
+year:"numeric"
+});
 }
 
-async function loadData(){
-  $("message").textContent="Loading latest database data...";
-
-  try{
-    const {data:packages,error:pError} =
-      await supabaseClient
-        .from("brj_packages")
-        .select("id,package_name,package_price,duration_days,is_active")
-        .order("package_price");
-
-    if(pError) throw pError;
-
-    const {data:settings,error:sError} =
-      await supabaseClient
-        .from("brj_roi_settings")
-        .select("package_id,daily_rate,duration_days,is_active");
-
-    if(sError) throw sError;
-
-    const {data:purchases,error:mError} =
-      await supabaseClient
-        .from("member_package_purchases")
-        .select("member_id,package_name,purchase_amount,purchase_status,activated_at,expires_at,completed_at")
-        .order("created_at",{ascending:false});
-
-    if(mError) throw mError;
-
-    const members = purchases || [];
-    const active = members.filter(m =>
-      String(m.purchase_status).toUpperCase()==="ACTIVE"
-    );
-
-    const now = new Date();
-    const today = now.toLocaleDateString("en-CA");
-
-    const todayMembers = members.filter(m =>
-      m.activated_at &&
-      new Date(m.activated_at).toLocaleDateString("en-CA")===today
-    );
-
-    const threeDays = new Date();
-    threeDays.setDate(threeDays.getDate()+3);
-
-    const expiring = active.filter(m=>{
-      if(!m.expires_at) return false;
-      const expiry = new Date(m.expires_at);
-      return expiry >= now && expiry <= threeDays;
-    });
-
-    $("activeCount").textContent=active.length;
-    $("activeAmount").textContent=money(
-      active.reduce((sum,m)=>sum+Number(m.purchase_amount||0),0)
-    );
-    $("todayCount").textContent=todayMembers.length;
-    $("expiringCount").textContent=expiring.length;
-
-    $("packageRows").innerHTML=(packages || []).map(p=>{
-      const list=active.filter(m=>m.package_name===p.package_name);
-      const amount=list.reduce(
-        (sum,m)=>sum+Number(m.purchase_amount||0),0
-      );
-
-      return `
-        <tr>
-          <td>${escapeHTML(p.package_name)}</td>
-          <td>${money(p.package_price)}</td>
-          <td>${p.duration_days} days</td>
-          <td>${list.length}</td>
-          <td>${money(amount)}</td>
-        </tr>`;
-    }).join("") || '<tr><td colspan="5" class="empty">No packages found</td></tr>';
-
-    $("roiRows").innerHTML=(packages || []).map(p=>{
-      const setting=(settings || []).find(
-        s=>s.package_id===p.id
-      );
-
-      return `
-        <tr>
-          <td>${escapeHTML(p.package_name)}</td>
-          <td>${setting ? Number(setting.daily_rate).toFixed(4) : "—"}</td>
-          <td>${setting ? setting.duration_days+" days" : "—"}</td>
-          <td>
-            <span class="badge ${setting?.is_active ? "" : "inactive"}">
-              ${setting?.is_active ? "ACTIVE" : "DISABLED"}
-            </span>
-          </td>
-        </tr>`;
-    }).join("") || '<tr><td colspan="4" class="empty">No settings found</td></tr>';
-
-    $("memberRows").innerHTML=members.map(m=>`
-      <tr>
-        <td>${escapeHTML(m.member_id)}</td>
-        <td>${escapeHTML(m.package_name)}</td>
-        <td>${money(m.purchase_amount)}</td>
-        <td>
-          <span class="badge ${
-            String(m.purchase_status).toUpperCase()==="ACTIVE"
-            ? "" : "inactive"
-          }">${escapeHTML(m.purchase_status)}</span>
-        </td>
-        <td>${date(m.activated_at)}</td>
-        <td>${date(m.expires_at)}</td>
-      </tr>
-    `).join("") || '<tr><td colspan="6" class="empty">No memberships found</td></tr>';
-
-    $("message").textContent=
-      "Last updated: "+new Date().toLocaleString("en-IN");
-
-  }catch(error){
-    console.error(error);
-    $("message").innerHTML=
-      '<span class="error">Error: '+
-      escapeHTML(error.message)+
-      '</span>';
-  }
+function showError(message){
+$("message").className="error";
+$("message").textContent=message;
+$("message").style.display="block";
 }
+
+function setValue(id,value){
+$(id).textContent=value;
+}
+
+async function verifyAdmin(){
+
+if(!DB||!DB.auth){
+throw new Error("Supabase connection missing. Check supabase.js.");
+}
+
+const {data,error}=await DB.auth.getSession();
+
+if(error)throw error;
+
+if(!data.session){
+location.replace("admin.login.html");
+return false;
+}
+
+const user=data.session.user;
+
+const {data:roles,error:roleError}=await DB
+.from("user_roles")
+.select("role")
+.eq("user_id",user.id);
+
+if(roleError){
+throw new Error("Role verification failed: "+roleError.message);
+}
+
+const roleList=(roles||[]).map(item=>
+String(item.role||"").toLowerCase()
+);
+
+const allowed=[
+"admin",
+"main_admin",
+"sub_admin",
+"subadmin"
+];
+
+if(!roleList.some(role=>allowed.includes(role))){
+await DB.auth.signOut();
+location.replace("admin.login.html");
+return false;
+}
+
+return true;
+}
+
+/* PACKAGE CONFIGURATION */
+
+async function loadPackages(){
+
+const [packageResult,roiResult]=await Promise.all([
+
+DB.from("brj_packages")
+.select("id,package_name,package_price,duration_days,is_active"),
+
+DB.from("brj_roi_settings")
+.select("package_id,daily_rate,duration_days,is_active")
+
+]);
+
+if(packageResult.error)throw packageResult.error;
+if(roiResult.error)throw roiResult.error;
+
+const packages=packageResult.data||[];
+const settings=roiResult.data||[];
+
+if(!packages.length){
+$("packageRows").innerHTML=
+'<tr><td colspan="6" class="empty">No package records found.</td></tr>';
+return;
+}
+
+$("packageRows").innerHTML=packages.map(pkg=>{
+
+const setting=settings.find(item=>
+item.package_id===pkg.id
+);
+
+const roiActive=setting?.is_active===true;
+const packageActive=pkg.is_active===true;
+
+return `
+<tr>
+<td class="package">${escapeHTML(pkg.package_name)}</td>
+
+<td class="gold">${money(pkg.package_price)}</td>
+
+<td>${escapeHTML(pkg.duration_days)} Days</td>
+
+<td>${setting?Number(setting.daily_rate||0).toFixed(4):"—"}</td>
+
+<td>
+<span class="badge ${roiActive?"active":"inactive"}">
+${roiActive?"ACTIVE":"INACTIVE"}
+</span>
+</td>
+
+<td>
+<span class="badge ${packageActive?"active":"inactive"}">
+${packageActive?"AVAILABLE":"DISABLED"}
+</span>
+</td>
+</tr>
+`;
+
+}).join("");
+
+}
+
+/* MEMBERSHIP RECORDS */
+
+async function loadMemberships(){
+
+const {data,error}=await DB
+.from("member_package_purchases")
+.select(`
+member_id,
+package_name,
+purchase_amount,
+purchase_status,
+activated_at,
+expires_at,
+created_at
+`)
+.order("created_at",{ascending:false});
+
+if(error)throw error;
+
+const records=data||[];
+
+const active=records.filter(item=>
+String(item.purchase_status).toUpperCase()==="ACTIVE"
+);
+
+const totalAmount=records.reduce((sum,item)=>
+sum+Number(item.purchase_amount||0),0
+);
+
+const now=new Date();
+const threeDays=new Date();
+threeDays.setDate(now.getDate()+3);
+
+const expiring=active.filter(item=>{
+
+if(!item.expires_at)return false;
+
+const expiry=new Date(item.expires_at);
+
+return expiry>=now&&expiry<=threeDays;
+
+});
+
+setValue("totalMemberships",records.length.toLocaleString("en-IN"));
+setValue("activeMemberships",active.length.toLocaleString("en-IN"));
+setValue("totalAmount",money(totalAmount));
+setValue("expiringSoon",expiring.length.toLocaleString("en-IN"));
+
+/* ACTIVE MEMBERSHIPS */
+
+if(!active.length){
+
+$("membershipRows").innerHTML=
+'<tr><td colspan="6" class="empty">No active memberships found.</td></tr>';
+
+}else{
+
+$("membershipRows").innerHTML=active.map(item=>`
+
+<tr>
+<td class="member-id">${escapeHTML(item.member_id)}</td>
+<td class="package">${escapeHTML(item.package_name)}</td>
+<td class="gold">${money(item.purchase_amount)}</td>
+<td><span class="badge active">ACTIVE</span></td>
+<td>${escapeHTML(dateFormat(item.activated_at))}</td>
+<td>${escapeHTML(dateFormat(item.expires_at))}</td>
+</tr>
+
+`).join("");
+
+}
+
+/* RECENT PURCHASES */
+
+if(!records.length){
+
+$("recentRows").innerHTML=
+'<tr><td colspan="5" class="empty">No membership records found.</td></tr>';
+
+}else{
+
+$("recentRows").innerHTML=records.slice(0,10).map(item=>{
+
+const status=String(item.purchase_status||"UNKNOWN").toUpperCase();
+
+const badge=status==="ACTIVE"?"active":
+status==="CANCELLED"?"inactive":"pending";
+
+return `
+<tr>
+<td class="member-id">${escapeHTML(item.member_id)}</td>
+<td class="package">${escapeHTML(item.package_name)}</td>
+<td class="gold">${money(item.purchase_amount)}</td>
+<td><span class="badge ${badge}">${escapeHTML(status)}</span></td>
+<td>${escapeHTML(dateFormat(item.created_at))}</td>
+</tr>
+`;
+
+}).join("");
+
+}
+
+}
+
+/* LOAD ALL DATA */
+
+async function loadDashboard(){
+
+try{
+
+$("message").style.display="none";
+
+await Promise.all([
+loadPackages(),
+loadMemberships()
+]);
+
+}catch(error){
+
+console.error("ROI monitoring error:",error);
+showError("ROI monitoring data could not load: "+error.message);
+
+}
+
+}
+
+/* START */
 
 (async()=>{
-  try{
-    const allowed=await checkAdmin();
-    if(allowed) await loadData();
-  }catch(error){
-    console.error(error);
-    $("message").textContent="Error: "+error.message;
-  }
+
+try{
+
+const verified=await verifyAdmin();
+
+if(!verified)return;
+
+await loadDashboard();
+
+}catch(error){
+
+console.error(error);
+showError(error.message);
+
+}
+
 })();
+
 </script>
 
 </body>
