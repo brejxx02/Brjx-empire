@@ -1759,7 +1759,8 @@ const ADMIN_PAGES={
 dashboard:"admin-dashboard.html",
 members:"admin-members.html",
 deposits:"admin-deposits.html",
-withdrawals:"admin-withdrawals.html"
+withdrawals:"admin-withdrawals.html",
+membership:"admin-memberships.html"
 
 };
 
@@ -1773,28 +1774,14 @@ const page=this.dataset.page;
 
 $("sidebar").classList.remove("open");
 
-/* Membership opens dashboard section */
+/* MEMBERSHIP PAGE */
 
 if(page==="membership"){
-
-$("membershipPanel").scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
-
-document.querySelectorAll(".nav-item").forEach(nav=>{
-nav.classList.remove("active");
-});
-
-document.querySelectorAll('.nav-item[data-page="membership"]').forEach(nav=>{
-nav.classList.add("active");
-});
-
+window.location.href="admin-memberships.html";
 return;
-
 }
 
-/* Dashboard home */
+/* DASHBOARD HOME */
 
 if(page==="dashboard"){
 
@@ -1803,7 +1790,7 @@ return;
 
 }
 
-/* Existing modules */
+/* EXISTING MODULES */
 
 const target=ADMIN_PAGES[page];
 
