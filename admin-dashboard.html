@@ -9,7 +9,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -40,9 +39,7 @@ color:var(--text);
 min-height:100vh;
 }
 
-button{
-font-family:inherit;
-}
+button{font-family:inherit}
 
 .app{
 display:flex;
@@ -95,9 +92,7 @@ font-weight:950;
 letter-spacing:1px;
 }
 
-.logo-text span{
-color:var(--gold);
-}
+.logo-text span{color:var(--gold)}
 
 .logo-sub{
 font-size:9px;
@@ -295,9 +290,7 @@ font-weight:900;
 letter-spacing:-.7px;
 }
 
-.welcome h1 span{
-color:var(--gold);
-}
+.welcome h1 span{color:var(--gold)}
 
 .welcome p{
 color:var(--muted);
@@ -368,6 +361,7 @@ font-size:29px;
 font-weight:900;
 margin-top:20px;
 letter-spacing:-1px;
+overflow-wrap:anywhere;
 }
 
 .stat-bottom{
@@ -416,9 +410,7 @@ color:var(--muted);
 margin-top:5px;
 }
 
-.panel-body{
-padding:20px;
-}
+.panel-body{padding:20px}
 
 .chart-box{
 height:260px;
@@ -467,9 +459,7 @@ margin-top:5px;
 
 /* TABLE */
 
-.table-wrap{
-overflow-x:auto;
-}
+.table-wrap{overflow-x:auto}
 
 table{
 width:100%;
@@ -484,25 +474,21 @@ letter-spacing:.8px;
 color:var(--muted);
 padding:14px 18px;
 border-bottom:1px solid var(--border);
+white-space:nowrap;
 }
 
 td{
 padding:15px 18px;
 font-size:11px;
 border-bottom:1px solid #ffffff08;
+white-space:nowrap;
 }
 
-tr:last-child td{
-border-bottom:0;
-}
+tr:last-child td{border-bottom:0}
 
-.member-cell{
-font-weight:800;
-}
+.member-cell{font-weight:800}
 
-.muted{
-color:var(--muted);
-}
+.muted{color:var(--muted)}
 
 .badge{
 padding:6px 9px;
@@ -532,6 +518,70 @@ text-align:center;
 padding:30px;
 color:var(--muted);
 font-size:12px;
+}
+
+/* MEMBERSHIP */
+
+.membership-section{
+margin-top:25px;
+scroll-margin-top:95px;
+}
+
+.membership-heading{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:17px;
+}
+
+.membership-heading h2{
+font-size:19px;
+font-weight:900;
+}
+
+.membership-heading p{
+font-size:11px;
+color:var(--muted);
+margin-top:6px;
+}
+
+.membership-tag{
+font-size:10px;
+color:var(--gold);
+background:#e6bb5812;
+border:1px solid #e6bb5830;
+padding:8px 11px;
+border-radius:9px;
+}
+
+.membership-stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-bottom:20px;
+}
+
+.membership-stats .stat-card{
+padding:18px;
+}
+
+.membership-stats .stat-number{
+font-size:25px;
+}
+
+.package-name{
+color:var(--light);
+font-weight:800;
+}
+
+.member-id{
+color:var(--gold);
+font-weight:900;
+}
+
+.date-cell{
+color:#aab4c3;
+font-size:10px;
 }
 
 /* FOOTER */
@@ -571,19 +621,17 @@ color:var(--green);
 /* RESPONSIVE */
 
 @media(max-width:1100px){
-.stats-grid{
+.stats-grid,
+.membership-stats{
 grid-template-columns:repeat(2,1fr);
 }
-.grid-two{
-grid-template-columns:1fr;
-}
+
+.grid-two{grid-template-columns:1fr}
 }
 
 @media(max-width:700px){
 
-.sidebar{
-transform:translateX(-100%);
-}
+.sidebar{transform:translateX(-100%)}
 
 .sidebar.open{
 transform:translateX(0);
@@ -600,35 +648,20 @@ height:67px;
 padding:0 15px;
 }
 
-.menu-btn{
-display:block;
-}
+.menu-btn{display:block}
 
-.page-title{
-font-size:15px;
-}
+.page-title{font-size:15px}
+.page-sub{font-size:9px}
 
-.page-sub{
-font-size:9px;
-}
+.live-status{display:none}
 
-.live-status{
-display:none;
-}
+.content{padding:20px 14px}
 
-.content{
-padding:20px 14px;
-}
+.welcome h1{font-size:21px}
+.welcome p{font-size:10px}
 
-.welcome h1{
-font-size:21px;
-}
-
-.welcome p{
-font-size:10px;
-}
-
-.stats-grid{
+.stats-grid,
+.membership-stats{
 gap:10px;
 }
 
@@ -637,13 +670,8 @@ padding:15px;
 border-radius:14px;
 }
 
-.stat-number{
-font-size:24px;
-}
-
-.stat-label{
-font-size:10px;
-}
+.stat-number{font-size:24px}
+.stat-label{font-size:10px}
 
 .stat-icon{
 width:32px;
@@ -651,31 +679,25 @@ height:32px;
 font-size:14px;
 }
 
-.panel-header{
-padding:16px;
-}
+.panel-header{padding:16px}
+.panel-body{padding:15px}
 
-.panel-body{
-padding:15px;
-}
-
-.quick-grid{
-gap:9px;
-}
-
-.quick-action{
-padding:13px;
-}
+.quick-grid{gap:9px}
+.quick-action{padding:13px}
 
 .logout{
 padding:9px 10px;
 font-size:9px;
 }
 
+.membership-heading h2{font-size:16px}
+.membership-tag{font-size:9px}
+
 }
 
 @media(max-width:350px){
-.stats-grid{
+.stats-grid,
+.membership-stats{
 grid-template-columns:1fr;
 }
 }
@@ -691,14 +713,12 @@ grid-template-columns:1fr;
 <aside class="sidebar" id="sidebar">
 
 <div class="logo-area">
-
 <div class="logo">BRJ</div>
 
 <div>
 <div class="logo-text">BRJ <span>EMPIRE</span></div>
 <div class="logo-sub">ADMIN CONTROL CENTER</div>
 </div>
-
 </div>
 
 <div class="nav">
@@ -733,6 +753,10 @@ grid-template-columns:1fr;
 <span class="nav-icon">◉</span> ROI Management
 </a>
 
+<a class="nav-item" data-page="membership">
+<span class="nav-icon">💎</span> Memberships
+</a>
+
 <a class="nav-item" data-page="transfers">
 <span class="nav-icon">⇄</span> P2P Transfers
 </a>
@@ -762,15 +786,13 @@ grid-template-columns:1fr;
 </div>
 
 <div class="nav-bottom">
-
 <div class="admin-mini">
 <div class="avatar">A</div>
 <div>
 <div class="admin-name" id="adminName">Administrator</div>
-<div class="admin-role">MAIN ADMIN</div>
+<div class="admin-role">ADMINISTRATOR</div>
 </div>
 </div>
-
 </div>
 
 </aside>
@@ -782,14 +804,12 @@ grid-template-columns:1fr;
 <header class="topbar">
 
 <div class="top-left">
-
 <button class="menu-btn" id="menuBtn">☰</button>
 
 <div>
 <div class="page-title">Admin Dashboard</div>
 <div class="page-sub">BRJ EMPIRE / CONTROL CENTER</div>
 </div>
-
 </div>
 
 <div class="top-right">
@@ -802,7 +822,6 @@ SYSTEM CONNECTED
 <button class="logout" id="logoutBtn">LOGOUT ↗</button>
 
 </div>
-
 </header>
 
 <div class="content">
@@ -810,17 +829,15 @@ SYSTEM CONNECTED
 <div id="notice"></div>
 
 <div class="welcome">
-
 <div>
 <h1>Welcome to <span>BRJ EMPIRE</span></h1>
 <p>Here is your platform overview and management center.</p>
 </div>
 
 <button class="refresh-btn" id="refreshBtn">↻ REFRESH</button>
-
 </div>
 
-<!-- STATISTICS -->
+<!-- MAIN STATISTICS -->
 
 <div class="stats-grid">
 
@@ -950,16 +967,15 @@ SYSTEM CONNECTED
 <div class="quick-desc">Review payouts</div>
 </a>
 
-<a class="quick-action" data-page="subadmins">
-<div class="quick-icon">♧</div>
-<div class="quick-title">Sub Admins</div>
-<div class="quick-desc">Manage permissions</div>
+<a class="quick-action" data-page="membership">
+<div class="quick-icon">💎</div>
+<div class="quick-title">Memberships</div>
+<div class="quick-desc">View purchases</div>
 </a>
 
 </div>
 
 </div>
-
 </div>
 
 </div>
@@ -969,7 +985,6 @@ SYSTEM CONNECTED
 <div class="panel" style="margin-bottom:20px">
 
 <div class="panel-header">
-
 <div>
 <div class="panel-title">Recent Members</div>
 <div class="panel-subtitle">Latest registered accounts</div>
@@ -978,7 +993,6 @@ SYSTEM CONNECTED
 <a data-page="members" style="color:var(--gold);font-size:11px;cursor:pointer">
 VIEW ALL →
 </a>
-
 </div>
 
 <div class="table-wrap">
@@ -998,19 +1012,16 @@ VIEW ALL →
 <td colspan="4" class="empty">Loading member records...</td>
 </tr>
 </tbody>
-
 </table>
 
 </div>
-
 </div>
 
 <!-- RECENT DEPOSITS -->
 
-<div class="panel">
+<div class="panel" style="margin-bottom:20px">
 
 <div class="panel-header">
-
 <div>
 <div class="panel-title">Recent Deposits</div>
 <div class="panel-subtitle">Latest deposit requests</div>
@@ -1019,13 +1030,11 @@ VIEW ALL →
 <a data-page="deposits" style="color:var(--gold);font-size:11px;cursor:pointer">
 VIEW ALL →
 </a>
-
 </div>
 
 <div class="table-wrap">
 
 <table>
-
 <thead>
 <tr>
 <th>REQUEST ID</th>
@@ -1040,21 +1049,112 @@ VIEW ALL →
 <td colspan="4" class="empty">Loading deposit records...</td>
 </tr>
 </tbody>
+</table>
+
+</div>
+</div>
+
+<!-- MEMBERSHIP MANAGEMENT OVERVIEW -->
+
+<section class="membership-section" id="membershipPanel">
+
+<div class="membership-heading">
+<div>
+<h2>💎 Membership Management</h2>
+<p>Membership purchase overview and latest records.</p>
+</div>
+
+<div class="membership-tag">DATABASE CONNECTED</div>
+</div>
+
+<!-- MEMBERSHIP STATISTICS -->
+
+<div class="membership-stats">
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">TOTAL MEMBERSHIPS</div>
+<div class="stat-icon gold">💎</div>
+</div>
+<div class="stat-number gold" id="totalMemberships">—</div>
+<div class="stat-bottom">All purchase records</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">ACTIVE MEMBERSHIPS</div>
+<div class="stat-icon green">✓</div>
+</div>
+<div class="stat-number green" id="activeMemberships">—</div>
+<div class="stat-bottom">Active purchase records</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">CANCELLED MEMBERSHIPS</div>
+<div class="stat-icon red">×</div>
+</div>
+<div class="stat-number red" id="cancelledMemberships">—</div>
+<div class="stat-bottom">Cancelled purchase records</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-top">
+<div class="stat-label">TOTAL INVESTMENT</div>
+<div class="stat-icon gold">₹</div>
+</div>
+<div class="stat-number gold" id="membershipInvestment">—</div>
+<div class="stat-bottom">Recorded purchase amounts</div>
+</div>
+
+</div>
+
+<!-- RECENT MEMBERSHIP PURCHASES -->
+
+<div class="panel">
+
+<div class="panel-header">
+<div>
+<div class="panel-title">Recent Membership Purchases</div>
+<div class="panel-subtitle">Latest activated and cancelled membership records</div>
+</div>
+
+<span class="membership-tag">LATEST 10</span>
+</div>
+
+<div class="table-wrap">
+
+<table>
+<thead>
+<tr>
+<th>MEMBER ID</th>
+<th>PACKAGE</th>
+<th>AMOUNT</th>
+<th>STATUS</th>
+<th>ACTIVATED</th>
+<th>EXPIRES</th>
+</tr>
+</thead>
+
+<tbody id="recentMemberships">
+<tr>
+<td colspan="6" class="empty">Loading membership records...</td>
+</tr>
+</tbody>
 
 </table>
 
 </div>
-
 </div>
+
+</section>
 
 <div class="footer">
 BRJ EMPIRE © 2026 · ADMIN CONTROL CENTER
 </div>
 
 </div>
-
 </main>
-
 </div>
 
 <script>
@@ -1063,11 +1163,12 @@ BRJ EMPIRE © 2026 · ADMIN CONTROL CENTER
    BRJ EMPIRE ADMIN DASHBOARD
 ================================= */
 
-const DB = window.supabaseClient;
+const DB=window.supabaseClient;
+const $=id=>document.getElementById(id);
 
-const $ = id => document.getElementById(id);
+let analyticsChart=null;
 
-let analyticsChart = null;
+/* NOTICE */
 
 function showNotice(message,type="error"){
 const box=$("notice");
@@ -1085,26 +1186,38 @@ return Number(value||0).toLocaleString("en-IN");
 }
 
 function setStat(id,value){
-$(id).textContent=value;
+if($(id)) $(id).textContent=value;
 }
 
-function setLoading(){
-[
-"totalMembers",
-"totalDeposits",
-"pendingDeposits",
-"pendingWithdrawals",
-"totalWithdrawals",
-"totalPackages",
-"totalTransfers"
-].forEach(id=>setStat(id,"—"));
+function formatDate(value){
+if(!value) return "—";
+
+const date=new Date(value);
+
+if(isNaN(date.getTime())) return "—";
+
+return date.toLocaleDateString("en-IN",{
+day:"2-digit",
+month:"short",
+year:"numeric"
+});
+}
+
+function escapeHTML(value){
+return String(value??"").replace(/[&<>"']/g,char=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[char]));
 }
 
 /* AUTHENTICATION */
 
 async function verifyAdmin(){
 
-if(!DB || !DB.auth){
+if(!DB||!DB.auth){
 throw new Error("Supabase client not found. Check supabase.js configuration.");
 }
 
@@ -1115,13 +1228,11 @@ if(error) throw error;
 const session=data.session;
 
 if(!session){
-location.replace("admin-login.html");
+location.replace("admin.login.html");
 return false;
 }
 
 const user=session.user;
-
-/* Verify role from database */
 
 const {data:roles,error:roleError}=await DB
 .from("user_roles")
@@ -1136,29 +1247,34 @@ const roleList=(roles||[]).map(r=>
 String(r.role||"").toLowerCase()
 );
 
-const isAdmin=roleList.includes("admin") ||
-roleList.includes("main_admin");
+const isAdmin=
+roleList.includes("admin")||
+roleList.includes("main_admin")||
+roleList.includes("sub_admin")||
+roleList.includes("subadmin");
 
 if(!isAdmin){
 await DB.auth.signOut();
-location.replace("admin-login.html");
+location.replace("admin.login.html");
 return false;
 }
 
 $("adminName").textContent=
-user.user_metadata?.full_name ||
-user.email?.split("@")[0] ||
+user.user_metadata?.full_name||
+user.email?.split("@")[0]||
 "Administrator";
 
 return true;
-
 }
 
 /* SAFE COUNT QUERY */
 
 async function getCount(table,filters){
 
-let query=DB.from(table).select("*",{count:"exact",head:true});
+let query=DB.from(table).select("*",{
+count:"exact",
+head:true
+});
 
 if(filters){
 filters.forEach(filter=>{
@@ -1171,7 +1287,6 @@ const {count,error}=await query;
 if(error) throw error;
 
 return count||0;
-
 }
 
 /* RECENT MEMBERS */
@@ -1188,29 +1303,48 @@ if(error) throw error;
 
 const tbody=$("recentMembers");
 
-if(!data || data.length===0){
+if(!data||data.length===0){
 tbody.innerHTML=
 '<tr><td colspan="4" class="empty">No member records found.</td></tr>';
 return;
 }
 
+/* Get official numeric IDs */
+
+const userIds=data.map(member=>member.id).filter(Boolean);
+
+let officialIds={};
+
+if(userIds.length){
+
+const {data:idData,error:idError}=await DB
+.from("brj_member_ids")
+.select("user_id,member_id")
+.in("user_id",userIds);
+
+if(!idError){
+(idData||[]).forEach(item=>{
+officialIds[item.user_id]=item.member_id;
+});
+}
+
+}
+
 tbody.innerHTML=data.map(member=>{
 
-const name=member.full_name ||
-member.name ||
+const name=member.full_name||
+member.name||
 "Member";
 
-const email=member.email || "—";
+const email=member.email||"—";
 
-const memberId=member.member_id ||
-member.bri_member_id ||
-"—";
+const officialId=officialIds[member.id]||"—";
 
 return `
 <tr>
 <td class="member-cell">${escapeHTML(name)}</td>
 <td class="muted">${escapeHTML(email)}</td>
-<td>${escapeHTML(memberId)}</td>
+<td class="member-id">${escapeHTML(officialId)}</td>
 <td><span class="badge approved">REGISTERED</span></td>
 </tr>
 `;
@@ -1233,7 +1367,7 @@ if(error) throw error;
 
 const tbody=$("recentDeposits");
 
-if(!data || data.length===0){
+if(!data||data.length===0){
 tbody.innerHTML=
 '<tr><td colspan="4" class="empty">No deposit requests found.</td></tr>';
 return;
@@ -1241,11 +1375,11 @@ return;
 
 tbody.innerHTML=data.map(item=>{
 
-const id=item.id || "—";
+const id=item.id||"—";
 
-const amount=item.amount ?? item.requested_amount ?? "—";
+const amount=item.amount??item.requested_amount??"—";
 
-const status=String(item.status || "pending").toLowerCase();
+const status=String(item.status||"pending").toLowerCase();
 
 let badge="pending";
 
@@ -1260,7 +1394,7 @@ badge="rejected";
 return `
 <tr>
 <td>${escapeHTML(String(id).slice(0,12))}</td>
-<td class="muted">${escapeHTML(item.member_id || "—")}</td>
+<td class="muted">${escapeHTML(item.member_id||"—")}</td>
 <td class="gold">₹${escapeHTML(String(amount))}</td>
 <td><span class="badge ${badge}">${escapeHTML(status.toUpperCase())}</span></td>
 </tr>
@@ -1291,7 +1425,10 @@ const date=new Date();
 
 date.setDate(date.getDate()-i);
 
-const key=date.toISOString().slice(0,10);
+const key=
+date.getFullYear()+"-"+
+String(date.getMonth()+1).padStart(2,"0")+"-"+
+String(date.getDate()).padStart(2,"0");
 
 labels.push(date.toLocaleDateString("en-IN",{
 day:"numeric",
@@ -1299,7 +1436,7 @@ month:"short"
 }));
 
 const count=(data||[]).filter(member=>
-member.created_at &&
+member.created_at&&
 String(member.created_at).slice(0,10)===key
 ).length;
 
@@ -1334,9 +1471,7 @@ options:{
 responsive:true,
 maintainAspectRatio:false,
 plugins:{
-legend:{
-display:false
-}
+legend:{display:false}
 },
 scales:{
 x:{
@@ -1358,12 +1493,152 @@ precision:0
 
 }
 
+/* =================================
+   MEMBERSHIP DASHBOARD INTEGRATION
+================================= */
+
+async function loadMembershipDashboard(){
+
+const tbody=$("recentMemberships");
+
+try{
+
+const {data,error}=await DB
+.from("member_package_purchases")
+.select(`
+member_id,
+package_name,
+purchase_amount,
+purchase_status,
+activated_at,
+expires_at,
+created_at
+`)
+.order("created_at",{ascending:false});
+
+if(error) throw error;
+
+const records=data||[];
+
+const active=records.filter(item=>
+item.purchase_status==="ACTIVE"
+);
+
+const cancelled=records.filter(item=>
+item.purchase_status==="CANCELLED"
+);
+
+const investment=records.reduce((total,item)=>{
+return total+Number(item.purchase_amount||0);
+},0);
+
+/* UPDATE MEMBERSHIP STATISTICS */
+
+setStat("totalMemberships",formatNumber(records.length));
+
+setStat("activeMemberships",formatNumber(active.length));
+
+setStat("cancelledMemberships",formatNumber(cancelled.length));
+
+setStat(
+"membershipInvestment",
+"₹"+investment.toLocaleString("en-IN",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+})
+);
+
+/* EMPTY STATE */
+
+if(records.length===0){
+
+tbody.innerHTML=
+'<tr><td colspan="6" class="empty">No membership purchases found.</td></tr>';
+
+return;
+}
+
+/* RECENT 10 PURCHASES */
+
+tbody.innerHTML=records.slice(0,10).map(item=>{
+
+const status=String(item.purchase_status||"").toUpperCase();
+
+const badge=status==="ACTIVE"?"approved":"rejected";
+
+return `
+<tr>
+
+<td class="member-id">
+${escapeHTML(item.member_id||"—")}
+</td>
+
+<td class="package-name">
+${escapeHTML(item.package_name||"—")}
+</td>
+
+<td class="gold">
+₹${Number(item.purchase_amount||0).toLocaleString("en-IN",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+})}
+</td>
+
+<td>
+<span class="badge ${badge}">
+${escapeHTML(status||"UNKNOWN")}
+</span>
+</td>
+
+<td class="date-cell">
+${escapeHTML(formatDate(item.activated_at))}
+</td>
+
+<td class="date-cell">
+${escapeHTML(formatDate(item.expires_at))}
+</td>
+
+</tr>
+`;
+
+}).join("");
+
+}catch(error){
+
+console.error("Membership dashboard error:",error);
+
+setStat("totalMemberships","ERROR");
+setStat("activeMemberships","ERROR");
+setStat("cancelledMemberships","ERROR");
+setStat("membershipInvestment","ERROR");
+
+tbody.innerHTML=`
+<tr>
+<td colspan="6" class="empty">
+Membership data could not load: ${escapeHTML(error.message)}
+</td>
+</tr>
+`;
+
+}
+
+}
+
 /* LOAD DASHBOARD */
 
 async function loadDashboard(){
 
 clearNotice();
-setLoading();
+
+[
+"totalMembers",
+"totalDeposits",
+"pendingDeposits",
+"pendingWithdrawals",
+"totalWithdrawals",
+"totalPackages",
+"totalTransfers"
+].forEach(id=>setStat(id,"—"));
 
 try{
 
@@ -1407,37 +1682,36 @@ setStat("totalTransfers",formatNumber(transfers));
 
 $("systemStatus").textContent="ONLINE";
 
-await Promise.all([
-loadMembers(),
-loadDeposits(),
-loadAnalytics()
-]);
-
 }catch(error){
 
-console.error("Dashboard error:",error);
+console.error("Main dashboard statistics error:",error);
 
 $("systemStatus").textContent="ERROR";
 
 showNotice(
-"Dashboard data could not be fully loaded. Check database table names, column names and Supabase permissions. "+error.message
+"Some dashboard statistics could not load. "+error.message
 );
 
 }
 
+/* Load individual sections independently */
+
+const results=await Promise.allSettled([
+
+loadMembers(),
+loadDeposits(),
+loadAnalytics(),
+loadMembershipDashboard()
+
+]);
+
+results.forEach((result,index)=>{
+
+if(result.status==="rejected"){
+console.error("Dashboard section error:",index,result.reason);
 }
 
-/* HTML ESCAPE */
-
-function escapeHTML(value){
-
-return String(value).replace(/[&<>"']/g,char=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-}[char]));
+});
 
 }
 
@@ -1454,16 +1728,20 @@ showNotice(error.message);
 return;
 }
 
-location.replace("admin-login.html");
+location.replace("admin.login.html");
 
 });
 
 /* REFRESH */
 
 $("refreshBtn").addEventListener("click",async()=>{
+
 $("refreshBtn").textContent="↻ LOADING...";
+
 await loadDashboard();
+
 $("refreshBtn").textContent="↻ REFRESH";
+
 });
 
 /* MOBILE MENU */
@@ -1476,15 +1754,12 @@ $("sidebar").classList.toggle("open");
    ADMIN MODULE NAVIGATION
 ================================= */
 
-const ADMIN_PAGES = {
+const ADMIN_PAGES={
 
-dashboard: "admin-dashboard.html",
-
-members: "admin-members.html",
-
-deposits: "admin-deposits.html",
-
-withdrawals: "admin-withdrawals.html"
+dashboard:"admin-dashboard.html",
+members:"admin-members.html",
+deposits:"admin-deposits.html",
+withdrawals:"admin-withdrawals.html"
 
 };
 
@@ -1496,9 +1771,41 @@ event.preventDefault();
 
 const page=this.dataset.page;
 
-const target=ADMIN_PAGES[page];
-
 $("sidebar").classList.remove("open");
+
+/* Membership opens dashboard section */
+
+if(page==="membership"){
+
+$("membershipPanel").scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+document.querySelectorAll(".nav-item").forEach(nav=>{
+nav.classList.remove("active");
+});
+
+document.querySelectorAll('.nav-item[data-page="membership"]').forEach(nav=>{
+nav.classList.add("active");
+});
+
+return;
+
+}
+
+/* Dashboard home */
+
+if(page==="dashboard"){
+
+window.location.href="admin-dashboard.html";
+return;
+
+}
+
+/* Existing modules */
+
+const target=ADMIN_PAGES[page];
 
 if(target){
 
