@@ -1,469 +1,268 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080a10">
 <title>BRJ EMPIRE | Admin Portal</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 
 :root{
-    --bg:#080a10;
-    --card:#111722;
-    --gold:#e6bb58;
-    --light:#ffe29a;
-    --text:#f4f5f7;
-    --muted:#8792a4;
-    --border:#242e3c;
-    --green:#56d59b;
+--bg:#080a10;
+--card:#111722;
+--gold:#e6bb58;
+--light:#ffe29a;
+--text:#f4f5f7;
+--muted:#8792a4;
+--border:#242e3c;
+--green:#56d59b;
+--red:#ef8994;
 }
 
 body{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:22px;
-    color:var(--text);
-    background:
-    radial-gradient(ellipse at 50% 5%,rgba(230,187,88,.13),transparent 38%),
-    radial-gradient(ellipse at 0% 100%,rgba(36,55,85,.16),transparent 40%),
-    #080a10;
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:22px;
+color:var(--text);
+background:
+radial-gradient(ellipse at 50% 5%,rgba(230,187,88,.13),transparent 38%),
+#080a10;
 }
 
-.wrapper{
-    width:100%;
-    max-width:440px;
-}
+.wrapper{width:100%;max-width:440px}
 
-/* BRAND */
-
-.brand{
-    text-align:center;
-    margin-bottom:32px;
-}
+.brand{text-align:center;margin-bottom:32px}
 
 .brand-mark{
-    width:76px;
-    height:76px;
-    margin:0 auto 17px;
-    border-radius:23px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    background:linear-gradient(145deg,#f8dfa0,#c18d32 55%,#8e641f);
-    box-shadow:0 12px 35px rgba(230,187,88,.2);
-    border:1px solid rgba(255,226,154,.65);
-}
-
-.brand-mark:before{
-    content:"";
-    position:absolute;
-    inset:5px;
-    border:1px solid rgba(255,255,255,.35);
-    border-radius:18px;
+width:76px;height:76px;margin:0 auto 17px;
+border-radius:23px;
+display:flex;align-items:center;justify-content:center;
+background:linear-gradient(145deg,#f8dfa0,#c18d32 55%,#8e641f);
+box-shadow:0 12px 35px rgba(230,187,88,.2);
+border:1px solid rgba(255,226,154,.65);
 }
 
 .brand-mark span{
-    font-size:30px;
-    font-weight:950;
-    letter-spacing:-3px;
-    color:#17120a;
-    transform:translateX(-1px);
+font-size:30px;font-weight:950;
+letter-spacing:-3px;color:#17120a;
 }
 
 .brand-name{
-    font-size:34px;
-    font-weight:950;
-    letter-spacing:2px;
-    color:#fff;
+font-size:34px;font-weight:950;
+letter-spacing:2px;color:white;
 }
 
-.brand-name span{
-    color:var(--gold);
-}
+.brand-name span{color:var(--gold)}
 
 .brand-subtitle{
-    margin-top:8px;
-    font-size:10px;
-    letter-spacing:4px;
-    color:var(--muted);
-    text-transform:uppercase;
+margin-top:8px;font-size:10px;
+letter-spacing:4px;color:var(--muted);
 }
 
-/* LOGIN CARD */
-
 .login-card{
-    position:relative;
-    overflow:hidden;
-    padding:32px 26px 28px;
-    border-radius:24px;
-    border:1px solid rgba(230,187,88,.19);
-    background:linear-gradient(145deg,rgba(20,28,41,.98),rgba(11,16,25,.98));
-    box-shadow:
-    0 30px 90px rgba(0,0,0,.55),
-    inset 0 1px 0 rgba(255,255,255,.035);
+position:relative;overflow:hidden;
+padding:32px 26px 28px;
+border-radius:24px;
+border:1px solid rgba(230,187,88,.19);
+background:linear-gradient(145deg,#141c29,#0b1019);
+box-shadow:0 30px 90px rgba(0,0,0,.55);
 }
 
 .login-card:before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:10%;
-    width:80%;
-    height:2px;
-    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+content:"";position:absolute;top:0;left:10%;
+width:80%;height:2px;
+background:linear-gradient(90deg,transparent,var(--gold),transparent);
 }
 
 .top-label{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    margin-bottom:23px;
+display:flex;align-items:center;justify-content:center;
+gap:8px;margin-bottom:23px;
 }
 
 .top-label span{
-    color:var(--gold);
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:2.5px;
+color:var(--gold);font-size:10px;
+font-weight:800;letter-spacing:2.5px;
 }
 
 .top-label i{
-    width:5px;
-    height:5px;
-    border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 9px var(--green);
+width:6px;height:6px;border-radius:50%;
+background:var(--green);
 }
 
-.heading{
-    text-align:center;
-    font-size:27px;
-    font-weight:850;
-    letter-spacing:-.5px;
-}
+.heading{text-align:center;font-size:27px;font-weight:850}
 
 .description{
-    text-align:center;
-    color:var(--muted);
-    font-size:13px;
-    margin-top:9px;
-    margin-bottom:31px;
+text-align:center;color:var(--muted);
+font-size:13px;margin-top:9px;margin-bottom:31px;
 }
 
-/* INPUTS */
-
-.input-group{
-    margin-bottom:20px;
-}
+.input-group{margin-bottom:20px}
 
 .input-group label{
-    display:block;
-    margin-bottom:10px;
-    color:#d8deea;
-    font-size:13px;
-    font-weight:650;
+display:block;margin-bottom:10px;
+color:#d8deea;font-size:13px;font-weight:650;
 }
 
-.input-box{
-    position:relative;
-}
+.input-box{position:relative}
 
 .input-box input{
-    width:100%;
-    height:56px;
-    padding:0 65px 0 17px;
-    border:1px solid var(--border);
-    border-radius:13px;
-    background:#0a1019;
-    outline:none;
-    color:var(--text);
-    font-size:14px;
-    transition:.25s;
+width:100%;height:56px;padding:0 70px 0 17px;
+border:1px solid var(--border);
+border-radius:13px;background:#0a1019;
+outline:none;color:var(--text);font-size:14px;
 }
 
 .input-box input:focus{
-    border-color:var(--gold);
-    box-shadow:0 0 0 3px rgba(230,187,88,.08);
-}
-
-.input-box input::placeholder{
-    color:#657184;
+border-color:var(--gold);
+box-shadow:0 0 0 3px rgba(230,187,88,.08);
 }
 
 .toggle-password{
-    position:absolute;
-    right:15px;
-    top:50%;
-    transform:translateY(-50%);
-    background:none;
-    border:0;
-    color:var(--gold);
-    font-size:11px;
-    font-weight:800;
-    letter-spacing:1px;
-    cursor:pointer;
+position:absolute;right:15px;top:50%;
+transform:translateY(-50%);
+background:none;border:0;color:var(--gold);
+font-size:11px;font-weight:800;cursor:pointer;
 }
 
-/* REMEMBER */
-
 .remember-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin:3px 0 25px;
-    color:var(--muted);
-    font-size:12px;
-    cursor:pointer;
+display:flex;align-items:center;gap:10px;
+margin:3px 0 25px;color:var(--muted);
+font-size:12px;cursor:pointer;
 }
 
 .remember-row input{
-    width:16px;
-    height:16px;
-    accent-color:var(--gold);
+width:17px;height:17px;accent-color:var(--gold);
 }
-
-/* BUTTON */
 
 .login-button{
-    width:100%;
-    height:57px;
-    border:0;
-    border-radius:14px;
-    background:linear-gradient(110deg,#b98a32,#ffe29a,#d5a743);
-    color:#17120a;
-    font-size:14px;
-    font-weight:900;
-    letter-spacing:1px;
-    cursor:pointer;
-    box-shadow:0 9px 30px rgba(230,187,88,.16);
-    transition:.25s;
+width:100%;height:57px;border:0;border-radius:14px;
+background:linear-gradient(110deg,#b98a32,#ffe29a,#d5a743);
+color:#17120a;font-size:14px;font-weight:900;
+letter-spacing:1px;cursor:pointer;
 }
 
-.login-button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 13px 35px rgba(230,187,88,.25);
-}
-
-.login-button:disabled{
-    opacity:.65;
-    cursor:not-allowed;
-    transform:none;
-}
-
-/* MESSAGE */
+.login-button:disabled{opacity:.65;cursor:not-allowed}
 
 #message{
-    display:none;
-    padding:13px;
-    margin-top:17px;
-    border-radius:11px;
-    font-size:13px;
-    text-align:center;
-    line-height:1.5;
+display:none;padding:13px;margin-top:17px;
+border-radius:11px;font-size:12px;
+text-align:center;line-height:1.6;
+overflow-wrap:anywhere;
 }
 
-/* SECURITY */
+#message.error{
+display:block;background:#351b22;
+border:1px solid #713744;color:#ffb1ba;
+}
+
+#message.success{
+display:block;background:#172e24;
+border:1px solid #28513c;color:#83e6b3;
+}
 
 .security{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:9px;
-    margin-top:25px;
-    color:var(--muted);
-    font-size:11px;
+display:flex;justify-content:center;align-items:center;
+gap:9px;margin-top:25px;color:var(--muted);
+font-size:11px;
 }
 
 .security-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 10px rgba(86,213,155,.65);
+width:7px;height:7px;border-radius:50%;
+background:var(--green);
 }
 
 .footer{
-    text-align:center;
-    margin-top:25px;
-    color:#657184;
-    font-size:11px;
-    letter-spacing:.3px;
+text-align:center;margin-top:25px;
+color:#657184;font-size:11px;
 }
 
 @media(max-width:380px){
-    .login-card{padding:28px 19px;}
-    .brand-name{font-size:29px;}
+.login-card{padding:28px 19px}
+.brand-name{font-size:29px}
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="wrapper">
 
-```
 <div class="brand">
-
-    <div class="brand-mark">
-        <span>BRJ</span>
-    </div>
-
-    <div class="brand-name">
-        BRJ <span>EMPIRE</span>
-    </div>
-
-    <div class="brand-subtitle">
-        PREMIUM ADMINISTRATION
-    </div>
-
+<div class="brand-mark"><span>BRJ</span></div>
+<div class="brand-name">BRJ <span>EMPIRE</span></div>
+<div class="brand-subtitle">PREMIUM ADMINISTRATION</div>
 </div>
 
 <div class="login-card">
 
-    <div class="top-label">
-        <i></i>
-        <span>AUTHORIZED ACCESS ONLY</span>
-    </div>
+<div class="top-label">
+<i></i>
+<span>AUTHORIZED ACCESS ONLY</span>
+</div>
 
-    <h1 class="heading">Welcome Back</h1>
+<h1 class="heading">Welcome Back</h1>
 
-    <p class="description">
-        Sign in to manage your BRJ EMPIRE platform.
-    </p>
+<p class="description">
+Sign in to manage your BRJ EMPIRE platform.
+</p>
 
-    <form id="adminLoginForm">
+<form id="adminLoginForm">
 
-        <div class="input-group">
-            <label for="adminEmail">Admin Email Address</label>
+<div class="input-group">
+<label for="adminEmail">Admin Email Address</label>
+<div class="input-box">
+<input type="email" id="adminEmail"
+placeholder="Enter your email"
+autocomplete="username" required>
+</div>
+</div>
 
-            <div class="input-box">
-                <input
-                    type="email"
-                    id="adminEmail"
-                    placeholder="Enter your email"
-                    autocomplete="username"
-                    required
-                >
-            </div>
-        </div>
+<div class="input-group">
+<label for="adminPassword">Password</label>
+<div class="input-box">
+<input type="password" id="adminPassword"
+placeholder="Enter your password"
+autocomplete="current-password" required>
 
-        <div class="input-group">
-            <label for="adminPassword">Password</label>
+<button type="button"
+class="toggle-password"
+id="togglePassword">SHOW</button>
+</div>
+</div>
 
-            <div class="input-box">
-                <input
-                    type="password"
-                    id="adminPassword"
-                    placeholder="Enter your password"
-                    autocomplete="current-password"
-                    required
-                >
+<label class="remember-row">
+<input type="checkbox" id="rememberEmail">
+Remember my email
+</label>
 
-                <button
-                    type="button"
-                    class="toggle-password"
-                    id="togglePassword"
-                >SHOW</button>
-            </div>
-        </div>
+<button type="submit" class="login-button" id="loginButton">
+ACCESS ADMIN PANEL →
+</button>
 
-        <label class="remember-row">
-            <input type="checkbox" id="rememberEmail">
-            Remember my email
-        </label>
+<div id="message"></div>
 
-        <button
-            type="submit"
-            class="login-button"
-            id="loginButton"
-        >
-            SECURE ADMIN LOGIN →
-        </button>
+</form>
 
-        <div id="message"></div>
-
-    </form>
-
-    <div class="security">
-        <span class="security-dot"></span>
-        Protected Admin Authentication
-    </div>
+<div class="security">
+<span class="security-dot"></span>
+Protected Admin Authentication
+</div>
 
 </div>
 
 <div class="footer">
-    © 2026 BRJ EMPIRE · ALL RIGHTS RESERVED
+© 2026 BRJ EMPIRE · ALL RIGHTS RESERVED
 </div>
-```
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase.js"></script>
-
 <script src="admin-auth.js"></script>
-
-<script>
-(function(){
-
-    const password = document.getElementById("adminPassword");
-    const toggle = document.getElementById("togglePassword");
-    const email = document.getElementById("adminEmail");
-    const remember = document.getElementById("rememberEmail");
-
-    toggle.addEventListener("click",function(){
-
-        if(password.type === "password"){
-            password.type = "text";
-            toggle.textContent = "HIDE";
-        }else{
-            password.type = "password";
-            toggle.textContent = "SHOW";
-        }
-
-    });
-
-    const savedEmail = localStorage.getItem("brj_admin_email");
-
-    if(savedEmail){
-        email.value = savedEmail;
-        remember.checked = true;
-    }
-
-    remember.addEventListener("change",function(){
-
-        if(this.checked){
-            localStorage.setItem("brj_admin_email",email.value.trim());
-        }else{
-            localStorage.removeItem("brj_admin_email");
-        }
-
-    });
-
-    email.addEventListener("input",function(){
-
-        if(remember.checked){
-            localStorage.setItem("brj_admin_email",email.value.trim());
-        }
-
-    });
-
-})();
-</script>
 
 </body>
 </html>
