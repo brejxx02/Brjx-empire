@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,68 +8,395 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-:root{--bg:#080a10;--card:#111722;--gold:#e6bb58;--gold2:#ffe29a;--text:#f4f5f7;--muted:#8792a4;--border:#242e3c;--green:#56d59b;--red:#ef8994}
-body{background:var(--bg);color:var(--text);min-height:100vh}
-button{cursor:pointer;-webkit-tap-highlight-color:transparent}
-header{position:sticky;top:0;z-index:50;background:rgba(8,10,16,.96);border-bottom:1px solid #242b37;backdrop-filter:blur(18px)}
-.header-inner{max-width:800px;height:68px;margin:auto;padding:0 17px;display:flex;align-items:center;gap:15px}
-.back-btn{width:40px;height:40px;border-radius:12px;background:#151b26;border:1px solid #303746;color:var(--gold);font-size:22px}
-.brand{font-size:19px;font-weight:900;letter-spacing:2px}
-.brand span{color:var(--gold)}
-.wrapper{max-width:800px;margin:auto;padding:22px 16px 55px}
-.heading{margin:10px 0 23px}
-.heading small{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:2px}
-.heading h1{font-size:26px;margin-top:10px}
-.heading p{color:var(--muted);font-size:12px;margin-top:8px}
-.summary-card{padding:23px;border-radius:21px;border:1px solid #5a492b;background:radial-gradient(circle at 100% 0%,rgba(230,187,88,.17),transparent 45%),linear-gradient(135deg,#242116,#171d27)}
-.summary-label{color:#b4b2a7;font-size:12px}
-.summary-amount{font-size:36px;color:var(--gold2);font-weight:900;margin-top:16px}
-.summary-note{color:#8994a6;font-size:10px;margin-top:10px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:16px}
-.stat{padding:17px;border:1px solid var(--border);background:linear-gradient(145deg,#151c28,#10151e);border-radius:16px}
-.stat small{color:var(--muted);font-size:10px}
-.stat strong{display:block;color:var(--gold2);font-size:22px;margin-top:10px;overflow-wrap:anywhere}
-.section{margin-top:28px}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px}
-.section-head h2{font-size:16px}
-.section-head span{color:var(--muted);font-size:10px}
-.package-card{padding:19px;border:1px solid #5a492b;border-radius:17px;background:linear-gradient(145deg,#242116,#141a24)}
-.package-top{display:flex;justify-content:space-between;align-items:center}
-.package-top strong{font-size:14px;color:var(--gold)}
-.status{padding:7px 10px;border-radius:30px;font-size:9px;background:#172b21;border:1px solid #28513c;color:var(--green)}
-.package-price{color:var(--gold2);font-size:28px;font-weight:900;margin-top:17px}
-.package-info{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px}
-.package-info small{color:var(--muted);font-size:10px}
-.package-info strong{display:block;margin-top:6px;font-size:13px}
-.table-card{background:var(--card);border:1px solid var(--border);border-radius:15px;overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:300px}
-th{padding:15px 12px;background:#1a2230;color:var(--gold);font-size:10px;text-align:left}
-td{padding:15px 12px;border-top:1px solid #273140;font-size:11px}
-.empty{padding:28px 15px;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:15px}
-.empty-icon{font-size:30px}
-.empty h3{font-size:13px;margin-top:12px}
-.empty p{color:var(--muted);font-size:11px;line-height:1.7;margin-top:8px}
-.calendar-card{padding:17px;border:1px solid var(--border);border-radius:16px;background:var(--card)}
-.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px}
-.calendar-head h3{font-size:13px}
-.calendar-head button{width:32px;height:32px;border-radius:9px;background:#202938;color:var(--gold);border:1px solid #354155;font-size:17px}
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
-.calendar-day{text-align:center;font-size:10px;color:var(--muted);padding:8px 0}
-.calendar-date{text-align:center;font-size:11px;padding:10px 2px;border-radius:9px;background:#192230;color:#c4ccd7;border:1px solid #273140}
-.calendar-date.empty-date{background:transparent;border-color:transparent}
-.calendar-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:17px;font-size:9px;color:var(--muted)}
-.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
-.credited{background:#1c5238}.pending{background:#594521}.upcoming{background:#192230}
-.notice{margin-top:23px;padding:16px;background:#171e2a;border:1px solid #303b4c;border-radius:13px}
-.notice strong{color:var(--gold);font-size:11px}
-.notice p{color:#929daf;font-size:10px;line-height:1.8;margin-top:8px}
-.footer{text-align:center;color:#697587;font-size:10px;margin-top:30px;line-height:1.8}
-.toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,20px);opacity:0;transition:.25s;z-index:500;background:#202b3a;border:1px solid #39495f;padding:13px 17px;border-radius:12px;color:white;font-size:12px;width:max-content;max-width:90%}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-.loading{color:var(--gold);font-size:11px;margin-top:12px}
-@media(max-width:360px){.summary-amount{font-size:30px}.stat strong{font-size:19px}}
-</style>
 
+:root{
+--bg:#080a10;
+--card:#111722;
+--gold:#e6bb58;
+--gold2:#ffe29a;
+--text:#f4f5f7;
+--muted:#8792a4;
+--border:#242e3c;
+--green:#56d59b;
+--red:#ef8994
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+min-height:100vh
+}
+
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+
+header{
+position:sticky;
+top:0;
+z-index:50;
+background:rgba(8,10,16,.96);
+border-bottom:1px solid #242b37;
+backdrop-filter:blur(18px)
+}
+
+.header-inner{
+max-width:800px;
+height:68px;
+margin:auto;
+padding:0 17px;
+display:flex;
+align-items:center;
+gap:15px
+}
+
+.back-btn{
+width:40px;
+height:40px;
+border-radius:12px;
+background:#151b26;
+border:1px solid #303746;
+color:var(--gold);
+font-size:22px
+}
+
+.brand{
+font-size:19px;
+font-weight:900;
+letter-spacing:2px
+}
+
+.brand span{color:var(--gold)}
+
+.wrapper{
+max-width:800px;
+margin:auto;
+padding:22px 16px 55px
+}
+
+.heading{margin:10px 0 23px}
+
+.heading small{
+color:var(--gold);
+font-size:10px;
+font-weight:900;
+letter-spacing:2px
+}
+
+.heading h1{font-size:26px;margin-top:10px}
+
+.heading p{
+color:var(--muted);
+font-size:12px;
+margin-top:8px
+}
+
+.loading{
+color:var(--gold);
+font-size:11px;
+margin-top:12px;
+line-height:1.6;
+overflow-wrap:anywhere
+}
+
+.summary-card{
+padding:23px;
+border-radius:21px;
+border:1px solid #5a492b;
+background:
+radial-gradient(circle at 100% 0%,rgba(230,187,88,.17),transparent 45%),
+linear-gradient(135deg,#242116,#171d27)
+}
+
+.summary-label{color:#b4b2a7;font-size:12px}
+
+.summary-amount{
+font-size:36px;
+color:var(--gold2);
+font-weight:900;
+margin-top:16px
+}
+
+.summary-note{
+color:#8994a6;
+font-size:10px;
+margin-top:10px
+}
+
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:11px;
+margin-top:16px
+}
+
+.stat{
+padding:17px;
+border:1px solid var(--border);
+background:linear-gradient(145deg,#151c28,#10151e);
+border-radius:16px
+}
+
+.stat small{color:var(--muted);font-size:10px}
+
+.stat strong{
+display:block;
+color:var(--gold2);
+font-size:22px;
+margin-top:10px;
+overflow-wrap:anywhere
+}
+
+.section{margin-top:28px}
+
+.section-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:14px;
+gap:10px
+}
+
+.section-head h2{font-size:16px}
+
+.section-head span{
+color:var(--muted);
+font-size:10px
+}
+
+.package-card{
+padding:19px;
+border:1px solid #5a492b;
+border-radius:17px;
+background:linear-gradient(145deg,#242116,#141a24)
+}
+
+.package-top{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.package-top strong{font-size:14px;color:var(--gold)}
+
+.status{
+padding:7px 10px;
+border-radius:30px;
+font-size:9px;
+background:#172b21;
+border:1px solid #28513c;
+color:var(--green)
+}
+
+.package-price{
+color:var(--gold2);
+font-size:28px;
+font-weight:900;
+margin-top:17px
+}
+
+.package-info{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:20px
+}
+
+.package-info small{color:var(--muted);font-size:10px}
+
+.package-info strong{
+display:block;
+margin-top:6px;
+font-size:13px
+}
+
+.table-card{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:15px;
+overflow-x:auto
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:300px
+}
+
+th{
+padding:15px 12px;
+background:#1a2230;
+color:var(--gold);
+font-size:10px;
+text-align:left;
+white-space:nowrap
+}
+
+td{
+padding:15px 12px;
+border-top:1px solid #273140;
+font-size:11px;
+white-space:nowrap
+}
+
+.empty{
+padding:28px 15px;
+text-align:center;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:15px
+}
+
+.empty-icon{font-size:30px}
+
+.empty h3{font-size:13px;margin-top:12px}
+
+.empty p{
+color:var(--muted);
+font-size:11px;
+line-height:1.7;
+margin-top:8px
+}
+
+.calendar-card{
+padding:17px;
+border:1px solid var(--border);
+border-radius:16px;
+background:var(--card)
+}
+
+.calendar-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:17px
+}
+
+.calendar-head h3{font-size:13px}
+
+.calendar-head button{
+width:32px;
+height:32px;
+border-radius:9px;
+background:#202938;
+color:var(--gold);
+border:1px solid #354155;
+font-size:17px
+}
+
+.calendar-grid{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:7px
+}
+
+.calendar-day{
+text-align:center;
+font-size:10px;
+color:var(--muted);
+padding:8px 0
+}
+
+.calendar-date{
+text-align:center;
+font-size:11px;
+padding:10px 2px;
+border-radius:9px;
+background:#192230;
+color:#c4ccd7;
+border:1px solid #273140
+}
+
+.calendar-date.empty-date{
+background:transparent;
+border-color:transparent
+}
+
+.calendar-legend{
+display:flex;
+flex-wrap:wrap;
+gap:14px;
+margin-top:17px;
+font-size:9px;
+color:var(--muted)
+}
+
+.legend-dot{
+display:inline-block;
+width:8px;
+height:8px;
+border-radius:50%;
+margin-right:5px
+}
+
+.credited{background:#1c5238}
+.pending{background:#594521}
+.upcoming{background:#192230}
+
+.notice{
+margin-top:23px;
+padding:16px;
+background:#171e2a;
+border:1px solid #303b4c;
+border-radius:13px
+}
+
+.notice strong{color:var(--gold);font-size:11px}
+
+.notice p{
+color:#929daf;
+font-size:10px;
+line-height:1.8;
+margin-top:8px
+}
+
+.footer{
+text-align:center;
+color:#697587;
+font-size:10px;
+margin-top:30px;
+line-height:1.8
+}
+
+.toast{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translate(-50%,20px);
+opacity:0;
+transition:.25s;
+z-index:500;
+background:#202b3a;
+border:1px solid #39495f;
+padding:13px 17px;
+border-radius:12px;
+color:white;
+font-size:12px;
+width:max-content;
+max-width:90%
+}
+
+.toast.show{
+opacity:1;
+transform:translate(-50%,0)
+}
+
+.error-box{
+display:none;
+padding:14px;
+margin-top:15px;
+background:#301c24;
+border:1px solid #69313c;
+border-radius:12px;
+color:#ffb3bd;
+font-size:11px;
+line-height:1.7;
+overflow-wrap:anywhere
+}
+
+@media(max-width:360px){
+.summary-amount{font-size:30px}
+.stat strong{font-size:19px}
+}
+</style>
 </head>
 
 <body>
@@ -89,23 +415,45 @@ td{padding:15px 12px;border-top:1px solid #273140;font-size:11px}
 <h1>ROI Overview</h1>
 <p>Investment and verified earnings summary.</p>
 <div class="loading" id="pageStatus">Connecting account...</div>
+<div class="error-box" id="errorBox"></div>
 </div>
 
 <section class="summary-card">
 <div class="summary-label">Total Verified ROI Received</div>
 <div class="summary-amount">₹ <span id="totalROI">0.00</span></div>
-<div class="summary-note">Only confirmed ledger transactions are included.</div>
+<div class="summary-note">Only identifiable ROI credit entries are included.</div>
 </section>
 
 <section class="stats">
-<div class="stat"><small>Total Investment</small><strong id="totalInvestment">₹0.00</strong></div>
-<div class="stat"><small>Active Investment</small><strong id="activeInvestment">₹0.00</strong></div>
-<div class="stat"><small>Completed Investment</small><strong id="completedInvestment">₹0.00</strong></div>
-<div class="stat"><small>Pending Earnings</small><strong id="pendingROI">₹0.00</strong></div>
+
+<div class="stat">
+<small>Total Investment</small>
+<strong id="totalInvestment">₹0.00</strong>
+</div>
+
+<div class="stat">
+<small>Active Investment</small>
+<strong id="activeInvestment">₹0.00</strong>
+</div>
+
+<div class="stat">
+<small>Completed Investment</small>
+<strong id="completedInvestment">₹0.00</strong>
+</div>
+
+<div class="stat">
+<small>Pending Earnings</small>
+<strong id="pendingROI">₹0.00</strong>
+</div>
+
 </section>
 
 <section class="section">
-<div class="section-head"><h2>Active Package</h2><span>INVESTMENT DETAILS</span></div>
+
+<div class="section-head">
+<h2>Active Package</h2>
+<span>INVESTMENT DETAILS</span>
+</div>
 
 <div class="empty" id="noPackage">
 <div class="empty-icon">💼</div>
@@ -114,368 +462,601 @@ td{padding:15px 12px;border-top:1px solid #273140;font-size:11px}
 </div>
 
 <div class="package-card" id="packageCard" style="display:none">
+
 <div class="package-top">
 <strong id="packageName">Membership</strong>
 <span class="status" id="packageStatus">ACTIVE</span>
 </div>
+
 <div class="package-price" id="packageAmount">₹0</div>
+
 <div class="package-info">
-<div><small>Start Date</small><strong id="packageStart">--</strong></div>
-<div><small>End Date</small><strong id="packageEnd">--</strong></div>
-<div><small>Credited Earnings</small><strong id="packageEarned">₹0</strong></div>
-<div><small>Duration</small><strong id="packageDuration">--</strong></div>
+
+<div>
+<small>Start Date</small>
+<strong id="packageStart">--</strong>
+</div>
+
+<div>
+<small>End Date</small>
+<strong id="packageEnd">--</strong>
+</div>
+
+<div>
+<small>Credited Earnings</small>
+<strong id="packageEarned">₹0</strong>
+</div>
+
+<div>
+<small>Duration</small>
+<strong id="packageDuration">--</strong>
+</div>
+
 </div>
 </div>
 </section>
 
 <section class="section">
-<div class="section-head"><h2>Daily ROI History</h2><span>DAILY RECORDS</span></div>
+
+<div class="section-head">
+<h2>Daily ROI History</h2>
+<span>DAILY RECORDS</span>
+</div>
+
 <div class="empty" id="dailyEmpty">
 <div class="empty-icon">📅</div>
 <h3>No Daily Records</h3>
 <p>Verified daily earnings entries will appear here.</p>
 </div>
+
 <div class="table-card" id="dailyTable" style="display:none">
-<table><thead><tr><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody id="dailyRecords"></tbody></table>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Amount</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="dailyRecords"></tbody>
+</table>
 </div>
+
 </section>
 
 <section class="section">
-<div class="section-head"><h2>ROI Calendar</h2><span>PAYMENT TRACKER</span></div>
+
+<div class="section-head">
+<h2>ROI Calendar</h2>
+<span>PAYMENT TRACKER</span>
+</div>
+
 <div class="calendar-card">
+
 <div class="calendar-head">
 <button onclick="changeMonth(-1)">‹</button>
 <h3 id="calendarMonth">Loading...</h3>
 <button onclick="changeMonth(1)">›</button>
 </div>
+
 <div class="calendar-grid" id="calendarGrid"></div>
+
 <div class="calendar-legend">
 <span><i class="legend-dot credited"></i>Credited</span>
 <span><i class="legend-dot pending"></i>Pending</span>
 <span><i class="legend-dot upcoming"></i>Upcoming</span>
 </div>
+
 </div>
 </section>
 
 <section class="section">
-<div class="section-head"><h2>Investment History</h2><span>ALL PACKAGES</span></div>
+
+<div class="section-head">
+<h2>Investment History</h2>
+<span>ALL PACKAGES</span>
+</div>
+
 <div class="empty" id="investmentEmpty">
 <div class="empty-icon">📂</div>
 <h3>No Investment Records</h3>
 <p>Your verified investment records will appear here.</p>
 </div>
+
 <div class="table-card" id="investmentTable" style="display:none">
-<table><thead><tr><th>Package</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="investmentRecords"></tbody></table>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Amount</th>
+<th>Date</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="investmentRecords"></tbody>
+</table>
 </div>
+
 </section>
 
 <section class="section">
-<div class="section-head"><h2>ROI Transaction History</h2><span>LEDGER RECORDS</span></div>
+
+<div class="section-head">
+<h2>ROI Transaction History</h2>
+<span>LEDGER RECORDS</span>
+</div>
+
 <div class="empty" id="transactionEmpty">
 <div class="empty-icon">📜</div>
 <h3>No Transactions Available</h3>
 <p>Confirmed ROI transaction records will appear here.</p>
 </div>
+
 <div class="table-card" id="transactionTable" style="display:none">
-<table><thead><tr><th>Transaction ID</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody id="transactionRecords"></tbody></table>
+<table>
+<thead>
+<tr>
+<th>Transaction ID</th>
+<th>Date</th>
+<th>Amount</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="transactionRecords"></tbody>
+</table>
 </div>
+
 </section>
 
 <div class="notice">
 <strong>IMPORTANT INFORMATION</strong>
-<p>ROI is not guaranteed. Displayed earnings must be based on genuine, verified business revenue and actual completed transactions. Investment amounts, pending amounts and earnings must be separately recorded. All applicable financial and legal requirements must be followed.</p>
+<p>
+ROI is not guaranteed. Displayed earnings must be based on genuine,
+verified business revenue and actual completed transactions.
+Investment amounts and earnings must be separately recorded.
+All applicable financial and legal requirements must be followed.
+</p>
 </div>
 
-<div class="footer">BRJ EMPIRE · ROI CENTER<br>Official Member Services</div>
+<div class="footer">
+BRJ EMPIRE · ROI CENTER<br>
+Official Member Services
+</div>
+
 </main>
 
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase.js"></script>
 
 <script>
 "use strict";
 
+/* GLOBAL DATABASE CLIENT */
+
+const db = window.brjSupabase || window.supabaseClient;
+
 let currentUser = null;
 let calendarDate = new Date();
 let calendarRecords = {};
 let memberPackages = [];
+let roiTransactions = [];
 
 function el(id){
-    return document.getElementById(id);
-}
-
-function showToast(message){
-    const toast = el("toast");
-    if(!toast) return;
-    toast.textContent = message;
-    toast.classList.add("show");
-    clearTimeout(window.toastTimer);
-    window.toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
+return document.getElementById(id);
 }
 
 function setStatus(message){
-    el("pageStatus").textContent = message;
+el("pageStatus").textContent = message;
+}
+
+function showError(message){
+el("errorBox").style.display = "block";
+el("errorBox").textContent = message;
+}
+
+function hideError(){
+el("errorBox").style.display = "none";
+}
+
+function showToast(message){
+const toast = el("toast");
+toast.textContent = message;
+toast.classList.add("show");
+
+clearTimeout(window.toastTimer);
+
+window.toastTimer = setTimeout(()=>{
+toast.classList.remove("show");
+},3000);
 }
 
 function money(value){
-    return Number(value || 0).toLocaleString("en-IN", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+return Number(value || 0).toLocaleString("en-IN",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+});
 }
 
 function formatDate(value){
-    if(!value) return "--";
-    const date = new Date(value);
-    if(Number.isNaN(date.getTime())) return "--";
-    return date.toLocaleDateString("en-IN", {
-        day:"2-digit",
-        month:"short",
-        year:"numeric"
-    });
+if(!value) return "--";
+
+const date = new Date(value);
+
+if(Number.isNaN(date.getTime())) return "--";
+
+return date.toLocaleDateString("en-IN",{
+day:"2-digit",
+month:"short",
+year:"numeric"
+});
 }
 
-function showEmpty(emptyId, tableId, hasData){
-    el(emptyId).style.display = hasData ? "none" : "block";
-    el(tableId).style.display = hasData ? "block" : "none";
+function showEmpty(emptyId,tableId,hasData){
+el(emptyId).style.display = hasData ? "none" : "block";
+el(tableId).style.display = hasData ? "block" : "none";
 }
+
+function addCell(row,value){
+const td = document.createElement("td");
+td.textContent = value == null ? "--" : String(value);
+row.appendChild(td);
+}
+
+/* CALENDAR */
 
 function renderCalendar(){
-    const year = calendarDate.getFullYear();
-    const month = calendarDate.getMonth();
 
-    el("calendarMonth").textContent = calendarDate.toLocaleDateString("en-IN", {
-        month:"long",
-        year:"numeric"
-    });
+const year = calendarDate.getFullYear();
+const month = calendarDate.getMonth();
 
-    const grid = el("calendarGrid");
-    grid.innerHTML = "";
+el("calendarMonth").textContent =
+calendarDate.toLocaleDateString("en-IN",{
+month:"long",
+year:"numeric"
+});
 
-    ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(day => {
-        const item = document.createElement("div");
-        item.className = "calendar-day";
-        item.textContent = day;
-        grid.appendChild(item);
-    });
+const grid = el("calendarGrid");
+grid.innerHTML = "";
 
-    const firstDay = new Date(year, month, 1).getDay();
-    const totalDays = new Date(year, month + 1, 0).getDate();
+["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(day=>{
+const item = document.createElement("div");
+item.className = "calendar-day";
+item.textContent = day;
+grid.appendChild(item);
+});
 
-    for(let i = 0; i < firstDay; i++){
-        const empty = document.createElement("div");
-        empty.className = "calendar-date empty-date";
-        grid.appendChild(empty);
-    }
+const firstDay = new Date(year,month,1).getDay();
+const totalDays = new Date(year,month+1,0).getDate();
 
-    for(let day = 1; day <= totalDays; day++){
-        const cell = document.createElement("div");
-        cell.className = "calendar-date";
-        cell.textContent = day;
+for(let i=0;i<firstDay;i++){
+const empty = document.createElement("div");
+empty.className = "calendar-date empty-date";
+grid.appendChild(empty);
+}
 
-        const key = year + "-" +
-            String(month + 1).padStart(2, "0") + "-" +
-            String(day).padStart(2, "0");
+for(let day=1;day<=totalDays;day++){
 
-        if(calendarRecords[key] === "credited"){
-            cell.style.background = "#17452f";
-            cell.style.borderColor = "#28513c";
-            cell.style.color = "#72e4a9";
-        }
+const cell = document.createElement("div");
+cell.className = "calendar-date";
+cell.textContent = day;
 
-        if(calendarRecords[key] === "pending"){
-            cell.style.background = "#49391c";
-            cell.style.borderColor = "#76602f";
-            cell.style.color = "#ffe29a";
-        }
+const key = year+"-"+
+String(month+1).padStart(2,"0")+"-"+
+String(day).padStart(2,"0");
 
-        grid.appendChild(cell);
-    }
+if(calendarRecords[key] === "credited"){
+cell.style.background = "#17452f";
+cell.style.borderColor = "#28513c";
+cell.style.color = "#72e4a9";
+}
+
+if(calendarRecords[key] === "pending"){
+cell.style.background = "#49391c";
+cell.style.borderColor = "#76602f";
+cell.style.color = "#ffe29a";
+}
+
+grid.appendChild(cell);
+}
 }
 
 function changeMonth(value){
-    calendarDate.setMonth(calendarDate.getMonth() + value);
-    renderCalendar();
+calendarDate.setMonth(calendarDate.getMonth()+value);
+renderCalendar();
 }
 
-function addCell(row, value){
-    const td = document.createElement("td");
-    td.textContent = value == null ? "--" : String(value);
-    row.appendChild(td);
-}
-
-/* MEMBERSHIP DATA */
+/* INVESTMENT HISTORY */
 
 async function loadMemberships(){
-    const {data, error} = await db
-        .from("member_package_purchases")
-        .select("id,member_id,package_name,purchase_amount,purchase_status,activated_at,expires_at,completed_at")
-        .eq("user_id", currentUser.id)
-        .order("activated_at", {ascending:false});
 
-    if(error) throw error;
+const {data,error} = await db
+.from("member_package_purchases")
+.select("id,member_id,package_name,purchase_amount,purchase_status,activated_at,expires_at,completed_at,created_at")
+.eq("user_id",currentUser.id)
+.order("created_at",{ascending:false});
 
-    memberPackages = data || [];
+if(error) throw error;
 
-    const now = new Date();
-    let total = 0;
-    let active = 0;
-    let completed = 0;
-    const activeItems = [];
+memberPackages = data || [];
 
-    memberPackages.forEach(item => {
-        const amount = Number(item.purchase_amount || 0);
-        total += amount;
+let total = 0;
+let active = 0;
+let completed = 0;
 
-        const expired = item.expires_at && new Date(item.expires_at) < now;
-        const isActive = item.purchase_status === "ACTIVE" && !expired;
+const activeItems = [];
+const now = new Date();
 
-        if(isActive){
-            active += amount;
-            activeItems.push(item);
-        }else{
-            completed += amount;
-        }
-    });
+memberPackages.forEach(item=>{
 
-    el("totalInvestment").textContent = "₹" + money(total);
-    el("activeInvestment").textContent = "₹" + money(active);
-    el("completedInvestment").textContent = "₹" + money(completed);
+const amount = Number(item.purchase_amount || 0);
 
-    // Earnings remain zero until verified earning records exist.
-    el("totalROI").textContent = money(0);
-    el("pendingROI").textContent = "₹" + money(0);
+const status = String(item.purchase_status || "").toUpperCase();
 
-    renderInvestmentHistory();
+const expired = item.expires_at &&
+new Date(item.expires_at) < now;
 
-    if(activeItems.length){
-        renderActivePackage(activeItems[0]);
-    }else{
-        el("packageCard").style.display = "none";
-        el("noPackage").style.display = "block";
-    }
+const isActive = status === "ACTIVE" && !expired;
+
+total += amount;
+
+if(isActive){
+active += amount;
+activeItems.push(item);
+}
+else if(status === "COMPLETED" || status === "EXPIRED" || expired){
+completed += amount;
+}
+
+});
+
+el("totalInvestment").textContent = "₹"+money(total);
+el("activeInvestment").textContent = "₹"+money(active);
+el("completedInvestment").textContent = "₹"+money(completed);
+
+renderInvestmentHistory();
+
+if(activeItems.length){
+renderActivePackage(activeItems[0]);
+}
+else{
+el("packageCard").style.display = "none";
+el("noPackage").style.display = "block";
+}
 }
 
 function renderActivePackage(item){
-    el("noPackage").style.display = "none";
-    el("packageCard").style.display = "block";
 
-    el("packageName").textContent = item.package_name || "Membership";
-    el("packageStatus").textContent = item.purchase_status || "ACTIVE";
-    el("packageAmount").textContent = "₹" + money(item.purchase_amount);
-    el("packageStart").textContent = formatDate(item.activated_at);
-    el("packageEnd").textContent = formatDate(item.expires_at);
-    el("packageEarned").textContent = "₹" + money(0);
+el("noPackage").style.display = "none";
+el("packageCard").style.display = "block";
 
-    let duration = "--";
+el("packageName").textContent = item.package_name || "Membership";
+el("packageStatus").textContent = item.purchase_status || "ACTIVE";
 
-    if(item.activated_at && item.expires_at){
-        const start = new Date(item.activated_at);
-        const end = new Date(item.expires_at);
-        duration = Math.max(0, Math.round((end - start) / 86400000)) + " Days";
-    }
+el("packageAmount").textContent =
+"₹"+money(item.purchase_amount);
 
-    el("packageDuration").textContent = duration;
+el("packageStart").textContent = formatDate(item.activated_at);
+el("packageEnd").textContent = formatDate(item.expires_at);
+
+el("packageEarned").textContent = "₹0.00";
+
+let duration = "--";
+
+if(item.activated_at && item.expires_at){
+
+const start = new Date(item.activated_at);
+const end = new Date(item.expires_at);
+
+duration = Math.max(
+0,
+Math.round((end-start)/86400000)
+)+" Days";
+
+}
+
+el("packageDuration").textContent = duration;
 }
 
 function renderInvestmentHistory(){
-    const tbody = el("investmentRecords");
-    tbody.innerHTML = "";
 
-    if(!memberPackages.length){
-        showEmpty("investmentEmpty", "investmentTable", false);
-        return;
-    }
+const tbody = el("investmentRecords");
+tbody.innerHTML = "";
 
-    showEmpty("investmentEmpty", "investmentTable", true);
+showEmpty(
+"investmentEmpty",
+"investmentTable",
+memberPackages.length > 0
+);
 
-    memberPackages.forEach(item => {
-        const row = document.createElement("tr");
+memberPackages.forEach(item=>{
 
-        addCell(row, item.package_name);
-        addCell(row, "₹" + money(item.purchase_amount));
-        addCell(row, formatDate(item.activated_at));
-        addCell(row, item.purchase_status);
+const row = document.createElement("tr");
 
-        tbody.appendChild(row);
-    });
+addCell(row,item.package_name);
+addCell(row,"₹"+money(item.purchase_amount));
+
+addCell(
+row,
+formatDate(item.activated_at || item.created_at)
+);
+
+addCell(row,item.purchase_status);
+
+tbody.appendChild(row);
+
+});
 }
 
-/* ROI SETTINGS */
+/* VERIFIED ROI LEDGER */
 
-async function loadROISettings(){
-    const {data, error} = await db
-        .from("brj_roi_settings")
-        .select("id,package_id,daily_rate,duration_days,is_active");
+async function loadROILedger(){
 
-    if(error) throw error;
+const {data,error} = await db
+.from("wallet_ledger")
+.select("id,entry_type,amount,description,created_at")
+.eq("user_id",currentUser.id)
+.eq("entry_type","credit")
+.ilike("description","%ROI%")
+.order("created_at",{ascending:false});
 
-    console.log("BRJ ROI settings:", data || []);
+if(error){
+
+console.error("ROI LEDGER ERROR:",error);
+
+el("totalROI").textContent = "0.00";
+
+showEmpty("dailyEmpty","dailyTable",false);
+showEmpty("transactionEmpty","transactionTable",false);
+
+return;
 }
 
-/* EMPTY VERIFIED HISTORIES */
+roiTransactions = data || [];
 
-function initializeEmptyHistories(){
-    showEmpty("dailyEmpty", "dailyTable", false);
-    showEmpty("transactionEmpty", "transactionTable", false);
-    el("dailyRecords").innerHTML = "";
-    el("transactionRecords").innerHTML = "";
+let totalROI = 0;
+
+const dailyBody = el("dailyRecords");
+const transactionBody = el("transactionRecords");
+
+dailyBody.innerHTML = "";
+transactionBody.innerHTML = "";
+
+calendarRecords = {};
+
+roiTransactions.forEach(item=>{
+
+const amount = Number(item.amount || 0);
+
+totalROI += amount;
+
+const date = new Date(item.created_at);
+
+const key = date.getFullYear()+"-"+
+String(date.getMonth()+1).padStart(2,"0")+"-"+
+String(date.getDate()).padStart(2,"0");
+
+calendarRecords[key] = "credited";
+
+/* DAILY HISTORY */
+
+const dailyRow = document.createElement("tr");
+
+addCell(dailyRow,formatDate(item.created_at));
+addCell(dailyRow,"₹"+money(amount));
+addCell(dailyRow,"CREDITED");
+
+dailyBody.appendChild(dailyRow);
+
+/* TRANSACTION HISTORY */
+
+const transactionRow = document.createElement("tr");
+
+addCell(
+transactionRow,
+String(item.id).substring(0,8).toUpperCase()
+);
+
+addCell(transactionRow,formatDate(item.created_at));
+addCell(transactionRow,"₹"+money(amount));
+addCell(transactionRow,"CREDITED");
+
+transactionBody.appendChild(transactionRow);
+
+});
+
+el("totalROI").textContent = money(totalROI);
+
+el("pendingROI").textContent = "₹0.00";
+
+showEmpty(
+"dailyEmpty",
+"dailyTable",
+roiTransactions.length > 0
+);
+
+showEmpty(
+"transactionEmpty",
+"transactionTable",
+roiTransactions.length > 0
+);
+
+renderCalendar();
 }
 
 /* MAIN CONNECTION */
 
 async function loadROI(){
-    renderCalendar();
-    initializeEmptyHistories();
 
-    const db = window.brjSupabase || window.supabaseClient;
+renderCalendar();
 
-    if(!db || !db.auth){
-        setStatus("Supabase client not found. Check supabase.js.");
-        showToast("Database connection unavailable.");
-        console.error("Supabase client missing. Expected window.brjSupabase or window.supabaseClient.");
-        return;
-    }
+if(!db || !db.auth){
 
-    try{
-        setStatus("Checking login...");
+setStatus("Supabase connection unavailable.");
 
-        const {data, error} = await db.auth.getSession();
+showError(
+"Supabase client not found. Check supabase.js and the Supabase CDN connection."
+);
 
-        if(error) throw error;
-
-        if(!data || !data.session){
-            location.href = "index.html";
-            return;
-        }
-
-        currentUser = data.session.user;
-
-        setStatus("Loading membership...");
-
-        await loadMemberships();
-
-        setStatus("Loading ROI settings...");
-
-        await loadROISettings();
-
-        setStatus("Account data loaded successfully.");
-
-    }catch(error){
-        console.error("BRJ ROI ERROR:", error);
-        setStatus("Unable to load account data: " + (error.message || "Unknown error"));
-        showToast(error.message || "Unable to load ROI account.");
-    }
+return;
 }
 
-/* START AFTER PAGE LOAD */
+try{
 
-window.addEventListener("load", function(){
-    loadROI();
+hideError();
+
+setStatus("Checking login...");
+
+const {data,error} = await db.auth.getSession();
+
+if(error) throw error;
+
+if(!data || !data.session){
+
+location.href = "index.html";
+return;
+
+}
+
+currentUser = data.session.user;
+
+setStatus("Loading investment records...");
+
+await loadMemberships();
+
+setStatus("Loading verified ROI transactions...");
+
+await loadROILedger();
+
+setStatus("Account data loaded successfully.");
+
+}
+catch(error){
+
+console.error("BRJ ROI ERROR:",error);
+
+setStatus("Account loading failed.");
+
+showError(
+(error && error.message)
+? error.message
+: "Unknown database error."
+);
+
+showToast("Unable to load ROI account.");
+
+}
+}
+
+/* AUTH SESSION */
+
+window.addEventListener("load",function(){
+
+loadROI();
+
 });
+
 </script>
 
 </body>
