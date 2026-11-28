@@ -1,102 +1,124 @@
-// ==========================================
-// BRJ EMPIRE - ADMIN AUTHENTICATION
-// MAIN ADMIN SECURITY SYSTEM
-// ==========================================
+// ========================================
+// BRJ EMPIRE - SECURE ADMIN AUTHENTICATION
+// ========================================
 
-(function () {
+(function(){
 
 "use strict";
 
-const supabase = window.brjSupabase;
-
-const LOGIN_PAGE = "admin-login.html";
-
+const LOGIN_PAGE = "admin.login.html";
 const DASHBOARD_PAGE = "admin-dashboard.html";
 
-const ALLOWED_ROLE = "admin";
+const ALLOWED_ROLES = ["admin"];
 
-let isProcessing = false;
-
-
-// ==========================================
-// ELEMENTS
-// ==========================================
+const supabase = window.brjSupabase || window.supabaseClient;
 
 const form = document.getElementById("adminLoginForm");
-
 const emailInput = document.getElementById("adminEmail");
-
 const passwordInput = document.getElementById("adminPassword");
-
 const loginButton = document.getElementById("loginButton");
-
 const messageBox = document.getElementById("message");
-
 const togglePassword = document.getElementById("togglePassword");
+const rememberEmail = document.getElementById("rememberEmail");
+
+let processing = false;
 
 
-// ==========================================
-// MESSAGE SYSTEM
-// ==========================================
+// ========================================
+// MESSAGE
+// ========================================
 
-function showMessage(message, type = "error") {
-
-    if (!messageBox) return;
+function showMessage(message,type="error"){
 
     messageBox.textContent = message;
-
-    messageBox.className = "message " + type;
+    messageBox.className = type;
+    messageBox.style.display = "block";
 
 }
 
 
-// ==========================================
-// BUTTON LOADING
-// ==========================================
+// ========================================
+// LOADING
+// ========================================
 
-function setLoading(loading) {
+function setLoading(value){
 
-    if (!loginButton) return;
+    loginButton.disabled = value;
 
-    loginButton.disabled = loading;
-
-    loginButton.textContent = loading
+    loginButton.textContent = value
         ? "VERIFYING ACCESS..."
         : "ACCESS ADMIN PANEL →";
 
 }
 
 
-// ==========================================
-// ROLE VERIFICATION
-// ==========================================
+// ========================================
+// PASSWORD SHOW/HIDE
+// ========================================
 
-async function verifyAdmin(userId) {
+if(togglePassword){
 
-    const { data, error } = await supabase
+    togglePassword.addEventListener("click",function(){
 
+        const visible = passwordInput.type === "password";
+
+        passwordInput.type = visible ? "text" : "password";
+
+        togglePassword.textContent = visible ? "HIDE" : "SHOW";
+
+    });
+
+}
+
+
+// ========================================
+// REMEMBER EMAIL
+// ========================================
+
+try{
+
+    const savedEmail = localStorage.getItem("brj_admin_email");
+
+    if(savedEmail){
+
+        emailInput.value = savedEmail;
+        rememberEmail.checked = true;
+
+    }
+
+}catch(error){
+
+    console.warn("Local storage unavailable.");
+
+}
+
+
+// ========================================
+// ADMIN ROLE VERIFICATION
+// ========================================
+
+async function verifyAdmin(userId){
+
+    const {data,error} = await supabase
         .from("user_roles")
-
         .select("role")
-
-        .eq("user_id", userId)
-
+        .eq("user_id",userId)
         .maybeSingle();
 
-    if (error) {
+    if(error){
 
-        console.error("ADMIN ROLE ERROR:", error);
+        console.error("ROLE ERROR:",error);
 
         throw new Error(
-            "Administrator verification failed. Check user_roles permissions."
+            "Role verification failed: " + error.message
         );
 
     }
 
-    if (!data || data.role !== ALLOWED_ROLE) {
+    if(!data || !ALLOWED_ROLES.includes(data.role)){
 
         throw new Error(
-            "Access denied. This account is not an authorized Main Admin."
+            "Access denied. This account is not an authorized Admin."
         );
 
     }
@@ -106,77 +128,74 @@ async function verifyAdmin(userId) {
 }
 
 
-// ==========================================
+// ========================================
 // LOGIN
-// ==========================================
+// ========================================
 
-async function adminLogin(event) {
+async function adminLogin(event){
 
     event.preventDefault();
 
-    if (isProcessing) return;
+    if(processing) return;
 
-    if (!supabase) {
+    if(!supabase || !supabase.auth){
 
-        showMessage("Supabase connection unavailable.");
+        showMessage("Supabase connection unavailable. Check supabase.js.");
 
         return;
 
     }
 
     const email = emailInput.value.trim();
-
     const password = passwordInput.value;
 
-    if (!email || !password) {
+    if(!email || !password){
 
-        showMessage("Please enter your email and password.");
+        showMessage("Please enter email and password.");
 
         return;
 
     }
 
-    isProcessing = true;
-
+    processing = true;
     setLoading(true);
 
-    showMessage("Verifying administrator credentials...", "success");
+    showMessage("Checking administrator credentials...","success");
 
-    let authenticatedUserId = null;
+    let authenticated = false;
 
-    try {
+    try{
 
-        // STEP 1: AUTHENTICATION
+        // STEP 1: LOGIN
 
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const {data,error} = await supabase.auth.signInWithPassword({
 
             email: email,
-
             password: password
 
         });
 
-        if (error) throw error;
+        if(error) throw error;
 
-        if (!data.user) {
+        if(!data.user){
 
-            throw new Error("Authentication failed.");
+            throw new Error("Login failed. User not found.");
 
         }
 
-        authenticatedUserId = data.user.id;
+        authenticated = true;
 
-        // STEP 2: ROLE VERIFICATION
+        // STEP 2: VERIFY ADMIN ROLE
 
         await verifyAdmin(data.user.id);
 
-        // STEP 3: SAVE EMAIL PREFERENCE
+        // STEP 3: REMEMBER EMAIL
 
-        if (document.getElementById("rememberEmail").checked) {
+        if(rememberEmail.checked){
 
-            localStorage.setItem("brj_admin_email", email);
+            localStorage.setItem("brj_admin_email",email);
 
-        } else {
+        }else{
 
             localStorage.removeItem("brj_admin_email");
 
@@ -185,38 +204,36 @@ async function adminLogin(event) {
         // STEP 4: SUCCESS
 
         showMessage(
-            "Administrator verified. Opening control center...",
+            "Admin verified. Opening control center...",
             "success"
         );
 
-        console.log("BRJ ADMIN AUTHENTICATED:", data.user.id);
+        console.log("BRJ ADMIN LOGIN SUCCESS");
 
-        // STEP 5: DASHBOARD REDIRECT
+        // STEP 5: REDIRECT
 
-        setTimeout(function () {
+        window.location.replace(DASHBOARD_PAGE);
 
-            window.location.replace(DASHBOARD_PAGE);
+    }catch(error){
 
-        }, 1000);
+        console.error("BRJ ADMIN LOGIN ERROR:",error);
 
-    } catch (error) {
+        // Only sign out after successful authentication
+        // followed by failed role verification.
 
-        console.error("ADMIN LOGIN ERROR:", error);
-
-        // SIGN OUT IF ROLE VERIFICATION FAILS
-
-        if (authenticatedUserId) {
+        if(authenticated){
 
             await supabase.auth.signOut();
 
         }
 
-        showMessage(error.message || "Admin login failed.");
+        showMessage(
+            error.message || "Unable to login. Please try again."
+        );
 
-    } finally {
+    }finally{
 
-        isProcessing = false;
-
+        processing = false;
         setLoading(false);
 
     }
@@ -224,102 +241,65 @@ async function adminLogin(event) {
 }
 
 
-// ==========================================
-// CHECK EXISTING SESSION
-// ==========================================
+// ========================================
+// EXISTING SESSION CHECK
+// ========================================
 
-async function checkExistingAdminSession() {
+async function checkExistingSession(){
 
-    if (!supabase) {
+    if(!supabase || !supabase.auth){
 
-        showMessage("Supabase connection failed.");
+        showMessage("Supabase connection unavailable.");
 
         return;
 
     }
 
-    try {
+    try{
 
-        const { data, error } = await supabase.auth.getSession();
+        const {data,error} = await supabase.auth.getSession();
 
-        if (error) throw error;
+        if(error) throw error;
 
-        if (!data.session) return;
+        if(!data.session) return;
 
         await verifyAdmin(data.session.user.id);
 
         window.location.replace(DASHBOARD_PAGE);
 
-    } catch (error) {
+    }catch(error){
 
-        console.error("ADMIN SESSION ERROR:", error);
+        console.error("SESSION CHECK:",error);
 
-        await supabase.auth.signOut();
+        // Do not silently destroy a session on a
+        // temporary network or permission error.
+
+        showMessage(
+            "Session verification failed: " + error.message
+        );
 
     }
 
 }
 
 
-// ==========================================
-// PASSWORD VISIBILITY
-// ==========================================
+// ========================================
+// FORM EVENT
+// ========================================
 
-if (togglePassword) {
+if(form){
 
-    togglePassword.addEventListener("click", function () {
-
-        if (passwordInput.type === "password") {
-
-            passwordInput.type = "text";
-
-            togglePassword.textContent = "HIDE";
-
-        } else {
-
-            passwordInput.type = "password";
-
-            togglePassword.textContent = "SHOW";
-
-        }
-
-    });
+    form.addEventListener("submit",adminLogin);
 
 }
 
 
-// ==========================================
-// REMEMBER EMAIL
-// ==========================================
+// ========================================
+// START
+// ========================================
 
-const savedEmail = localStorage.getItem("brj_admin_email");
+checkExistingSession();
 
-if (savedEmail) {
-
-    emailInput.value = savedEmail;
-
-    document.getElementById("rememberEmail").checked = true;
-
-}
-
-
-// ==========================================
-// FORM SUBMISSION
-// ==========================================
-
-if (form) {
-
-    form.addEventListener("submit", adminLogin);
-
-}
-
-
-// ==========================================
-// INITIALIZE
-// ==========================================
-
-checkExistingAdminSession();
-
-console.log("BRJ ADMIN AUTHENTICATION INITIALIZED");
+console.log("BRJ ADMIN AUTH SYSTEM READY");
 
 })();
