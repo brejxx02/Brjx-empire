@@ -2,708 +2,890 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080a10">
-<title>BRJ EMPIRE | Deposit Management</title>
+<title>BRJ EMPIRE | Deposit Control Center</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+
 :root{
- --bg:#080a10;
- --panel:#111722;
- --panel2:#151d2a;
- --gold:#e6bb58;
- --gold2:#ffe29a;
- --text:#f5f5f5;
- --muted:#929bad;
- --green:#20c997;
- --red:#ff647c;
- --blue:#61a8ff;
- --border:rgba(230,187,88,.16);
+--bg:#080a10;
+--card:#111823;
+--gold:#e6bb58;
+--light:#ffe29a;
+--text:#f5f6f8;
+--muted:#8994a6;
+--border:#263140;
+--green:#56d59b;
+--red:#ff707d;
+--blue:#72baff;
 }
-*{box-sizing:border-box}
-body{
- margin:0;background:var(--bg);color:var(--text);
- font-family:Arial,sans-serif;
-}
+
+body{background:var(--bg);color:var(--text);min-height:100vh}
+
 button,input,select{font:inherit}
+
 button{cursor:pointer}
-.layout{display:flex;min-height:100vh}
+
 .sidebar{
- width:245px;background:#0d121b;border-right:1px solid var(--border);
- padding:22px 15px;position:fixed;top:0;bottom:0;left:0;
- overflow-y:auto;z-index:20;
+position:fixed;inset:0 auto 0 0;width:250px;
+background:#0c121c;border-right:1px solid var(--border);
+padding:22px 14px;z-index:10
 }
-.logo{
- color:var(--gold2);font-size:22px;font-weight:900;
- letter-spacing:1px;padding:10px 12px 25px;
+
+.logo{padding:10px 12px 25px;border-bottom:1px solid var(--border)}
+.logo h2{font-size:21px;font-weight:950}
+.logo span{color:var(--gold)}
+.logo small{display:block;color:var(--muted);font-size:9px;letter-spacing:2px;margin-top:7px}
+
+.menu-title{font-size:9px;color:#647185;letter-spacing:2px;margin:28px 12px 12px}
+
+.nav{
+display:block;padding:14px 13px;margin-bottom:6px;
+border-radius:10px;color:#a0aabb;font-size:12px;
+font-weight:650;text-decoration:none;transition:.2s
 }
-.logo small{display:block;color:var(--muted);font-size:10px;margin-top:7px;letter-spacing:2px}
-.nav-title{font-size:10px;color:#687386;padding:15px 12px 8px;letter-spacing:1.5px}
-.nav a{
- display:block;text-decoration:none;color:#aeb7c7;
- padding:12px;border-radius:9px;margin:4px 0;font-size:13px;
+
+.nav:hover,.nav.active{
+background:#e6bb5818;border:1px solid #e6bb5830;
+color:var(--light)
 }
-.nav a:hover,.nav a.active{
- background:rgba(230,187,88,.12);color:var(--gold2);
+
+.sidebar-bottom{position:absolute;bottom:20px;left:20px;right:20px}
+
+.sidebar-bottom button{
+width:100%;padding:12px;border-radius:10px;
+background:#ff707d12;border:1px solid #ff707d30;
+color:var(--red);font-weight:800
 }
-.main{margin-left:245px;width:calc(100% - 245px);padding:25px}
+
+.main{margin-left:250px;min-height:100vh}
+
 .topbar{
- display:flex;justify-content:space-between;align-items:center;
- gap:15px;margin-bottom:25px;flex-wrap:wrap;
+height:75px;padding:0 30px;background:#0c121c;
+border-bottom:1px solid var(--border);
+display:flex;align-items:center;justify-content:space-between;
+position:sticky;top:0;z-index:5
 }
-.topbar h1{font-size:23px;margin:0;color:var(--gold2)}
-.topbar p{margin:7px 0 0;color:var(--muted);font-size:12px}
-.top-actions{display:flex;gap:9px;align-items:center}
-.btn{
- border:1px solid var(--border);background:var(--panel2);
- color:var(--gold2);padding:10px 15px;border-radius:8px;
- font-size:12px;font-weight:bold;
+
+.topbar h3{font-size:17px}
+.topbar small{display:block;font-size:10px;color:var(--muted);margin-top:5px}
+
+.admin-badge{
+font-size:10px;padding:9px 13px;
+border:1px solid #56d59b40;background:#56d59b10;
+color:var(--green);border-radius:20px
 }
-.btn:hover{background:#202b3b}
-.btn.gold{background:var(--gold);color:#17130a;border:0}
+
+.content{padding:30px;max-width:1700px;margin:auto}
+
+.heading{
+display:flex;justify-content:space-between;align-items:center;
+margin-bottom:25px;gap:15px
+}
+
+.heading h1{font-size:27px;font-weight:950}
+.heading h1 span{color:var(--gold)}
+.heading p{font-size:12px;color:var(--muted);margin-top:7px}
+
+.refresh{
+padding:12px 18px;background:#e6bb5815;
+border:1px solid #e6bb5840;color:var(--gold);
+border-radius:10px;font-weight:850
+}
+
 .stats{
- display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
- gap:14px;margin-bottom:20px;
+display:grid;grid-template-columns:repeat(4,1fr);
+gap:15px;margin-bottom:24px
 }
+
 .stat{
- background:var(--panel);border:1px solid var(--border);
- border-radius:13px;padding:19px;
+padding:22px;background:linear-gradient(145deg,#151e2b,#101620);
+border:1px solid var(--border);border-radius:16px;
+position:relative;overflow:hidden
 }
-.stat span{font-size:11px;color:var(--muted)}
-.stat h2{font-size:25px;margin:10px 0 0;color:var(--gold2)}
-.stat small{display:block;color:var(--muted);font-size:10px;margin-top:6px}
-.card{
- background:var(--panel);border:1px solid var(--border);
- border-radius:13px;padding:18px;margin-bottom:18px;
+
+.stat:after{
+content:"";position:absolute;width:90px;height:90px;
+right:-35px;bottom:-45px;border-radius:50%;
+background:#e6bb5809
 }
-.filters{
- display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+
+.stat small{color:var(--muted);font-size:10px;font-weight:850;letter-spacing:1px}
+.stat h2{font-size:27px;margin-top:14px;position:relative;z-index:1}
+.gold{color:var(--gold)}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.blue{color:var(--blue)}
+
+.panel{
+background:linear-gradient(145deg,#131c29,#0e141e);
+border:1px solid var(--border);border-radius:17px;overflow:hidden
 }
-.filters input,.filters select{
- background:#090e17;color:white;border:1px solid var(--border);
- padding:12px;border-radius:8px;outline:none;min-width:150px;
+
+.panel-head{
+padding:21px;border-bottom:1px solid var(--border);
+display:flex;justify-content:space-between;align-items:center
 }
-.filters input{flex:1;min-width:190px}
-.filters select option{background:#111722}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px}
+
+.panel-head h3{font-size:14px}
+.panel-head p{font-size:10px;color:var(--muted);margin-top:5px}
+
+.live-indicator{font-size:10px;color:var(--green)}
+.live-indicator i{
+display:inline-block;width:7px;height:7px;border-radius:50%;
+background:var(--green);margin-right:6px;
+box-shadow:0 0 10px var(--green)
+}
+
+.filters{padding:20px;display:flex;gap:12px;flex-wrap:wrap}
+
+.search,.select{
+height:46px;padding:0 14px;border-radius:10px;
+background:#090f18;border:1px solid var(--border);
+color:white;outline:none;font-size:12px
+}
+
+.search{flex:1;min-width:190px}
+.search:focus,.select:focus{border-color:var(--gold)}
+
+.tabs{display:flex;gap:8px;padding:0 20px 18px;overflow-x:auto}
+
 .tab{
- border:1px solid var(--border);background:#0c121c;color:#aeb7c7;
- padding:9px 15px;border-radius:20px;font-size:11px;
+padding:10px 15px;border-radius:9px;background:#ffffff06;
+border:1px solid var(--border);color:var(--muted);
+font-size:10px;font-weight:850;white-space:nowrap
 }
-.tab.active{background:var(--gold);color:#17130a;border-color:var(--gold);font-weight:bold}
+
+.tab.active{background:#e6bb5815;border-color:#e6bb5850;color:var(--gold)}
+
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:950px}
+
+table{width:100%;border-collapse:collapse;min-width:1050px}
+
 th{
- text-align:left;padding:14px 12px;color:var(--gold);
- font-size:10px;letter-spacing:.8px;border-bottom:1px solid var(--border);
+padding:16px;text-align:left;font-size:9px;
+letter-spacing:1px;color:var(--muted);
+border-bottom:1px solid var(--border)
 }
-td{
- padding:14px 12px;border-bottom:1px solid rgba(255,255,255,.055);
- font-size:12px;color:#dce1e9;
-}
-tr:hover td{background:rgba(255,255,255,.018)}
-.member-id{color:var(--gold2);font-weight:bold}
-.amount{font-weight:bold;color:var(--green)}
-.muted{color:var(--muted)}
-.badge{
- display:inline-block;padding:6px 9px;border-radius:20px;
- font-size:10px;font-weight:bold;text-transform:uppercase;
-}
-.pending{background:rgba(255,190,70,.13);color:#ffc45b}
-.approved{background:rgba(32,201,151,.13);color:#20c997}
-.rejected{background:rgba(255,100,124,.13);color:#ff647c}
+
+td{padding:16px;font-size:11px;border-bottom:1px solid #ffffff08}
+
+.member{font-weight:850;color:var(--light)}
+.sub{color:var(--muted);font-size:10px;margin-top:5px}
+
+.amount{color:var(--gold);font-weight:950;font-size:13px}
+
+.badge{padding:6px 9px;border-radius:7px;font-size:9px;font-weight:850;display:inline-block}
+.pending{background:#e6bb5815;color:var(--gold)}
+.approved{background:#56d59b15;color:var(--green)}
+.rejected{background:#ff707d15;color:var(--red)}
+
+.actions{display:flex;gap:7px}
+
 .action-btn{
- background:#1b2635;color:var(--gold2);border:1px solid var(--border);
- padding:7px 10px;border-radius:6px;font-size:10px;margin:2px;
+padding:8px 10px;border-radius:7px;font-size:9px;
+font-weight:850;border:1px solid;white-space:nowrap
 }
-.action-btn:hover{background:#29384d}
+
+.approve{background:#56d59b12;border-color:#56d59b40;color:var(--green)}
+.reject{background:#ff707d12;border-color:#ff707d40;color:var(--red)}
+.view{background:#e6bb5812;border-color:#e6bb5840;color:var(--gold)}
+
 .empty{text-align:center;padding:45px;color:var(--muted)}
-.message{
- padding:12px;border-radius:8px;font-size:12px;margin-bottom:15px;
- display:none;line-height:1.5;
+
+.notice{
+display:none;padding:14px;margin-bottom:18px;
+border-radius:10px;font-size:12px;line-height:1.6
 }
-.message.error{display:block;background:#361821;color:#ff9aaa}
-.message.success{display:block;background:#123329;color:#76e6c0}
-.message.info{display:block;background:#18283b;color:#9bcaff}
+
+.notice.error{display:block;background:#ff707d12;border:1px solid #ff707d40;color:#ff9ba4}
+.notice.success{display:block;background:#56d59b12;border:1px solid #56d59b40;color:var(--green)}
+
 .pagination{
- display:flex;justify-content:space-between;align-items:center;
- gap:10px;margin-top:17px;color:var(--muted);font-size:11px;
+padding:17px;display:flex;justify-content:space-between;
+align-items:center;color:var(--muted);font-size:11px;gap:10px
 }
+
+.page-btn{
+padding:9px 13px;background:#e6bb5815;
+border:1px solid #e6bb5830;color:var(--gold);border-radius:8px
+}
+
+.page-btn:disabled{opacity:.35;cursor:not-allowed}
+
 .modal{
- display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);
- z-index:100;align-items:center;justify-content:center;padding:15px;
+display:none;position:fixed;inset:0;background:#000e;
+z-index:100;align-items:center;justify-content:center;padding:15px
 }
+
 .modal.show{display:flex}
-.modal-box{
- width:100%;max-width:650px;background:var(--panel);
- border:1px solid var(--border);border-radius:14px;padding:20px;
- max-height:90vh;overflow:auto;
+
+.modal-card{
+width:100%;max-width:480px;background:#111a27;
+border:1px solid #e6bb5850;border-radius:18px;padding:23px;
+max-height:90vh;overflow:auto
 }
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
-.modal-head h3{color:var(--gold2);margin:0}
-.close{background:none;border:0;color:white;font-size:25px}
-.proof-image{width:100%;max-height:65vh;object-fit:contain;border-radius:8px;background:#080a10}
-.proof-link{color:var(--gold2);font-size:12px;display:block;margin-top:12px}
-#loading{color:var(--gold2);padding:30px;text-align:center}
-#userInfo{font-size:11px;color:var(--muted)}
-@media(max-width:900px){
- .sidebar{width:205px}
- .main{margin-left:205px;width:calc(100% - 205px);padding:18px}
- .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+.modal-head{display:flex;justify-content:space-between;margin-bottom:20px}
+.modal-head button{background:none;border:0;color:white;font-size:25px}
+
+.modal-card img{
+width:100%;max-height:420px;object-fit:contain;
+background:#090f18;border-radius:10px
 }
-@media(max-width:650px){
- .sidebar{position:relative;width:100%;height:auto;border:0;border-bottom:1px solid var(--border)}
- .layout{display:block}
- .main{margin:0;width:100%;padding:14px}
- .sidebar{padding:12px}
- .logo{padding:5px 8px 12px}
- .nav{display:flex;overflow-x:auto;gap:5px}
- .nav-title{display:none}
- .nav a{white-space:nowrap;padding:9px 11px}
- .stats{gap:9px}
- .stat{padding:14px}
- .stat h2{font-size:20px}
- .topbar h1{font-size:20px}
+
+.modal-card p{font-size:12px;color:var(--muted);margin-bottom:12px}
+.modal-card strong{color:var(--gold)}
+
+.loading{animation:pulse 1.2s infinite alternate}
+@keyframes pulse{from{opacity:.4}to{opacity:1}}
+
+@media(max-width:1000px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+@media(max-width:700px){
+.sidebar{
+position:relative;width:100%;height:auto;padding:13px;
+border-right:0;border-bottom:1px solid var(--border)
+}
+.logo{padding:8px 10px;border:0}
+.sidebar .menu-title,.sidebar .nav:not(.active),.sidebar-bottom{display:none}
+.sidebar .nav.active{display:inline-block;padding:10px;margin:5px 0}
+.main{margin-left:0}
+.topbar{height:65px;padding:0 15px}
+.content{padding:20px 13px}
+.heading h1{font-size:21px}
+.stats{gap:10px}
+.stat{padding:15px}
+.stat h2{font-size:23px}
+.panel-head{padding:16px}
+.admin-badge{font-size:9px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="layout">
-
 <aside class="sidebar">
- <div class="logo">
-  BRJ EMPIRE
-  <small>ADMIN CONTROL CENTER</small>
- </div>
+<div class="logo">
+<h2>BRJ <span>EMPIRE</span></h2>
+<small>ADMINISTRATION</small>
+</div>
 
- <div class="nav-title">MAIN MENU</div>
- <nav class="nav">
-  <a href="admin-dashboard.html">▦ Overview</a>
-  <a href="admin-members.html">♙ Members</a>
-  <a href="admin-deposits.html" class="active">⇧ Deposits</a>
-  <a href="admin-withdrawals.html">⇩ Withdrawals</a>
-  <a href="admin-packages.html">◇ Packages</a>
-  <a href="admin-referrals.html">♧ Referrals</a>
-  <a href="admin-transfers.html">⇄ Transfers</a>
- </nav>
+<div class="menu-title">MANAGEMENT</div>
 
- <div class="nav-title">ACCOUNT</div>
- <nav class="nav">
-  <a href="admin.login.html" id="logoutBtn">↪ Logout</a>
- </nav>
+<a class="nav" href="admin-dashboard.html">◈ Overview</a>
+<a class="nav" href="admin-members.html">♙ Members</a>
+<a class="nav active" href="admin-deposits.html">↗ Deposits</a>
+<a class="nav" href="admin-withdrawals.html">↙ Withdrawals</a>
+<a class="nav" href="admin-packages.html">▣ Packages</a>
+<a class="nav" href="admin-referrals.html">♧ Referrals</a>
+<a class="nav" href="admin-transfers.html">⇄ P2P Transfers</a>
+
+<div class="sidebar-bottom">
+<button id="logoutBtn">LOGOUT ↗</button>
+</div>
 </aside>
 
 <main class="main">
 
- <div class="topbar">
-  <div>
-   <h1>Deposit Management</h1>
-   <p>BRJ EMPIRE · Member Payment Requests</p>
-  </div>
-  <div class="top-actions">
-   <span id="userInfo"></span>
-   <button class="btn gold" id="refreshBtn">↻ Refresh</button>
-  </div>
- </div>
+<header class="topbar">
+<div>
+<h3>Deposit Management</h3>
+<small>BRJ EMPIRE / DEPOSIT CONTROL CENTER</small>
+</div>
+<div class="admin-badge">● ADMIN PANEL</div>
+</header>
 
- <div id="message" class="message"></div>
+<div class="content">
 
- <section class="stats">
-  <div class="stat">
-   <span>TOTAL REQUESTS</span>
-   <h2 id="totalCount">0</h2>
-   <small>All payment requests</small>
-  </div>
-  <div class="stat">
-   <span>PENDING REQUESTS</span>
-   <h2 id="pendingCount">0</h2>
-   <small>Awaiting review</small>
-  </div>
-  <div class="stat">
-   <span>APPROVED REQUESTS</span>
-   <h2 id="approvedCount">0</h2>
-   <small>Approved payments</small>
-  </div>
-  <div class="stat">
-   <span>TOTAL APPROVED AMOUNT</span>
-   <h2 id="approvedAmount">₹0</h2>
-   <small>Approved request amount</small>
-  </div>
- </section>
+<div id="notice" class="notice"></div>
 
- <section class="card">
-  <div class="tabs">
-   <button class="tab active" data-filter="all">All Requests</button>
-   <button class="tab" data-filter="pending">Pending</button>
-   <button class="tab" data-filter="approved">Approved</button>
-   <button class="tab" data-filter="rejected">Rejected</button>
-  </div>
-
-  <div class="filters">
-   <input type="search" id="searchInput" placeholder="Search Member ID, UTR, package...">
-   <select id="packageFilter">
-    <option value="">All Packages</option>
-    <option value="Starter">Starter</option>
-    <option value="Pro">Pro</option>
-    <option value="VIP">VIP</option>
-   </select>
-   <button class="btn" id="clearBtn">Clear</button>
-  </div>
- </section>
-
- <section class="card">
-  <div class="table-wrap">
-   <table>
-    <thead>
-     <tr>
-      <th>MEMBER ID</th>
-      <th>PACKAGE</th>
-      <th>AMOUNT</th>
-      <th>UTR NUMBER</th>
-      <th>DATE</th>
-      <th>STATUS</th>
-      <th>PAYMENT PROOF</th>
-     </tr>
-    </thead>
-    <tbody id="depositRows">
-     <tr><td colspan="7" id="loading">Loading deposit requests...</td></tr>
-    </tbody>
-   </table>
-  </div>
-
-  <div class="pagination">
-   <span id="pageInfo">Page 1</span>
-   <div>
-    <button class="btn" id="prevBtn">← Previous</button>
-    <button class="btn" id="nextBtn">Next →</button>
-   </div>
-  </div>
- </section>
-
-</main>
+<div class="heading">
+<div>
+<h1>Deposit <span>Management</span></h1>
+<p>Monitor, review and manage member payment requests.</p>
+</div>
+<button class="refresh" id="refreshBtn">↻ REFRESH</button>
 </div>
 
-<div class="modal" id="proofModal">
- <div class="modal-box">
-  <div class="modal-head">
-   <h3>Payment Screenshot</h3>
-   <button class="close" id="closeModal">×</button>
-  </div>
-  <div id="proofContent">
-   <p class="muted">Loading screenshot...</p>
-  </div>
- </div>
+<div class="stats">
+
+<div class="stat">
+<small>TOTAL REQUESTS</small>
+<h2 class="gold" id="totalCount">—</h2>
+</div>
+
+<div class="stat">
+<small>PENDING REQUESTS</small>
+<h2 class="gold" id="pendingCount">—</h2>
+</div>
+
+<div class="stat">
+<small>APPROVED REQUESTS</small>
+<h2 class="green" id="approvedCount">—</h2>
+</div>
+
+<div class="stat">
+<small>REJECTED REQUESTS</small>
+<h2 class="red" id="rejectedCount">—</h2>
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-head">
+<div>
+<h3>Deposit Requests</h3>
+<p>Live records from BRJ EMPIRE database</p>
+</div>
+<div class="live-indicator"><i></i> LIVE SYSTEM</div>
+</div>
+
+<div class="filters">
+<input class="search" id="searchInput" placeholder="Search Member ID / UTR / Request ID...">
+
+<select class="select" id="statusFilter">
+<option value="all">All Status</option>
+<option value="pending">Pending</option>
+<option value="approved">Approved</option>
+<option value="rejected">Rejected</option>
+</select>
+</div>
+
+<div class="tabs">
+<button class="tab active" data-status="all">ALL REQUESTS</button>
+<button class="tab" data-status="pending">PENDING</button>
+<button class="tab" data-status="approved">APPROVED</button>
+<button class="tab" data-status="rejected">REJECTED</button>
+</div>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>REQUEST ID</th>
+<th>MEMBER ID</th>
+<th>PACKAGE</th>
+<th>AMOUNT</th>
+<th>UTR / TXN ID</th>
+<th>DATE</th>
+<th>STATUS</th>
+<th>ACTION</th>
+</tr>
+</thead>
+
+<tbody id="depositTable">
+<tr><td colspan="8" class="empty">Verifying admin access...</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="pagination">
+<span id="pageInfo">Loading...</span>
+<div>
+<button class="page-btn" id="prevBtn" disabled>← PREVIOUS</button>
+<button class="page-btn" id="nextBtn" disabled>NEXT →</button>
+</div>
+</div>
+
+</div>
+</div>
+</main>
+
+<div class="modal" id="imageModal">
+<div class="modal-card">
+<div class="modal-head">
+<h3>Payment Proof</h3>
+<button id="closeModal">×</button>
+</div>
+<p>Transaction reference: <strong id="modalUTR">—</strong></p>
+<p>Request ID: <strong id="modalID">—</strong></p>
+<img id="paymentImage" alt="Payment proof">
+</div>
 </div>
 
 <script>
-(function(){
-
 "use strict";
 
-const DB = window.supabaseClient || window.brjSupabase;
+const DB=window.supabaseClient||window.brjSupabase;
 
-let deposits = [];
-let memberMap = new Map();
-let currentFilter = "all";
-let currentPage = 1;
-const pageSize = 10;
+const $=id=>document.getElementById(id);
 
-const $ = id => document.getElementById(id);
+let deposits=[];
+let filtered=[];
+let page=0;
+let realtimeChannel=null;
+let memberMap={};
 
-function showMessage(text,type="info"){
- const box=$("message");
- box.className="message "+type;
- box.textContent=text;
- box.style.display="block";
+const PAGE_SIZE=15;
+const BUCKET="payment-proofs";
+
+function escapeHTML(value){
+return String(value??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+}[c]));
+}
+
+function showMessage(message,type="error"){
+$("notice").className="notice "+type;
+$("notice").textContent=message;
+$("notice").style.display="block";
 }
 
 function hideMessage(){
- $("message").style.display="none";
+$("notice").style.display="none";
+}
+
+function normalizeStatus(value){
+const s=String(value||"PENDING").trim().toUpperCase();
+
+if(s==="APPROVED"||s==="SUCCESS"||s==="COMPLETED")return "approved";
+if(s==="REJECTED"||s==="FAILED"||s==="CANCELLED")return "rejected";
+
+return "pending";
 }
 
 function money(value){
- return "₹"+Number(value||0).toLocaleString("en-IN",{
-  minimumFractionDigits:2,maximumFractionDigits:2
- });
+return "₹"+Number(value||0).toLocaleString("en-IN",{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+});
 }
 
-function safe(value){
- return String(value??"").replace(/[&<>"']/g,char=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
- }[char]));
+function getMember(item){
+return memberMap[item.user_id]||item.official_member_id||"ID NOT ASSIGNED";
 }
 
-function formatDate(value){
- if(!value)return "—";
- const date=new Date(value);
- if(isNaN(date.getTime()))return "—";
- return date.toLocaleString("en-IN",{
-  day:"2-digit",month:"short",year:"numeric",
-  hour:"2-digit",minute:"2-digit"
- });
-}
-
-function statusOf(item){
- return String(item.status||"pending").toLowerCase();
-}
-
-function statusBadge(status){
- const s=statusOf({status});
- let cls="pending";
- if(s==="approved")cls="approved";
- if(s==="rejected")cls="rejected";
- return `<span class="badge ${cls}">${safe(s)}</span>`;
+function getUTR(item){
+return item.utr_number||"—";
 }
 
 async function verifyAdmin(){
 
- if(!DB){
-  showMessage("Supabase client nahi mila. supabase.js aur Supabase connection check karo.","error");
-  return false;
- }
+if(!DB?.auth)throw new Error("Supabase client not found. Check supabase.js.");
 
- const {data:{session},error:sessionError}=await DB.auth.getSession();
+const {data,error}=await DB.auth.getSession();
+if(error)throw error;
 
- if(sessionError||!session){
-  location.replace("admin.login.html");
-  return false;
- }
-
- const {data:roleData,error:roleError}=await DB
-  .from("user_roles")
-  .select("role")
-  .eq("user_id",session.user.id)
-  .maybeSingle();
-
- if(roleError){
-  showMessage("Admin role verify nahi ho paya: "+roleError.message,"error");
-  return false;
- }
-
- const role=String(roleData?.role||"").toLowerCase();
-
- if(!["admin","main_admin"].includes(role)){
-  showMessage("Access denied. This account is not an authorized Admin.","error");
-  return false;
- }
-
- $("userInfo").textContent=session.user.email||"Admin";
- return true;
+if(!data.session){
+location.replace("admin.login.html");
+return false;
 }
 
-async function loadMemberIDs(userIds){
+const user=data.session.user;
 
- memberMap.clear();
+const {data:roles,error:roleError}=await DB
+.from("user_roles")
+.select("role")
+.eq("user_id",user.id);
 
- if(!userIds.length)return;
+if(roleError)throw new Error("Admin verification failed: "+roleError.message);
 
- const uniqueIds=[...new Set(userIds.filter(Boolean))];
+const valid=(roles||[]).some(r=>
+["admin","main_admin"].includes(String(r.role).toLowerCase())
+);
 
- for(let i=0;i<uniqueIds.length;i+=100){
-  const batch=uniqueIds.slice(i,i+100);
-
-  const {data,error}=await DB
-   .from("brj_member_ids")
-   .select("user_id,member_id")
-   .in("user_id",batch);
-
-  if(error){
-   console.error("Member ID mapping error:",error);
-   continue;
-  }
-
-  (data||[]).forEach(row=>{
-   memberMap.set(row.user_id,String(row.member_id));
-  });
- }
-
+if(!valid){
+await DB.auth.signOut();
+location.replace("admin.login.html");
+return false;
 }
+
+return true;
+}
+
+/* OFFICIAL MEMBER ID MAPPING */
+
+async function loadMemberIDs(records){
+
+memberMap={};
+
+const userIDs=[...new Set(
+records.map(x=>x.user_id).filter(Boolean)
+)];
+
+if(!userIDs.length)return;
+
+const {data,error}=await DB
+.from("brj_member_ids")
+.select("user_id,member_id")
+.in("user_id",userIDs);
+
+if(error){
+console.warn("Member ID mapping:",error.message);
+return;
+}
+
+(data||[]).forEach(row=>{
+memberMap[row.user_id]=row.member_id;
+});
+}
+
+/* LOAD REAL DEPOSIT REQUESTS */
 
 async function loadDeposits(){
 
- hideMessage();
- $("depositRows").innerHTML=
-  '<tr><td colspan="7" id="loading">Loading deposit requests...</td></tr>';
+$("depositTable").innerHTML=
+'<tr><td colspan="8" class="empty loading">Loading real deposit requests...</td></tr>';
 
- $("refreshBtn").disabled=true;
+const {data,error}=await DB
+.from("payment_requests")
+.select("*")
+.order("created_at",{ascending:false});
 
- try{
+if(error){
+throw new Error(
+"Deposit loading failed: "+error.message+
+". Check payment_requests SELECT permission and RLS."
+);
+}
 
-  const {data,error}=await DB
-   .from("payment_requests")
-   .select("*")
-   .order("created_at",{ascending:false});
+deposits=data||[];
 
-  if(error)throw error;
+await loadMemberIDs(deposits);
 
-  deposits=data||[];
-
-  const userIds=deposits.map(item=>item.user_id);
-  await loadMemberIDs(userIds);
-
-  updateStats();
-  currentPage=1;
-  renderTable();
-
- }catch(error){
-
-  console.error("Deposit loading error:",error);
-
-  $("depositRows").innerHTML=
-   `<tr><td colspan="7" class="empty">Deposit requests load nahi hue.<br>${safe(error.message)}</td></tr>`;
-
-  showMessage("Deposit data error: "+error.message,"error");
-
- }finally{
-  $("refreshBtn").disabled=false;
- }
+updateStats();
+applyFilters();
 
 }
+
+/* STATISTICS */
 
 function updateStats(){
 
- const pending=deposits.filter(x=>statusOf(x)==="pending");
- const approved=deposits.filter(x=>statusOf(x)==="approved");
+$("totalCount").textContent=deposits.length;
 
- const approvedTotal=approved.reduce((sum,x)=>{
-  return sum+Number(x.amount||0);
- },0);
+$("pendingCount").textContent=
+deposits.filter(x=>normalizeStatus(x.status)==="pending").length;
 
- $("totalCount").textContent=deposits.length;
- $("pendingCount").textContent=pending.length;
- $("approvedCount").textContent=approved.length;
- $("approvedAmount").textContent=money(approvedTotal);
+$("approvedCount").textContent=
+deposits.filter(x=>normalizeStatus(x.status)==="approved").length;
+
+$("rejectedCount").textContent=
+deposits.filter(x=>normalizeStatus(x.status)==="rejected").length;
+
+}
+
+/* PAYMENT SCREENSHOT */
+
+async function getProofURL(item){
+
+const path=item.screenshot_path;
+
+if(!path)return null;
+
+if(/^https?:\/\//i.test(path))return path;
+
+let clean=path.replace(/^\/+/,"");
+
+if(clean.startsWith(BUCKET+"/")){
+clean=clean.slice(BUCKET.length+1);
+}
+
+const {data,error}=await DB.storage
+.from(BUCKET)
+.createSignedUrl(clean,3600);
+
+if(error)throw error;
+
+return data?.signedUrl||null;
 
 }
 
-function getFiltered(){
+/* FILTERS */
 
- const search=$("searchInput").value.trim().toLowerCase();
- const packageName=$("packageFilter").value.toLowerCase();
+function applyFilters(){
 
- return deposits.filter(item=>{
+const search=$("searchInput").value.toLowerCase().trim();
+const status=$("statusFilter").value;
 
-  const status=statusOf(item);
+filtered=deposits.filter(item=>{
 
-  if(currentFilter!=="all"&&status!==currentFilter)return false;
+const text=[
+item.id,
+getMember(item),
+getUTR(item),
+item.package_name,
+item.amount,
+item.user_id
+].join(" ").toLowerCase();
 
-  if(packageName&&String(item.package_name||"").toLowerCase()!==packageName.toLowerCase()){
-   return false;
-  }
+return text.includes(search)&&
+(status==="all"||normalizeStatus(item.status)===status);
 
-  const memberID=memberMap.get(item.user_id)||"";
-  const searchable=[
-   memberID,
-   item.utr_number,
-   item.package_name,
-   item.amount,
-   item.status
-  ].join(" ").toLowerCase();
+});
 
-  if(search&&!searchable.includes(search))return false;
-
-  return true;
- });
+page=0;
+renderTable();
 
 }
+
+/* RENDER TABLE */
 
 function renderTable(){
 
- const filtered=getFiltered();
- const totalPages=Math.max(1,Math.ceil(filtered.length/pageSize));
+const start=page*PAGE_SIZE;
+const records=filtered.slice(start,start+PAGE_SIZE);
 
- if(currentPage>totalPages)currentPage=totalPages;
+if(!records.length){
 
- const start=(currentPage-1)*pageSize;
- const pageItems=filtered.slice(start,start+pageSize);
+$("depositTable").innerHTML=
+'<tr><td colspan="8" class="empty">No deposit requests found.</td></tr>';
 
- if(!pageItems.length){
-  $("depositRows").innerHTML=
-   '<tr><td colspan="7" class="empty">No deposit requests found.</td></tr>';
- }else{
+}else{
 
-  $("depositRows").innerHTML=pageItems.map(item=>{
+$("depositTable").innerHTML=records.map(item=>{
 
-   const officialID=memberMap.get(item.user_id)||"NOT ASSIGNED";
-   const proofAvailable=!!item.screenshot_path;
+const status=normalizeStatus(item.status);
 
-   return `
-    <tr>
-     <td class="member-id">${safe(officialID)}</td>
-     <td>${safe(item.package_name||"—")}</td>
-     <td class="amount">${money(item.amount)}</td>
-     <td>${safe(item.utr_number||"—")}</td>
-     <td>${formatDate(item.created_at)}</td>
-     <td>${statusBadge(item.status)}</td>
-     <td>
-      ${
-       proofAvailable
-       ? `<button class="action-btn proof-btn" data-id="${safe(item.id)}">VIEW PROOF</button>`
-       : `<span class="muted">No proof</span>`
-      }
-     </td>
-    </tr>
-   `;
+const action=`
+<button class="action-btn view" data-view="${escapeHTML(item.id)}">
+VIEW PROOF
+</button>
+`;
 
-  }).join("");
+return `
+<tr>
+<td>
+<div class="member">${escapeHTML(String(item.id).slice(0,12))}</div>
+<div class="sub">PAYMENT REQUEST</div>
+</td>
 
- }
+<td>
+<div class="member">${escapeHTML(getMember(item))}</div>
+<div class="sub">BRJ MEMBER</div>
+</td>
 
- $("pageInfo").textContent=
-  `Page ${currentPage} of ${totalPages} · ${filtered.length} requests`;
+<td>${escapeHTML(item.package_name||"—")}</td>
 
- $("prevBtn").disabled=currentPage<=1;
- $("nextBtn").disabled=currentPage>=totalPages;
+<td class="amount">${money(item.amount)}</td>
 
- $("prevBtn").style.opacity=currentPage<=1?".4":"1";
- $("nextBtn").style.opacity=currentPage>=totalPages?".4":"1";
+<td>${escapeHTML(getUTR(item))}</td>
 
-}
+<td>${escapeHTML(item.created_at?
+new Date(item.created_at).toLocaleString("en-IN"):"—")}</td>
 
-async function openProof(requestId){
+<td>
+<span class="badge ${status}">${status.toUpperCase()}</span>
+</td>
 
- const item=deposits.find(x=>String(x.id)===String(requestId));
+<td>${action}</td>
+</tr>
+`;
 
- if(!item||!item.screenshot_path){
-  showMessage("Payment screenshot path nahi mila.","error");
-  return;
- }
-
- $("proofModal").classList.add("show");
- $("proofContent").innerHTML='<p class="muted">Loading screenshot...</p>';
-
- try{
-
-  const path=String(item.screenshot_path);
-
-  // Agar database me already complete URL hai.
-  if(/^https?:\/\//i.test(path)){
-   $("proofContent").innerHTML=`
-    <img class="proof-image" src="${safe(path)}" alt="Payment proof">
-    <a class="proof-link" href="${safe(path)}" target="_blank" rel="noopener">Open image in new tab ↗</a>
-   `;
-   return;
-  }
-
-  // Private bucket ke liye temporary signed URL.
-  const {data,error}=await DB.storage
-   .from("payment-proofs")
-   .createSignedUrl(path,300);
-
-  if(error)throw error;
-
-  if(!data?.signedUrl)throw new Error("Signed image URL nahi mila.");
-
-  $("proofContent").innerHTML=`
-   <img class="proof-image" src="${safe(data.signedUrl)}" alt="Payment proof">
-   <a class="proof-link" href="${safe(data.signedUrl)}" target="_blank" rel="noopener">Open image in new tab ↗</a>
-  `;
-
- }catch(error){
-
-  console.error("Proof preview error:",error);
-
-  $("proofContent").innerHTML=`
-   <p style="color:#ff8999">Screenshot open nahi hua.</p>
-   <p class="muted">${safe(error.message)}</p>
-   <p class="muted">Storage bucket ka naam aur screenshot_path check karo.</p>
-  `;
-
- }
+}).join("");
 
 }
 
-$("depositRows").addEventListener("click",event=>{
- const button=event.target.closest(".proof-btn");
- if(button)openProof(button.dataset.id);
+$("depositTable").querySelectorAll("[data-view]").forEach(button=>{
+
+button.addEventListener("click",async()=>{
+
+const item=deposits.find(x=>String(x.id)===button.dataset.view);
+if(!item)return;
+
+try{
+
+button.textContent="LOADING...";
+
+const url=await getProofURL(item);
+
+if(!url){
+showMessage("Payment screenshot is not available for this request.");
+return;
+}
+
+$("paymentImage").src=url;
+$("modalUTR").textContent=getUTR(item);
+$("modalID").textContent=item.id;
+
+$("imageModal").classList.add("show");
+
+}catch(error){
+showMessage("Screenshot error: "+error.message);
+}finally{
+button.textContent="VIEW PROOF";
+}
+
 });
 
-$("closeModal").addEventListener("click",()=>{
- $("proofModal").classList.remove("show");
 });
 
-$("proofModal").addEventListener("click",event=>{
- if(event.target===$("proofModal")){
-  $("proofModal").classList.remove("show");
- }
+$("pageInfo").textContent=
+`Showing ${filtered.length?start+1:0}–${Math.min(start+PAGE_SIZE,filtered.length)} of ${filtered.length} requests`;
+
+$("prevBtn").disabled=page===0;
+$("nextBtn").disabled=(start+PAGE_SIZE)>=filtered.length;
+
+}
+
+/* SAFE APPROVAL PLACEHOLDER */
+
+async function processRequest(id,action){
+
+showMessage(
+"Secure approval system is not configured. No deposit status or wallet balance has been changed."
+);
+
+}
+
+/* REALTIME */
+
+function startRealtime(){
+
+if(realtimeChannel){
+DB.removeChannel(realtimeChannel);
+}
+
+realtimeChannel=DB
+.channel("brj-payment-requests-live")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"payment_requests"
+},
+async()=>{
+try{
+await loadDeposits();
+}catch(error){
+showMessage("Live update error: "+error.message);
+}
+}
+)
+.subscribe(status=>{
+
+console.log("Deposit realtime:",status);
+
 });
 
-$("refreshBtn").addEventListener("click",loadDeposits);
+}
 
-$("searchInput").addEventListener("input",()=>{
- currentPage=1;
- renderTable();
+/* SEARCH */
+
+$("searchInput").addEventListener("input",applyFilters);
+
+$("statusFilter").addEventListener("change",()=>{
+
+document.querySelectorAll(".tab").forEach(x=>
+x.classList.toggle("active",x.dataset.status===$("statusFilter").value)
+);
+
+applyFilters();
+
 });
 
-$("packageFilter").addEventListener("change",()=>{
- currentPage=1;
- renderTable();
-});
-
-$("clearBtn").addEventListener("click",()=>{
- $("searchInput").value="";
- $("packageFilter").value="";
- currentFilter="all";
- document.querySelectorAll(".tab").forEach(btn=>{
-  btn.classList.toggle("active",btn.dataset.filter==="all");
- });
- currentPage=1;
- renderTable();
-});
+/* TABS */
 
 document.querySelectorAll(".tab").forEach(button=>{
- button.addEventListener("click",()=>{
-  currentFilter=button.dataset.filter;
-  currentPage=1;
 
-  document.querySelectorAll(".tab").forEach(btn=>{
-   btn.classList.toggle("active",btn===button);
-  });
+button.addEventListener("click",()=>{
 
-  renderTable();
- });
+$("statusFilter").value=button.dataset.status;
+
+document.querySelectorAll(".tab").forEach(x=>
+x.classList.remove("active")
+);
+
+button.classList.add("active");
+
+applyFilters();
+
 });
 
+});
+
+/* PAGINATION */
+
 $("prevBtn").addEventListener("click",()=>{
- if(currentPage>1){
-  currentPage--;
-  renderTable();
- }
+if(page>0){page--;renderTable();}
 });
 
 $("nextBtn").addEventListener("click",()=>{
- currentPage++;
- renderTable();
+if((page+1)*PAGE_SIZE<filtered.length){page++;renderTable();}
 });
 
-$("logoutBtn").addEventListener("click",async event=>{
- event.preventDefault();
+/* REFRESH */
 
- const {error}=await DB.auth.signOut();
+$("refreshBtn").addEventListener("click",async()=>{
 
- if(error){
-  showMessage("Logout error: "+error.message,"error");
-  return;
- }
+$("refreshBtn").textContent="LOADING...";
 
- location.replace("admin.login.html");
-});
-
-async function init(){
- const allowed=await verifyAdmin();
- if(!allowed)return;
- await loadDeposits();
+try{
+hideMessage();
+await loadDeposits();
+}catch(error){
+showMessage(error.message);
+}finally{
+$("refreshBtn").textContent="↻ REFRESH";
 }
 
-init();
+});
+
+/* MODAL */
+
+$("closeModal").addEventListener("click",()=>{
+$("imageModal").classList.remove("show");
+$("paymentImage").src="";
+});
+
+$("imageModal").addEventListener("click",e=>{
+if(e.target===$("imageModal")){
+$("imageModal").classList.remove("show");
+$("paymentImage").src="";
+}
+});
+
+/* LOGOUT */
+
+$("logoutBtn").addEventListener("click",async()=>{
+
+if(!confirm("Logout from BRJ EMPIRE Admin?"))return;
+
+const {error}=await DB.auth.signOut();
+
+if(error){
+showMessage(error.message);
+return;
+}
+
+location.replace("admin.login.html");
+
+});
+
+/* INITIALIZATION */
+
+(async()=>{
+
+try{
+
+const verified=await verifyAdmin();
+if(!verified)return;
+
+await loadDeposits();
+
+startRealtime();
+
+}catch(error){
+
+console.error("BRJ DEPOSIT ERROR:",error);
+
+showMessage(error.message);
+
+$("depositTable").innerHTML=
+'<tr><td colspan="8" class="empty">Unable to load deposit requests. See the error message above.</td></tr>';
+
+}
 
 })();
-</script>
 
+</script>
 </body>
 </html>
