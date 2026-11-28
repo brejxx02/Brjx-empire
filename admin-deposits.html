@@ -31,10 +31,16 @@ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
 }
 
 body{
-background:var(--bg);
+background:
+radial-gradient(ellipse at 75% 0%,#e6bb5809,transparent 35%),
+var(--bg);
 color:var(--text);
 min-height:100vh;
 }
+
+button,input,select{font:inherit}
+
+button{cursor:pointer}
 
 .sidebar{
 position:fixed;
@@ -56,6 +62,7 @@ border-bottom:1px solid var(--border);
 .logo h2{
 font-size:21px;
 font-weight:950;
+letter-spacing:.5px;
 }
 
 .logo span{color:var(--gold)}
@@ -84,11 +91,17 @@ color:#a0aabb;
 font-size:12px;
 font-weight:650;
 text-decoration:none;
+transition:.2s;
+}
+
+.nav:hover{
+background:#ffffff08;
+color:white;
 }
 
 .nav.active{
-background:#e6bb5818;
-border:1px solid #e6bb5830;
+background:linear-gradient(100deg,#e6bb5820,#e6bb5808);
+border:1px solid #e6bb5840;
 color:var(--light);
 }
 
@@ -107,7 +120,6 @@ background:#ff707d12;
 border:1px solid #ff707d30;
 color:var(--red);
 font-weight:800;
-cursor:pointer;
 }
 
 .main{
@@ -118,7 +130,8 @@ min-height:100vh;
 .topbar{
 height:75px;
 padding:0 30px;
-background:#0c121c;
+background:#0c121cdd;
+backdrop-filter:blur(15px);
 border-bottom:1px solid var(--border);
 display:flex;
 align-items:center;
@@ -161,8 +174,8 @@ gap:15px;
 }
 
 .heading h1{
-font-size:25px;
-font-weight:900;
+font-size:27px;
+font-weight:950;
 }
 
 .heading h1 span{color:var(--gold)}
@@ -174,13 +187,18 @@ margin-top:7px;
 }
 
 .refresh{
-padding:11px 17px;
-background:#e6bb5815;
-border:1px solid #e6bb5840;
+padding:12px 18px;
+background:linear-gradient(135deg,#e6bb5825,#e6bb580c);
+border:1px solid #e6bb5850;
 color:var(--gold);
-border-radius:9px;
-font-weight:800;
-cursor:pointer;
+border-radius:10px;
+font-weight:850;
+transition:.2s;
+}
+
+.refresh:hover{
+background:#e6bb5830;
+transform:translateY(-1px);
 }
 
 .stats{
@@ -191,21 +209,42 @@ margin-bottom:25px;
 }
 
 .stat{
-padding:21px;
+position:relative;
+padding:22px;
 background:linear-gradient(145deg,#151e2b,#101620);
 border:1px solid var(--border);
 border-radius:16px;
+overflow:hidden;
+transition:.2s;
+}
+
+.stat:hover{
+border-color:#e6bb5850;
+transform:translateY(-2px);
+}
+
+.stat:after{
+content:"";
+position:absolute;
+right:-30px;
+top:-35px;
+width:100px;
+height:100px;
+border-radius:50%;
+background:#e6bb5808;
 }
 
 .stat small{
 color:var(--muted);
 font-size:10px;
-font-weight:800;
+font-weight:850;
+letter-spacing:1px;
 }
 
 .stat h2{
-font-size:27px;
+font-size:29px;
 margin-top:14px;
+font-weight:950;
 }
 
 .gold{color:var(--gold)}
@@ -217,6 +256,7 @@ background:linear-gradient(145deg,#131c29,#0e141e);
 border:1px solid var(--border);
 border-radius:17px;
 overflow:hidden;
+box-shadow:0 15px 45px #0003;
 }
 
 .panel-head{
@@ -227,12 +267,21 @@ justify-content:space-between;
 align-items:center;
 }
 
-.panel-head h3{font-size:14px}
+.panel-head h3{font-size:15px}
 
 .panel-head p{
 font-size:10px;
 color:var(--muted);
 margin-top:5px;
+}
+
+.live{
+font-size:9px;
+color:var(--green);
+background:#56d59b10;
+border:1px solid #56d59b30;
+padding:7px 10px;
+border-radius:20px;
 }
 
 .filters{
@@ -260,6 +309,11 @@ min-width:190px;
 
 .search:focus,.select:focus{
 border-color:var(--gold);
+box-shadow:0 0 0 3px #e6bb5810;
+}
+
+.select option{
+background:#111823;
 }
 
 .tabs{
@@ -276,8 +330,7 @@ background:#ffffff06;
 border:1px solid var(--border);
 color:var(--muted);
 font-size:10px;
-font-weight:800;
-cursor:pointer;
+font-weight:850;
 white-space:nowrap;
 }
 
@@ -292,26 +345,37 @@ color:var(--gold);
 table{
 width:100%;
 border-collapse:collapse;
-min-width:900px;
+min-width:950px;
 }
 
 th{
-padding:16px;
+padding:17px 15px;
 text-align:left;
 font-size:9px;
 letter-spacing:1px;
 color:var(--muted);
 border-bottom:1px solid var(--border);
+white-space:nowrap;
 }
 
 td{
-padding:16px;
+padding:16px 15px;
 font-size:11px;
 border-bottom:1px solid #ffffff08;
+vertical-align:middle;
+}
+
+tbody tr{
+transition:.2s;
+}
+
+tbody tr:hover{
+background:#ffffff04;
 }
 
 .member{
-font-weight:800;
+font-weight:850;
+color:#fff;
 }
 
 .sub{
@@ -322,14 +386,15 @@ margin-top:5px;
 
 .amount{
 color:var(--gold);
-font-weight:900;
+font-weight:950;
+font-size:13px;
 }
 
 .badge{
-padding:6px 9px;
+padding:7px 10px;
 border-radius:7px;
 font-size:9px;
-font-weight:800;
+font-weight:900;
 display:inline-block;
 }
 
@@ -351,15 +416,28 @@ color:var(--red);
 .actions{
 display:flex;
 gap:7px;
+align-items:center;
 }
 
 .action-btn{
-padding:8px 10px;
-border-radius:7px;
+padding:9px 11px;
+border-radius:8px;
 font-size:9px;
-font-weight:850;
-cursor:pointer;
+font-weight:900;
 border:1px solid;
+transition:.2s;
+white-space:nowrap;
+}
+
+.action-btn:hover{
+transform:translateY(-1px);
+filter:brightness(1.2);
+}
+
+.action-btn:disabled{
+opacity:.4;
+cursor:not-allowed;
+transform:none;
 }
 
 .approve{
@@ -382,15 +460,15 @@ color:var(--gold);
 
 .empty{
 text-align:center;
-padding:40px;
+padding:45px!important;
 color:var(--muted);
 }
 
 .notice{
 display:none;
-padding:14px;
+padding:15px 17px;
 margin-bottom:18px;
-border-radius:10px;
+border-radius:11px;
 font-size:12px;
 line-height:1.6;
 }
@@ -409,63 +487,19 @@ border:1px solid #56d59b40;
 color:var(--green);
 }
 
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:#000d;
-z-index:100;
-align-items:center;
-justify-content:center;
-padding:15px;
+.notice.info{
+display:block;
+background:#e6bb5812;
+border:1px solid #e6bb5840;
+color:var(--gold);
 }
-
-.modal.show{display:flex}
-
-.modal-card{
-width:100%;
-max-width:450px;
-background:#111a27;
-border:1px solid #e6bb5850;
-border-radius:18px;
-padding:23px;
-}
-
-.modal-head{
-display:flex;
-justify-content:space-between;
-margin-bottom:20px;
-}
-
-.modal-head button{
-background:none;
-border:0;
-color:white;
-font-size:23px;
-cursor:pointer;
-}
-
-.modal-card img{
-width:100%;
-max-height:350px;
-object-fit:contain;
-background:#090f18;
-border-radius:10px;
-}
-
-.modal-card p{
-font-size:12px;
-color:var(--muted);
-margin-bottom:12px;
-}
-
-.modal-card strong{color:var(--gold)}
 
 .pagination{
 padding:17px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+gap:10px;
 color:var(--muted);
 font-size:11px;
 }
@@ -476,11 +510,82 @@ background:#e6bb5815;
 border:1px solid #e6bb5830;
 color:var(--gold);
 border-radius:8px;
-cursor:pointer;
 }
 
 .page-btn:disabled{
 opacity:.35;
+cursor:not-allowed;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:#000e;
+backdrop-filter:blur(8px);
+z-index:100;
+align-items:center;
+justify-content:center;
+padding:15px;
+}
+
+.modal.show{display:flex}
+
+.modal-card{
+width:100%;
+max-width:480px;
+background:linear-gradient(145deg,#172231,#0d141f);
+border:1px solid #e6bb5850;
+border-radius:19px;
+padding:23px;
+box-shadow:0 25px 80px #0009;
+}
+
+.modal-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.modal-head h3{font-size:17px}
+
+.modal-head button{
+background:none;
+border:0;
+color:white;
+font-size:27px;
+}
+
+.modal-card img{
+width:100%;
+max-height:400px;
+object-fit:contain;
+background:#090f18;
+border-radius:10px;
+}
+
+.modal-card p{
+font-size:12px;
+color:var(--muted);
+margin-bottom:13px;
+}
+
+.modal-card strong{color:var(--gold)}
+
+.loader{
+display:inline-block;
+width:15px;
+height:15px;
+border:2px solid #e6bb5840;
+border-top-color:var(--gold);
+border-radius:50%;
+animation:spin .7s linear infinite;
+vertical-align:middle;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg)}
 }
 
 @media(max-width:1000px){
@@ -524,7 +629,7 @@ padding:0 15px;
 
 .content{padding:20px 13px}
 
-.heading h1{font-size:21px}
+.heading h1{font-size:22px}
 
 .stats{gap:10px}
 
@@ -534,8 +639,11 @@ padding:0 15px;
 
 .panel-head{padding:16px}
 
-}
+.admin-badge{font-size:9px}
 
+.pagination{flex-wrap:wrap}
+
+}
 </style>
 </head>
 
@@ -619,10 +727,14 @@ padding:0 15px;
 <div class="panel">
 
 <div class="panel-head">
+
 <div>
 <h3>Deposit Requests</h3>
-<p>Live deposit records from Supabase</p>
+<p>Live payment records from BRJ EMPIRE database</p>
 </div>
+
+<span class="live">● DATABASE CONNECTED</span>
+
 </div>
 
 <div class="filters">
@@ -659,6 +771,7 @@ placeholder="Search Member ID / UTR / Request ID..."
 <tr>
 <th>REQUEST</th>
 <th>MEMBER ID</th>
+<th>PACKAGE</th>
 <th>AMOUNT</th>
 <th>UTR / TXN ID</th>
 <th>DATE</th>
@@ -669,7 +782,9 @@ placeholder="Search Member ID / UTR / Request ID..."
 
 <tbody id="depositTable">
 <tr>
-<td colspan="7" class="empty">Verifying admin access...</td>
+<td colspan="8" class="empty">
+Verifying admin access...
+</td>
 </tr>
 </tbody>
 
@@ -696,7 +811,7 @@ placeholder="Search Member ID / UTR / Request ID..."
 
 </div>
 
-<!-- SCREENSHOT MODAL -->
+<!-- PAYMENT PROOF MODAL -->
 
 <div class="modal" id="imageModal">
 
@@ -717,13 +832,14 @@ placeholder="Search Member ID / UTR / Request ID..."
 
 <script>
 
-const DB=window.supabaseClient;
+const DB=window.supabaseClient||window.brjSupabase;
 
 const $=id=>document.getElementById(id);
 
 let deposits=[];
 let filtered=[];
 let page=0;
+
 const PAGE_SIZE=15;
 
 function escapeHTML(value){
@@ -742,6 +858,7 @@ function showMessage(message,type="error"){
 
 $("notice").className="notice "+type;
 $("notice").textContent=message;
+$("notice").style.display="block";
 
 }
 
@@ -764,8 +881,10 @@ const {data,error}=await DB.auth.getSession();
 if(error)throw error;
 
 if(!data.session){
-location.replace("admin-login.html");
+
+location.replace("admin.login.html");
 return false;
+
 }
 
 const user=data.session.user;
@@ -776,7 +895,11 @@ const {data:roles,error:roleError}=await DB
 .eq("user_id",user.id);
 
 if(roleError){
-throw new Error("Admin verification failed: "+roleError.message);
+
+throw new Error(
+"Admin verification failed: "+roleError.message
+);
+
 }
 
 const valid=(roles||[]).some(row=>
@@ -786,74 +909,118 @@ String(row.role).toLowerCase()
 );
 
 if(!valid){
+
 await DB.auth.signOut();
-location.replace("admin-login.html");
+
+location.replace("admin.login.html");
+
 return false;
+
 }
 
 return true;
 
 }
 
-/* FIELD HELPERS */
+/* OFFICIAL MEMBER IDS */
+
+async function loadMemberIDs(){
+
+const userIDs=[
+...new Set(deposits.map(x=>x.user_id).filter(Boolean))
+];
+
+if(!userIDs.length)return;
+
+const {data,error}=await DB
+.from("brj_member_ids")
+.select("user_id,member_id")
+.in("user_id",userIDs);
+
+if(error){
+
+console.warn("Member ID mapping:",error.message);
+
+return;
+
+}
+
+const map={};
+
+(data||[]).forEach(row=>{
+
+map[row.user_id]=row.member_id;
+
+});
+
+deposits.forEach(item=>{
+
+item.official_member_id=
+map[item.user_id]??"ID NOT ASSIGNED";
+
+});
+
+}
+
+/* HELPERS */
 
 function getAmount(item){
 
-return item.amount ??
-item.requested_amount ??
-0;
+return item.amount??0;
 
 }
 
 function getMember(item){
 
-return item.member_id ??
-item.user_id ??
-"—";
+return item.official_member_id??"—";
 
 }
 
 function getUTR(item){
 
-return item.utr_number ??
-item.utr ??
-item.transaction_id ??
-item.upi_transaction_id ??
-"—";
-
-}
-
-function getProof(item){
-
-return item.payment_screenshot ??
-item.screenshot_url ??
-item.payment_proof ??
-item.proof_url ??
-null;
+return item.utr_number??"—";
 
 }
 
 function getStatus(item){
 
-return String(item.status||"pending").toLowerCase();
+return String(item.status||"PENDING").toLowerCase();
 
 }
 
-/* LOAD DATA */
+/* LOAD DEPOSITS */
 
 async function loadDeposits(){
 
 $("depositTable").innerHTML=
-'<tr><td colspan="7" class="empty">Loading deposit requests...</td></tr>';
+'<tr><td colspan="8" class="empty"><span class="loader"></span> Loading requests...</td></tr>';
 
 const {data,error}=await DB
-.from("deposit_requests")
+.from("payment_requests")
 .select("*")
 .order("created_at",{ascending:false});
 
-if(error)throw error;
+if(error){
+
+throw new Error(
+"Payment requests load failed: "+error.message
+);
+
+}
 
 deposits=data||[];
+
+await loadMemberIDs();
+
+updateStats();
+
+applyFilters();
+
+}
+
+/* STATS */
+
+function updateStats(){
 
 $("totalCount").textContent=deposits.length;
 
@@ -865,8 +1032,6 @@ deposits.filter(x=>getStatus(x)==="approved").length;
 
 $("rejectedCount").textContent=
 deposits.filter(x=>getStatus(x)==="rejected").length;
-
-applyFilters();
 
 }
 
@@ -883,7 +1048,9 @@ filtered=deposits.filter(item=>{
 const text=[
 item.id,
 getMember(item),
-getUTR(item)
+getUTR(item),
+item.package_name,
+item.amount
 ].join(" ").toLowerCase();
 
 return text.includes(search)&&
@@ -897,18 +1064,93 @@ renderTable();
 
 }
 
-/* RENDER */
+/* SCREENSHOT URL */
+
+async function getProofURL(path){
+
+if(!path)return null;
+
+if(/^https?:\/\//i.test(path)){
+return path;
+}
+
+const {data,error}=await DB
+.storage
+.from("payment-proofs")
+.createSignedUrl(path,300);
+
+if(error){
+
+throw new Error(
+"Screenshot access failed: "+error.message
+);
+
+}
+
+return data?.signedUrl||null;
+
+}
+
+/* VIEW PROOF */
+
+async function viewProof(path,utr,button){
+
+if(!path){
+
+showMessage("Payment screenshot is not available.");
+
+return;
+
+}
+
+const oldText=button.textContent;
+
+button.disabled=true;
+button.textContent="LOADING...";
+
+try{
+
+const url=await getProofURL(path);
+
+if(!url){
+
+throw new Error("Screenshot URL unavailable.");
+
+}
+
+$("paymentImage").src=url;
+$("modalUTR").textContent=utr||"—";
+
+$("imageModal").classList.add("show");
+
+}catch(error){
+
+showMessage(error.message);
+
+}finally{
+
+button.disabled=false;
+button.textContent=oldText;
+
+}
+
+}
+
+/* RENDER TABLE */
 
 function renderTable(){
 
 const start=page*PAGE_SIZE;
 
-const records=filtered.slice(start,start+PAGE_SIZE);
+const records=filtered.slice(
+start,
+start+PAGE_SIZE
+);
 
 if(!records.length){
 
 $("depositTable").innerHTML=
-'<tr><td colspan="7" class="empty">No deposit requests found.</td></tr>';
+'<tr><td colspan="8" class="empty">No payment requests found.</td></tr>';
 
 }else{
 
@@ -916,46 +1158,86 @@ $("depositTable").innerHTML=records.map(item=>{
 
 const status=getStatus(item);
 
-const badge=["pending","approved","rejected"].includes(status)
-?status:"pending";
+const badge=[
+"pending",
+"approved",
+"rejected"
+].includes(status)?status:"pending";
 
-const proof=getProof(item);
+let actions="";
 
-const actions=status==="pending"
-?`
+if(status==="pending"){
+
+actions=`
 <div class="actions">
 
-<button class="action-btn approve" data-action="approve" data-id="${escapeHTML(item.id)}">
+<button
+class="action-btn approve"
+data-action="approve"
+data-id="${escapeHTML(item.id)}">
 APPROVE
 </button>
 
-<button class="action-btn reject" data-action="reject" data-id="${escapeHTML(item.id)}">
+<button
+class="action-btn reject"
+data-action="reject"
+data-id="${escapeHTML(item.id)}">
 REJECT
 </button>
 
+<button
+class="action-btn view"
+data-proof="${escapeHTML(item.screenshot_path||"")}"
+data-utr="${escapeHTML(getUTR(item))}">
+PROOF
+</button>
+
 </div>
-`
-:`
-<button class="action-btn view" data-proof="${proof?escapeHTML(proof):""}" data-utr="${escapeHTML(getUTR(item))}">
-VIEW
+`;
+
+}else{
+
+actions=`
+<button
+class="action-btn view"
+data-proof="${escapeHTML(item.screenshot_path||"")}"
+data-utr="${escapeHTML(getUTR(item))}">
+VIEW PROOF
 </button>
 `;
+
+}
 
 return `
 <tr>
 
 <td>
 <div class="member">${escapeHTML(String(item.id).slice(0,12))}</div>
-<div class="sub">DEPOSIT REQUEST</div>
+<div class="sub">PAYMENT REQUEST</div>
 </td>
 
-<td>${escapeHTML(getMember(item))}</td>
+<td>
+<div class="member">${escapeHTML(getMember(item))}</div>
+</td>
 
-<td class="amount">₹${escapeHTML(getAmount(item))}</td>
+<td>
+<div class="member">${escapeHTML(item.package_name||"—")}</div>
+<div class="sub">PACKAGE PURCHASE</div>
+</td>
+
+<td class="amount">
+₹${Number(getAmount(item)).toLocaleString("en-IN")}
+</td>
 
 <td>${escapeHTML(getUTR(item))}</td>
 
-<td>${escapeHTML(item.created_at?new Date(item.created_at).toLocaleString("en-IN"):"—")}</td>
+<td>
+${escapeHTML(
+item.created_at?
+new Date(item.created_at).toLocaleString("en-IN"):
+"—"
+)}
+</td>
 
 <td>
 <span class="badge ${badge}">
@@ -972,34 +1254,37 @@ ${escapeHTML(status.toUpperCase())}
 
 }
 
-$("depositTable").querySelectorAll("[data-action]").forEach(button=>{
+/* APPROVE / REJECT EVENTS */
+
+$("depositTable")
+.querySelectorAll("[data-action]")
+.forEach(button=>{
 
 button.addEventListener("click",()=>{
 
 processRequest(
 button.dataset.id,
-button.dataset.action
+button.dataset.action,
+button
 );
 
 });
 
 });
 
-$("depositTable").querySelectorAll("[data-proof]").forEach(button=>{
+/* PROOF EVENTS */
+
+$("depositTable")
+.querySelectorAll("[data-proof]")
+.forEach(button=>{
 
 button.addEventListener("click",()=>{
 
-const proof=button.dataset.proof;
-
-if(!proof){
-showMessage("No payment proof is available.");
-return;
-}
-
-$("paymentImage").src=proof;
-$("modalUTR").textContent=button.dataset.utr;
-
-$("imageModal").classList.add("show");
+viewProof(
+button.dataset.proof,
+button.dataset.utr,
+button
+);
 
 });
 
@@ -1015,55 +1300,123 @@ $("nextBtn").disabled=
 
 }
 
-/*
- IMPORTANT:
- Approval/rejection must be performed
- through a secure server-side RPC.
+/* SECURE APPROVAL / REJECTION RPC */
 
- No direct wallet update from browser.
-*/
+async function processRequest(id,action,button){
 
-async function processRequest(id,action){
+if(!["approve","reject"].includes(action))return;
 
-if(action!=="approve"&&action!=="reject")return;
-
-const item=deposits.find(x=>String(x.id)===String(id));
+const item=deposits.find(
+x=>String(x.id)===String(id)
+);
 
 if(!item)return;
 
 if(getStatus(item)!=="pending"){
-showMessage("This request is no longer pending.");
+
+showMessage(
+"This payment request has already been processed."
+);
+
 return;
+
 }
 
 const message=action==="approve"
-?"Approve this deposit request? Wallet credit will require a secure server-side transaction."
-:"Reject this deposit request?";
+?`Approve ${item.package_name} package for Member ${getMember(item)}?`
+:`Reject payment request for Member ${getMember(item)}?`;
 
 if(!confirm(message))return;
 
+const oldText=button.textContent;
+
+button.disabled=true;
+button.textContent="PROCESSING...";
+
+try{
+
 /*
- Safe default:
- Do not modify payment status or wallet here.
- The exact RPC must be implemented using
- the actual database schema and server function.
+Existing secure database RPC.
+It verifies admin access and locks
+the payment request before processing.
 */
 
-showMessage(
-"Action not executed. Secure deposit approval RPC is not configured yet. No wallet balance has been changed."
+const {data,error}=await DB.rpc(
+"admin_process_package_payment",
+{
+p_request_id:id,
+p_action:action
+}
 );
+
+if(error){
+
+throw error;
+
+}
+
+if(!data||data.success!==true){
+
+throw new Error(
+data?.message||"The payment request was not processed."
+);
+
+}
+
+if(action==="approve"){
+
+showMessage(
+`SUCCESS! Member ${getMember(item)} package ${item.package_name} approved and activated. Wallet credit: ₹0.`,
+"success"
+);
+
+}else{
+
+showMessage(
+`Payment request ${String(id).slice(0,12)} rejected successfully.`,
+"success"
+);
+
+}
+
+/* Reload actual database records */
+
+await loadDeposits();
+
+}catch(error){
+
+console.error("Payment processing error:",error);
+
+showMessage(
+error.message||"Unable to process payment request."
+);
+
+button.disabled=false;
+button.textContent=oldText;
+
+}
 
 }
 
 /* SEARCH */
 
-$("searchInput").addEventListener("input",applyFilters);
+$("searchInput").addEventListener(
+"input",
+applyFilters
+);
+
+/* STATUS FILTER */
 
 $("statusFilter").addEventListener("change",()=>{
 
-document.querySelectorAll(".tab").forEach(x=>
-x.classList.toggle("active",x.dataset.status===$("statusFilter").value)
+document.querySelectorAll(".tab").forEach(tab=>{
+
+tab.classList.toggle(
+"active",
+tab.dataset.status===$("statusFilter").value
 );
+
+});
 
 applyFilters();
 
@@ -1077,8 +1430,8 @@ button.addEventListener("click",()=>{
 
 $("statusFilter").value=button.dataset.status;
 
-document.querySelectorAll(".tab").forEach(x=>
-x.classList.remove("active")
+document.querySelectorAll(".tab").forEach(tab=>
+tab.classList.remove("active")
 );
 
 button.classList.add("active");
@@ -1094,8 +1447,10 @@ applyFilters();
 $("prevBtn").addEventListener("click",()=>{
 
 if(page>0){
+
 page--;
 renderTable();
+
 }
 
 });
@@ -1103,8 +1458,10 @@ renderTable();
 $("nextBtn").addEventListener("click",()=>{
 
 if((page+1)*PAGE_SIZE<filtered.length){
+
 page++;
 renderTable();
+
 }
 
 });
@@ -1113,11 +1470,13 @@ renderTable();
 
 $("refreshBtn").addEventListener("click",async()=>{
 
+$("refreshBtn").disabled=true;
 $("refreshBtn").textContent="LOADING...";
 
 try{
 
 hideMessage();
+
 await loadDeposits();
 
 }catch(error){
@@ -1126,6 +1485,7 @@ showMessage(error.message);
 
 }
 
+$("refreshBtn").disabled=false;
 $("refreshBtn").textContent="↻ REFRESH";
 
 });
@@ -1135,7 +1495,20 @@ $("refreshBtn").textContent="↻ REFRESH";
 $("closeModal").addEventListener("click",()=>{
 
 $("imageModal").classList.remove("show");
+
 $("paymentImage").src="";
+
+});
+
+$("imageModal").addEventListener("click",event=>{
+
+if(event.target===$("imageModal")){
+
+$("imageModal").classList.remove("show");
+
+$("paymentImage").src="";
+
+}
 
 });
 
@@ -1143,16 +1516,19 @@ $("paymentImage").src="";
 
 $("logoutBtn").addEventListener("click",async()=>{
 
-if(!confirm("Logout from Admin Panel?"))return;
+if(!confirm("Logout from BRJ EMPIRE Admin Panel?"))return;
 
 const {error}=await DB.auth.signOut();
 
 if(error){
+
 showMessage(error.message);
+
 return;
+
 }
 
-location.replace("admin-login.html");
+location.replace("admin.login.html");
 
 });
 
@@ -1175,7 +1551,10 @@ console.error(error);
 showMessage(error.message);
 
 $("depositTable").innerHTML=
-'<tr><td colspan="7" class="empty">Unable to load deposit records. Check database permissions and column names.</td></tr>';
+`<tr><td colspan="8" class="empty">
+Unable to load deposit records.<br><br>
+${escapeHTML(error.message)}
+</td></tr>`;
 
 }
 
