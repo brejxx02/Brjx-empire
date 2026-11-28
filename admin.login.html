@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#080a10">
 <title>BRJ EMPIRE | Admin Portal</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif
+}
 
 :root{
 --bg:#080a10;
@@ -18,7 +23,6 @@
 --muted:#8792a4;
 --border:#242e3c;
 --green:#56d59b;
---red:#ef8994;
 }
 
 body{
@@ -30,7 +34,7 @@ padding:22px;
 color:var(--text);
 background:
 radial-gradient(ellipse at 50% 5%,rgba(230,187,88,.13),transparent 38%),
-#080a10;
+var(--bg);
 }
 
 .wrapper{width:100%;max-width:440px}
@@ -73,7 +77,8 @@ box-shadow:0 30px 90px rgba(0,0,0,.55);
 }
 
 .login-card:before{
-content:"";position:absolute;top:0;left:10%;
+content:"";
+position:absolute;top:0;left:10%;
 width:80%;height:2px;
 background:linear-gradient(90deg,transparent,var(--gold),transparent);
 }
@@ -261,8 +266,8 @@ Protected Admin Authentication
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
-<script src="admin-auth.js"></script>
+<script src="supabase.js?v=20261128"></script>
+<script src="admin-auth.js?v=20261128"></script>
 
 </body>
 </html>
